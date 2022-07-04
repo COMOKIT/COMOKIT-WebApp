@@ -1,7 +1,7 @@
 import React from 'react'
 // import Charts from "./Chart";
-import { Input, Spinner, Card, Button, CardTitle } from "reactstrap";
-import BaseMap from "./BaseMap"; 
+import { Spinner, Card, Button, CardTitle } from "reactstrap";
+import BaseMap from "./BaseMap";
 
 class Widget extends React.Component {
   static id;
@@ -17,7 +17,10 @@ class Widget extends React.Component {
     this.state = {
       data: [],
       loading: false,
-      url: "ws://localhost:6868",
+      // url: "ws://localhost:6868",
+      url: "ws://51.255.46.42:6001",
+      model_path: "/var/www/github/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml",
+      exp_name: "Closures",
       chartType: "geojson"
     };
 
@@ -32,10 +35,10 @@ class Widget extends React.Component {
   }
 
   fetchFile() {
-    this.setState((prevState) => ({
-      data: prevState.data,
-      loading: true
-    }));
+    // this.setState((prevState) => ({
+    //   data: prevState.data,
+    //   loading: true
+    // }));
     // const url = this.state.url;
     // const chartType = this.state.chartType;
 
@@ -45,9 +48,6 @@ class Widget extends React.Component {
       loading: false
     }));
 
-    // socket.addEventListener('open', (event) => { 
-    //   console.log("connected");
-    // });
     // fetch(url)
     //   .then((res) => res.json())
     //   .then(
@@ -82,31 +82,73 @@ class Widget extends React.Component {
             width: "100%"
           }}
         >
-          <br />
-          <Card body>
-            <CardTitle>Enter WebSocket URL</CardTitle>
-            <Input id="input1" name="url" onChange={this.handleChange}></Input>
-            <br />
-            <label>Select display type</label>
-            <select
-              id="select1"
-              className="form-control"
-              name="chartType"
-              onChange={this.handleChange}
-              defaultValue="geojson"
-            >
-              <option value="geojson">Geojson</option>
-              <option value="expression">Expression</option>
-              <option value="image">Image</option>
-            </select>
-            <br />
+          <Card body><CardTitle>  </CardTitle>
+            <table>
+              <tbody>
+                <tr><td>URL</td><td>
+                  <select
+                    id="select_host"
+                    className="form-control"
+                    name="url"
+                    onChange={this.handleChange}
+                    defaultValue={"ws://localhost:6868/"}
+                  >
+                    <option value="ws://localhost:6868/">Local ws://localhost:6868/</option>
+                    <option value="ws://51.255.46.42:6001">Gama ovh</option>
+                  </select>
+                </td></tr>
+                <tr><td>Model</td><td>
+                  <select
+                    id="select_model"
+                    className="form-control"
+                    name="model_path"
+                    onChange={this.handleChange}
+
+                    value={this.model_path}
+                    defaultValue={{ label: "Comokit local", value: "C:\\git\\PROJECT\\COMOKIT-Model\\COMOKIT\\Meso\\Models\\Experiments\\Activity Restrictions\\School and Workplace Closure.gaml" }}
+                  >
+                    <option value="C:\\git\\gama/msi.gama.models/models/Tutorials/Road Traffic/models/Model 05.gaml">Road Traffic 05.gaml</option>
+                    <option value="C:\\git\\PROJECT\\COMOKIT-Model\\COMOKIT\\Meso\\Models\\Experiments\\Activity Restrictions\\School and Workplace Closure.gaml">Comokit local</option>
+                    <option value="/var/www/github/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml">Comokit ovh</option>
+                  </select>
+                </td></tr>
+                <tr><td>Experiment</td><td>
+
+                  <select
+                    id="select_exp"
+                    className="form-control"
+                    name="exp_name"
+                    onChange={this.handleChange}
+                    defaultValue={"Closures"}
+                  >
+                    <option value="road_traffic">road_traffic</option>
+                    <option value="Closures">Closures</option>
+                  </select>
+                </td></tr>
+                <tr><td>Display type</td><td>
+
+                  <select
+                    id="select1"
+                    className="form-control"
+                    name="chartType"
+                    onChange={this.handleChange}
+                    defaultValue={"geojson"}
+                  >
+                    <option value="geojson">Geojson</option>
+                    <option value="expression">Expression</option>
+                    <option value="image">Image</option>
+                  </select>
+                </td></tr>
+              </tbody>
+            </table>
+
             <Button color="primary" onClick={this.fetchFile}>
               Connect
             </Button>
           </Card>
         </div>
       );
-    } 
+    }
     // return <Charts data={this.state.data}></Charts>;
     return (
       <BaseMap parent={this} />

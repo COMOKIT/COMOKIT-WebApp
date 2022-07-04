@@ -4,7 +4,7 @@ import mapboxgl from '!mapbox-gl'; // eslint-disable-line import/no-webpack-load
 import GAMA from "./GAMA";
 const BaseMap = (props) => {
   mapboxgl.accessToken = 'pk.eyJ1IjoiaHFuZ2hpODgiLCJhIjoiY2t0N2w0cGZ6MHRjNTJ2bnJtYm5vcDB0YyJ9.oTjisOggN28UFY8q1hiAug';
-  // console.log(props.parent);
+  console.log(props.parent);
   const mymap = useRef(null);
 
   useEffect(() => { 
@@ -21,8 +21,8 @@ const BaseMap = (props) => {
   }, []);
  
   var addr =props.parent.state.url;// "ws://localhost:6868/"; 
-  var modelPath = 'C:\\git\\PROJECT\\COMOKIT-Model\\COMOKIT\\Meso\\Models\\Experiments\\Activity Restrictions\\School and Workplace Closure.gaml';
-  var experimentName = 'Closures';
+  var modelPath = props.parent.state.model_path;//'C:\\git\\PROJECT\\COMOKIT-Model\\COMOKIT\\Meso\\Models\\Experiments\\Activity Restrictions\\School and Workplace Closure.gaml';
+  var experimentName = props.parent.state.exp_name;//'Closures';
   return (
     <><div id={props.parent.id} className="map">
 
