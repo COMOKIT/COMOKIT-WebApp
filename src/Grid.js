@@ -93,9 +93,9 @@ class Grid extends React.Component {
           <Button color="primary" size="sm" onClick={this.addWidget}>
             Add Chart Widget
           </Button>
-          <Button color="primary" size="sm" onClick={this.exportPdf}>
+          {/* <Button color="primary" size="sm" onClick={this.exportPdf}>
             Export to PDF
-          </Button>
+          </Button> */}
         </div>
         <br />
         <ResponsiveGridLayout
@@ -121,6 +121,7 @@ function getFromLS(key) {
   if (global.localStorage) {
     try {
       ls = JSON.parse(global.localStorage.getItem("rdv_layout")) || {};
+      // console.log(ls);
     } catch (e) {
       console.log(e);
     }

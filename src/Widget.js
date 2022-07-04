@@ -1,9 +1,8 @@
 import React from 'react'
 // import Charts from "./Chart";
 import { Input, Spinner, Card, Button, CardTitle } from "reactstrap";
+import BaseMap from "./BaseMap"; 
 
-
-import BaseMap from "./BaseMap";
 class Widget extends React.Component {
   static id;
   constructor() {
@@ -13,13 +12,13 @@ class Widget extends React.Component {
     } else {
       Widget.id += 1;
     }
-    this.id = "m"+Widget.id;
+    this.id = "m" + Widget.id;
 
     this.state = {
       data: [],
       loading: false,
-      url: "",
-      chartType: "line"
+      url: "ws://localhost:6868",
+      chartType: "geojson"
     };
 
     this.fetchFile = this.fetchFile.bind(this);
@@ -40,8 +39,7 @@ class Widget extends React.Component {
     // const url = this.state.url;
     // const chartType = this.state.chartType;
 
-    // console.log(url);
-
+    // console.log(url);s
     this.setState((prevState) => ({
       data: [0, 1],
       loading: false
@@ -86,32 +84,32 @@ class Widget extends React.Component {
         >
           <br />
           <Card body>
-            <CardTitle>Enter URL to fetch JSON data</CardTitle>
+            <CardTitle>Enter WebSocket URL</CardTitle>
             <Input id="input1" name="url" onChange={this.handleChange}></Input>
             <br />
-            <label>Select chart type</label>
+            <label>Select display type</label>
             <select
               id="select1"
               className="form-control"
               name="chartType"
               onChange={this.handleChange}
+              defaultValue="geojson"
             >
-              <option value="line">Line</option>
-              <option value="scatter">Scatter</option>
-              <option value="column">Column</option>
+              <option value="geojson">Geojson</option>
+              <option value="expression">Expression</option>
+              <option value="image">Image</option>
             </select>
             <br />
             <Button color="primary" onClick={this.fetchFile}>
-              Convert
+              Connect
             </Button>
           </Card>
         </div>
       );
-    }
-
+    } 
     // return <Charts data={this.state.data}></Charts>;
     return (
-      <BaseMap id={this.id} />
+      <BaseMap parent={this} />
     )
       ;
   }
