@@ -4,7 +4,7 @@ import mapboxgl from '!mapbox-gl'; // eslint-disable-line import/no-webpack-load
 import GAMA from "./GAMA";
 const BaseMap = (props) => {
   mapboxgl.accessToken = 'pk.eyJ1IjoiaHFuZ2hpODgiLCJhIjoiY2t0N2w0cGZ6MHRjNTJ2bnJtYm5vcDB0YyJ9.oTjisOggN28UFY8q1hiAug';
-  console.log(props.parent);
+  // console.log(props.parent);
   const mymap = useRef(null);
 
   useEffect(() => { 

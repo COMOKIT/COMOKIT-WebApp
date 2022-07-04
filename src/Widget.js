@@ -17,9 +17,10 @@ class Widget extends React.Component {
     this.state = {
       data: [],
       loading: false,
-      // url: "ws://localhost:6868",
-      url: "ws://51.255.46.42:6001",
-      model_path: "/var/www/github/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml",
+      // url: "ws://51.255.46.42:6001",
+      // model_path: "/var/www/github/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml",
+      url: "ws://localhost:6868",
+      model_path:"C:\\git\\PROJECT\\COMOKIT-Model\\COMOKIT\\Meso\\Models\\Experiments\\Activity Restrictions\\School and Workplace Closure.gaml",
       exp_name: "Closures",
       chartType: "geojson"
     };
@@ -91,10 +92,10 @@ class Widget extends React.Component {
                     className="form-control"
                     name="url"
                     onChange={this.handleChange}
-                    defaultValue={"ws://localhost:6868/"}
+                    defaultValue={"ws://51.255.46.42:6001"}
                   >
-                    <option value="ws://localhost:6868/">Local ws://localhost:6868/</option>
                     <option value="ws://51.255.46.42:6001">Gama ovh</option>
+                    <option value="ws://localhost:6868/">Local ws://localhost:6868/</option>
                   </select>
                 </td></tr>
                 <tr><td>Model</td><td>
@@ -105,11 +106,11 @@ class Widget extends React.Component {
                     onChange={this.handleChange}
 
                     value={this.model_path}
-                    defaultValue={{ label: "Comokit local", value: "C:\\git\\PROJECT\\COMOKIT-Model\\COMOKIT\\Meso\\Models\\Experiments\\Activity Restrictions\\School and Workplace Closure.gaml" }}
+                    defaultValue={"C:\\git\\PROJECT\\COMOKIT-Model\\COMOKIT\\Meso\\Models\\Experiments\\Activity Restrictions\\School and Workplace Closure.gaml"}
                   >
-                    <option value="C:\\git\\gama/msi.gama.models/models/Tutorials/Road Traffic/models/Model 05.gaml">Road Traffic 05.gaml</option>
-                    <option value="C:\\git\\PROJECT\\COMOKIT-Model\\COMOKIT\\Meso\\Models\\Experiments\\Activity Restrictions\\School and Workplace Closure.gaml">Comokit local</option>
                     <option value="/var/www/github/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml">Comokit ovh</option>
+                    <option value="C:\\git\\PROJECT\\COMOKIT-Model\\COMOKIT\\Meso\\Models\\Experiments\\Activity Restrictions\\School and Workplace Closure.gaml">Comokit local</option>
+                    <option value="C:\\git\\gama/msi.gama.models/models/Tutorials/Road Traffic/models/Model 05.gaml">Road Traffic 05.gaml</option>
                   </select>
                 </td></tr>
                 <tr><td>Experiment</td><td>
