@@ -4,6 +4,7 @@ import { Responsive, WidthProvider } from "react-grid-layout";
 import Widget from "./Widget";
 import { RiDragMove2Fill } from "react-icons/ri";
 import exportToPdf from "./exportToPdf";
+import GAMA from "./GAMA";
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 const default_Layout = {
@@ -82,20 +83,30 @@ class Grid extends React.Component {
             </table>
 
           </div>
-          <Widget></Widget>
+          <Widget id={item.id}></Widget>
         </div>
       </div>
     ));
+ 
 
+    var addr = "ws://51.255.46.42:6001";
+    var modelPath = "/var/www/github/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml";
+
+    // var addr = "ws://localhost:6868/";  
+    // var modelPath = 'C:\\git\\PROJECT\\COMOKIT-Model\\COMOKIT\\Meso\\Models\\Experiments\\Activity Restrictions\\School and Workplace Closure.gaml';
+    var experimentName = 'Closures';
+
+    // var modelPath = 'C:/git/gama/msi.gama.models/models/Tutorials/Road Traffic/models/Model 05.gaml';
+    // var experimentName = 'road_traffic';
     return (
-      <div>
+      <><GAMA address={addr} modelPath={modelPath} experimentName={experimentName}></GAMA><div>
         <div className="toolBar">
           <Button color="primary" size="sm" onClick={this.addWidget}>
             Add Chart Widget
           </Button>
           {/* <Button color="primary" size="sm" onClick={this.exportPdf}>
-            Export to PDF
-          </Button> */}
+      Export to PDF
+    </Button> */}
         </div>
         <br />
         <ResponsiveGridLayout
@@ -105,13 +116,11 @@ class Grid extends React.Component {
           rowHeight={370}
           draggableHandle={".dragHandle"}
           layouts={this.state.layouts}
-          onLayoutChange={(layout, layouts) =>
-            this.onLayoutChange(layout, layouts)
-          }
+          onLayoutChange={(layout, layouts) => this.onLayoutChange(layout, layouts)}
         >
           {layouts}
         </ResponsiveGridLayout>
-      </div>
+      </div></>
     );
   }
 }

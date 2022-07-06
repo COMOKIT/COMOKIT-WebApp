@@ -20,7 +20,7 @@ class GAMA extends React.Component {
         this.modelPath = md;
         this.experimentName = exp;
         this.map = mmap;
-        this.updateSource=null;
+        this.updateSource = null;
         this.geojson = {
             'type': 'FeatureCollection',
             'features': [
@@ -34,6 +34,8 @@ class GAMA extends React.Component {
             ]
         };
         this.connect(this.on_connected, this.on_disconnected);
+
+
     }
 
     connect(opened_callback, closed_callback) {
@@ -81,6 +83,20 @@ class GAMA extends React.Component {
             }
         }, this.executor_speed);
     }
+    
+    on_connected(myself) {
+        console.log("connected");
+        window.$gama=myself;
+        
+        window.$gama.launch(window.$gama.play());
+        
+    }
+
+    on_disconnected() {
+        console.log("disconnected");
+    }
+
+
 
     requestCommand(cmd) {
         if (this.req === "" || this.queue.length === 0) {
@@ -179,147 +195,7 @@ class GAMA extends React.Component {
         this.execute(this.state);
         if (c) c();
     }
-    
 
-    on_connected(myself) { 
-        const attribute1Name = 'state';  
-        const attribute2Name = 'zone_id';
-        console.log("connected");
-        // console.log(myself.map);
-        myself.launch();
-        var mymyself = myself;
-
-        myself.map.current.on('load', async () => {
-            // Add the source1 location as a source.
-            mymyself.map.current.addSource('source1', {
-                type: 'geojson',
-                data: mymyself.geojson
-            });
-            myself.map.current.addSource('source2', {
-                type: 'geojson',
-                data: mymyself.geojson
-            });
-            myself.map.current.addLayer({
-                'id': 'source1',
-                type: 'circle',
-                'source': 'source1',
-                'layout': {},
-                'paint': {
-                    'circle-radius': {
-                        'base': 1.75,
-                        'stops': [
-                            [12, 1],
-                            [22, 50]
-                        ]
-                    },
-                    'circle-color': ['match', ['get', attribute1Name], // get the property
-                        "susceptible", 'green',
-                        "latent", 'orange',
-                        "presymptomatic", 'red',
-                        "asymptomatic", 'red',
-                        "symptomatic", 'red',
-                        "removed", 'blue',
-                        'gray'],
-
-                },
-            });
-            myself.map.current.addLayer({
-                'id': 'source2',
-                type: 'fill',
-                'source': 'source2',
-                'layout': {},
-                'paint': {
-                    'fill-color': ['match', ['get', attribute2Name], // get the property
-                        "commerce", 'green',
-                        "gare", 'red', "Musee", 'red',
-                        "habitat", 'blue', "culte", 'blue', "Industrial", 'blue',
-                        'gray'],
-
-                },
-            });
-            // Add some fog in the background
-            myself.map.current.setFog({
-                'range': [-0.5, 5],
-                'color': 'white',
-                'horizon-blend': 0.2
-            });
-            // Add a sky layer over the horizon
-            myself.map.current.addLayer({
-                'id': 'sky',
-                'type': 'sky',
-                'paint': {
-                    'sky-type': 'atmosphere',
-                    'sky-atmosphere-color': 'rgba(85, 151, 210, 0.5)'
-                }
-            });
-            // Add terrain source, with slight exaggeration
-            myself.map.current.addSource('mapbox-dem', {
-                'type': 'raster-dem',
-                'url': 'mapbox://mapbox.terrain-rgb',
-                'tileSize': 512,
-                'maxzoom': 14
-            });
-            myself.map.current.setTerrain({ 'source': 'mapbox-dem', 'exaggeration': 1.5 });
-            myself.map.current.setLight({ anchor: 'map' });
-            myself.start_renderer();
-        });
-        myself.evalExpr("CRS_transform(world.location,\"EPSG:4326\")", function (ee) {
-            ee = JSON.parse(ee).result.replace(/[{}]/g, "");
-            var eee = ee.split(",");
-            console.log(eee[0]);
-            console.log(eee[1]);
-            mymyself.map.current.flyTo({
-                center: [eee[0], eee[1]],
-                essential: true,
-                duration: 0,
-                zoom: 15
-            });
-            // document.getElementById('div-loader').remove();
-            myself.request = "";//IMPORTANT FLAG TO ACCOMPLISH CURRENT TRANSACTION
-        });
-
-        myself.play();
-    }
-
-    on_disconnected() {
-        console.log("disconnected");
-    }
-
-
-    start_renderer() {
-
-        const species1Name = 'Individual';
-        const attribute1Name = 'state'; 
-        const species2Name = 'Building';
-        const attribute2Name = 'zone_id';
-        
-        var myself=this;
-        this.getPopulation(species2Name, [attribute2Name], "EPSG:4326", function (message) {
-            if (typeof message.data == "object") {
-
-            } else {
-                myself.geojson = null;
-                myself.geojson = JSON.parse(message);
-                // console.log(geojson);
-                myself.map.current.getSource('source2').setData(myself.geojson);
-            }
-        });
-
-        this.updateSource = setInterval(() => {
-            myself.getPopulation(species1Name, [attribute1Name], "EPSG:4326", function (message) {
-                if (typeof message.data == "object") {
-
-                } else {
-                    myself.geojson = null;
-                    myself.geojson = JSON.parse(message);
-                    // console.log(geojson);
-                    myself.map.current.getSource('source1').setData(myself.geojson); 
-                }
-            });
-        }, 100);
-    }
-     
-    
 
     componentWillUnmount() {
         this.wSocket.close();

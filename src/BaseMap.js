@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import mapboxgl from '!mapbox-gl'; // eslint-disable-line import/no-webpack-loader-syntax
 
-import GAMA from "./GAMA";
+import MapGeojson from "./MapGeojson";
 const BaseMap = (props) => {
   mapboxgl.accessToken = 'pk.eyJ1IjoiaHFuZ2hpODgiLCJhIjoiY2t0N2w0cGZ6MHRjNTJ2bnJtYm5vcDB0YyJ9.oTjisOggN28UFY8q1hiAug';
   // console.log(props.parent);
@@ -18,18 +18,18 @@ const BaseMap = (props) => {
       zoom: 15 // starting zoom
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
- 
-  var addr =props.parent.state.url;// "ws://localhost:6868/"; 
-  var modelPath = props.parent.state.model_path;//'C:\\git\\PROJECT\\COMOKIT-Model\\COMOKIT\\Meso\\Models\\Experiments\\Activity Restrictions\\School and Workplace Closure.gaml';
-  var experimentName = props.parent.state.exp_name;//'Closures';
+  }, [mymap]); 
+  
+  var addr = "ws://localhost:6868/"; 
+  var modelPath = 'C:/git/gama/msi.gama.models/models/Tutorials/Road Traffic/models/Model 05.gaml';
+  var experimentName = 'road_traffic';
   return (
     <><div id={props.parent.id} className="map">
 
     </div>
       <div>
 
-        <GAMA address={addr} modelPath={modelPath} experimentName={experimentName} map={mymap}></GAMA>
+        <MapGeojson address={addr} modelPath={modelPath} experimentName={experimentName} map={mymap}></MapGeojson>
       </div></>
   );
 };
