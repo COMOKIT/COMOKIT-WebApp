@@ -1,9 +1,7 @@
 import React from 'react'
 import { Navbar, NavbarBrand } from "reactstrap";
 import GAMA from "./GAMA";
-import { GrConnect } from "react-icons/gr";
-import { GrLaunch } from "react-icons/gr"; 
-import { Button } from "reactstrap"; 
+import { Button } from "reactstrap";
 const default_Nav_state = {
   // url: "ws://51.255.46.42:6001",
   // model_path: "/var/www/github/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml",
@@ -18,10 +16,11 @@ const default_Nav_state = {
 
 class NavigationBar extends React.Component {
   constructor(param) {
-    super();
+    super(param);
     this.id = "m" + param.id;
     this.state = this.getNFromLS("Nav") || default_Nav_state;
     this.gama = React.createRef();
+    this.grid = param.grid;
     this.fetchFile = this.fetchFile.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.tryConnect = this.tryConnect.bind(this);
@@ -30,6 +29,7 @@ class NavigationBar extends React.Component {
     this.tryPause = this.tryPause.bind(this);
     this.tryStep = this.tryStep.bind(this);
     this.tryReload = this.tryReload.bind(this);
+    this.tryAdd = this.tryAdd.bind(this);
   }
 
   handleChange(e) {
@@ -51,75 +51,79 @@ class NavigationBar extends React.Component {
   render() {
     var addr = this.state.url;
     // if (this.gama.current && this.gama.current.wSocket && this.gama.current.wSocket.readyState === 1) {
- 
-      return (<><GAMA ref={this.gama} address={addr}  ></GAMA>
-        <div>
-          <Navbar color="faded" light className="navBar">
-            <NavbarBrand className="mr-auto" width="100%">
-              <table><tbody><tr width="100%">
-                <td> <select
-                  id="select_host"
+    
+    return (<><GAMA ref={this.gama} address={addr}  ></GAMA>
+      <div>
+        <Navbar color="faded" light className="navBar">
+          <NavbarBrand className="mr-auto" width="100%">
+            <table><tbody><tr width="100%">
+              <td> <select
+                id="select_host"
+                className="form-control"
+                name="url"
+                onChange={this.handleChange}
+                defaultValue={this.state.url}
+              // defaultValue={"ws://51.255.46.42:6001"}
+              >
+                <option value="ws://51.255.46.42:6001">Gama ovh</option>
+                <option value="ws://localhost:6868">Local</option>
+              </select></td>
+              <td><Button color="primary" size="sm" onClick={this.tryConnect}>Connect</Button></td>
+              <td>
+                <select
+                  id="select_model"
                   className="form-control"
-                  name="url"
+                  name="model_path"
                   onChange={this.handleChange}
-                  defaultValue={this.state.url}
-                // defaultValue={"ws://51.255.46.42:6001"}
+                  // defaultValue={"/var/www/github/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml"}                    
+                  defaultValue={this.state.model_path}
                 >
-                  <option value="ws://51.255.46.42:6001">Gama ovh</option>
-                  <option value="ws://localhost:6868">Local</option>
-                </select></td>
-                <td><GrConnect onClick={this.tryConnect} /></td>
-                <td>
-                  <select
-                    id="select_model"
-                    className="form-control"
-                    name="model_path"
-                    onChange={this.handleChange}
-                    // defaultValue={"/var/www/github/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml"}                    
-                    defaultValue={this.state.model_path}
-                  >
-                    <option value="/var/www/github/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml">Comokit ovh</option>
-                    <option value="C:/git/PROJECT/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml">Comokit local</option>
-                    <option value="C:/git/gama/msi.gama.models/models/Tutorials/Road Traffic/models/Model 05.gaml">Road Traffic 05.gaml</option>
-                  </select>
-                </td><td><select
-                  id="select_exp"
-                  className="form-control"
-                  name="exp_name"
-                  onChange={this.handleChange}
-                  // defaultValue={"Closures"}
-                  defaultValue={this.state.exp_name}
-                >
-                  <option value="Closures">Closures</option>
-                  <option value="road_traffic">road_traffic</option>
-                </select></td><td><GrLaunch onClick={this.tryLaunch} /></td>
-                <td><Button color="primary" size="sm" onClick={this.tryPlay}>Play</Button> </td>
-                <td><Button color="primary" size="sm" onClick={this.tryPause}>Pause</Button> </td>
-                <td><Button color="primary" size="sm" onClick={this.tryStep}>Step</Button> </td>
-                <td><Button color="primary" size="sm" onClick={this.tryReload}>Reload</Button> </td> 
-              </tr></tbody></table>
-            </NavbarBrand>
-          </Navbar>
-        </div></>
-      );
- 
+                  <option value="/var/www/github/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml">Comokit ovh</option>
+                  <option value="C:/git/PROJECT/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml">Comokit local</option>
+                  <option value="C:/git/gama/msi.gama.models/models/Tutorials/Road Traffic/models/Model 05.gaml">Road Traffic 05.gaml</option>
+                </select>
+              </td><td><select
+                id="select_exp"
+                className="form-control"
+                name="exp_name"
+                onChange={this.handleChange}
+                // defaultValue={"Closures"}
+                defaultValue={this.state.exp_name}
+              >
+                <option value="Closures">Closures</option>
+                <option value="road_traffic">road_traffic</option>
+              </select></td>
+              <td><Button color="primary" size="sm" onClick={this.tryLaunch}>Launch</Button> </td>
+              <td><Button color="primary" size="sm" onClick={this.tryPlay}>Play</Button> </td>
+              <td><Button color="primary" size="sm" onClick={this.tryPause}>Pause</Button> </td>
+              <td><Button color="primary" size="sm" onClick={this.tryStep}>Step</Button> </td>
+              <td><Button color="primary" size="sm" onClick={this.tryReload}>Reload</Button> </td>
+              <td><Button color="primary" size="sm" onClick={this.tryAdd}>Add Chart Widget</Button></td>
+            </tr></tbody></table>
+          </NavbarBrand>
+        </Navbar>
+      </div></>
+    );
+
   }
 
 
+  tryAdd() {
+    this.props.grid.current.addWidget();
+  }
   tryConnect() {
     if (!this.gama.current.wSocket) {// && this.gama.current.wSocket.readyState!==1
-      var _this=this;
-      this.gama.current.doConnect(_this.setState((prevState) => ({ 
-        loading: true
-      })));
+      var _this = this;
+      this.gama.current.doConnect( );
 
-      console.log(this.gama.current);
     }
     // window.$gama.doConnect();
   }
 
-
-  tryLaunch() { 
+  tryLaunch() {
+    if (!this.gama.current.wSocket) {
+      this.tryConnect();
+    }
     if (this.gama.current && this.gama.current.wSocket) {// && this.gama.current.wSocket.readyState!==1
 
 
@@ -135,30 +139,30 @@ class NavigationBar extends React.Component {
   }
 
 
-  tryPlay() { 
+  tryPlay() {
     if (this.gama.current && this.gama.current.wSocket) {// && this.gama.current.wSocket.readyState!== 
-      
+
       this.gama.current.queue.length = 0;
       this.gama.current.play();
     }
     // window.$gama.doConnect();
   }
 
-  tryStep() { 
+  tryStep() {
     if (this.gama.current && this.gama.current.wSocket) {// && this.gama.current.wSocket.readyState!== 
       this.gama.current.queue.length = 0;
       this.gama.current.step();
     }
     // window.$gama.doConnect();
   }
-  tryPause() { 
+  tryPause() {
     if (this.gama.current && this.gama.current.wSocket) {// && this.gama.current.wSocket.readyState!== 
       this.gama.current.queue.length = 0;
       this.gama.current.pause();
     }
     // window.$gama.doConnect();
   }
-  tryReload() { 
+  tryReload() {
     if (this.gama.current && this.gama.current.wSocket) {// && this.gama.current.wSocket.readyState!== 
       this.gama.current.queue.length = 0;
       this.gama.current.reload();

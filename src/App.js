@@ -7,11 +7,13 @@ import NavigationBar from "./Navbar";
 class App extends React.Component {
   
   render() {
+    var mygrid = React.createRef();
+
     return (
       <div className="App">
-        <NavigationBar></NavigationBar>
+        <NavigationBar grid={mygrid}></NavigationBar>
         <Container fluid={true}>
-          <Grid></Grid>
+          <Grid  ref={mygrid} ></Grid>
         </Container>
       </div>
     );

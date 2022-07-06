@@ -161,7 +161,7 @@ class GAMA extends React.Component {
         var myself = this;
         this.state = "launch";
         this.execute(this.state, function (e) {
-            console.log(e);
+            // console.log(e);
             var result = JSON.parse(e);
             if (result.exp_id) myself.exp_id = result.exp_id;
             if (result.socket_id) myself.socket_id = result.socket_id;

@@ -27,6 +27,7 @@ class Grid extends React.Component {
   }
 
   addWidget() {
+    console.log("xxxxxxx");
     this.setState((prevState) => ({
       widgets: [...prevState.widgets, { id: prevState.widgetSequence + 1 }],
       widgetSequence: prevState.widgetSequence + 1
@@ -91,9 +92,6 @@ class Grid extends React.Component {
     return (
       <><div>
         <div className="toolBar">
-          <Button color="primary" size="sm" onClick={this.addWidget}>
-            Add Chart Widget
-          </Button>
           {/* <Button color="primary" size="sm" onClick={this.exportPdf}>
       Export to PDF
     </Button> */}
