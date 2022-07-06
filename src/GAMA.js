@@ -33,11 +33,16 @@ class GAMA extends React.Component {
                 }
             ]
         };
-        this.connect(this.on_connected, this.on_disconnected);
+        
+        window.$gama=this;
+        // this.connect(this.on_connected, this.on_disconnected);
 
 
     }
-
+    doConnect(c){
+        this.connect(this.on_connected, this.on_disconnected);
+        if(c) c();
+    }
     connect(opened_callback, closed_callback) {
         // console.log(this.address.address);
         this.modelPath = this.address.modelPath;
@@ -83,13 +88,9 @@ class GAMA extends React.Component {
             }
         }, this.executor_speed);
     }
-    
+
     on_connected(myself) {
-        console.log("connected");
-        window.$gama=myself;
-        
-        window.$gama.launch(window.$gama.play());
-        
+        console.log("connected");       
     }
 
     on_disconnected() {
@@ -160,7 +161,7 @@ class GAMA extends React.Component {
         var myself = this;
         this.state = "launch";
         this.execute(this.state, function (e) {
-            // console.log(e);
+            console.log(e);
             var result = JSON.parse(e);
             if (result.exp_id) myself.exp_id = result.exp_id;
             if (result.socket_id) myself.socket_id = result.socket_id;
@@ -197,9 +198,9 @@ class GAMA extends React.Component {
     }
 
 
-    componentWillUnmount() {
-        this.wSocket.close();
-    }
+    // componentWillUnmount() {
+    //     this.wSocket.close();
+    // }
     render() {
 
 

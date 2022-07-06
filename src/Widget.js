@@ -5,14 +5,6 @@ import BaseMap from "./BaseMap";
 const default_Widget_state = {
   data: [],
   loading: false,
-  // url: "ws://51.255.46.42:6001",
-  // model_path: "/var/www/github/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml",
-  url: "ws://localhost:6868",
-  // model_path:"C:/git/PROJECT/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml",
-  // exp_name: "Closures",
-
-  model_path: 'C:/git/gama/msi.gama.models/models/Tutorials/Road Traffic/models/Model 05.gaml',
-  exp_name: 'road_traffic',
   expression: '',
   chartType: "geojson"
 };
@@ -93,7 +85,7 @@ class Widget extends React.Component {
           <Card body><CardTitle>  </CardTitle>
             <table>
               <tbody>
-                <tr><td>GAMA Server</td><td>
+                {/* <tr><td>GAMA Server< /td><td>
                   <select
                     id="select_host"
                     className="form-control"
@@ -132,7 +124,7 @@ class Widget extends React.Component {
                     <option value="Closures">Closures</option>
                     <option value="road_traffic">road_traffic</option>
                   </select>
-                </td></tr>
+                </td></tr>*/}
                 <tr><td>Display type</td><td>
 
                   <select

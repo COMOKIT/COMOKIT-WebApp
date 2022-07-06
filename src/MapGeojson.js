@@ -1,7 +1,7 @@
 import React from 'react'
 
 class MapGeojson extends React.Component {
-    
+
     constructor(addr, md, exp, mmap) {
 
         super();
@@ -33,18 +33,19 @@ class MapGeojson extends React.Component {
                     }
                 }
             ]
-        }; 
-        setTimeout(() => {   
-        
-            var myself=this;
-            this.on_connected(myself); }, 20);
+        };
+        setTimeout(() => {
+
+            var myself = this;
+            this.on_connected(myself);
+        }, 20);
 
     }
 
-  
 
-    on_connected(myself) { 
-        const attribute1Name = 'state';  
+
+    on_connected(myself) {
+        const attribute1Name = 'state';
         const attribute2Name = 'zone_id';
         console.log("connected");
         console.log(this.props.map);
@@ -149,24 +150,29 @@ class MapGeojson extends React.Component {
     start_renderer() {
 
         const species1Name = 'Individual';
-        const attribute1Name = 'state'; 
+        const attribute1Name = 'state';
         const species2Name = 'Building';
         const attribute2Name = 'zone_id';
-        
+
         // const species1Name = 'people';
         // const attribute1Name = 'name'; 
         // const species2Name = 'building';
         // const attribute2Name = 'name';
-        
-        var myself=this;
+
+        var myself = this;
         window.$gama.getPopulation(species2Name, [attribute2Name], "EPSG:4326", function (message) {
             if (typeof message.data == "object") {
 
             } else {
-                myself.geojson = null;
-                myself.geojson = JSON.parse(message);
-                // console.log(geojson);
-                myself.props.map.current.getSource('source2').setData(myself.geojson);
+                try {
+                    myself.geojson = null;
+                    myself.geojson = JSON.parse(message);
+                    // console.log(geojson);
+                    myself.props.map.current.getSource('source2').setData(myself.geojson);
+                    // console.log(ls);
+                } catch (e) {
+                    console.log(e);
+                }
             }
         });
 
@@ -178,13 +184,13 @@ class MapGeojson extends React.Component {
                     myself.geojson = null;
                     myself.geojson = JSON.parse(message);
                     // console.log(geojson);
-                    myself.props.map.current.getSource('source1').setData(myself.geojson); 
+                    myself.props.map.current.getSource('source1').setData(myself.geojson);
                 }
             });
         }, 1000);
     }
-     
-     
+
+
     render() {
 
 
