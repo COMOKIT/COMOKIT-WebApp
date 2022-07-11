@@ -11,16 +11,23 @@ class Charts extends React.Component {
       title: {
         text: props.expr
       },
-      series: [
-        {
-          data: []
-        }
+      series: [ 
       ]
     };
 
     window.$gama.addOutput(this, this);
     // console.log(window.$gama.outputs);
-    this.expression = props.expr;
+    this.expressions = props.expr;
+    let _this = this;
+    this.expressions.forEach((value, index, array) => {
+
+      _this.state.series.push({
+        data: [],
+        name: value.expr,
+        color: value.color
+      });
+    }
+    );
     this.update = this.update.bind(this);
     // this.updateSource = setInterval(() => {
     //   window.$gama.evalExpr(props.expr, function (ee) {
@@ -35,14 +42,21 @@ class Charts extends React.Component {
   update(c) {
     // console.log(this.expression);
     let _this = this;
-    window.$gama.evalExpr(this.expression, function (ee) {
-      // console.log("finish "+_this);
-      _this.state.series[0].data.push(parseInt(JSON.parse(ee).result));
-      _this.setState({ series: [{ data: _this.state.series[0].data }] });
-      if (c) {
-        c();
-      }
-    });
+    this.expressions.forEach(each);
+    function each(value, index, array) {
+      // console.log(index); 
+      // console.log(value.expr);    
+      window.$gama.evalExpr(value.expr, function (ee) {
+        // console.log("finish "+_this);
+        _this.state.series[index].data.push(parseInt(JSON.parse(ee).result));
+        // _this.state.series[index].name = value.expr;
+        _this.state.series[index].color = `rgba(${value.color.r}, ${value.color.g}, ${value.color.b}, ${value.color.a})`;
+        _this.setState({ series: _this.state.series });
+      });
+    }
+    if (c) {
+      c();
+    }
   }
   componentWillUnmount() {
 

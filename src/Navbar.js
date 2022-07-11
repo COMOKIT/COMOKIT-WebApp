@@ -133,7 +133,7 @@ class NavigationBar extends React.Component {
       // var modelPath = 'C:/git/gama/msi.gama.models/models/Tutorials/Road Traffic/models/Model 05.gaml';
       // var experimentName = 'road_traffic';
       var _this=this;
-      this.gama.current.launch();// _this.tryPlay
+      this.gama.current.launch( _this.tryPlay);
 
     }
     // window.$gama.doConnect();
