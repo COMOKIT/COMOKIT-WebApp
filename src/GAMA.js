@@ -12,12 +12,15 @@ class GAMA extends React.Component {
         this.req = "";
         this.result = "";
         this.executor = void 0;
-        this.executor_speed = 1000;
+        this.output_executor = void 0;
+        this.executor_speed = 10;
         this.endCondition = "";
         this.param = [];
+        this.outputs = new Map();
         this.logger = void 0;
         this.address = addr;
         this.modelPath = md;
+        this.pendingoutput = 0;
         this.experimentName = exp;
         this.map = mmap;
         this.updateSource = null;
@@ -33,15 +36,15 @@ class GAMA extends React.Component {
                 }
             ]
         };
-        
-        window.$gama=this;
+
+        window.$gama = this;
         // this.connect(this.on_connected, this.on_disconnected);
 
 
     }
-    doConnect(c){
+    doConnect(c) {
         this.connect(this.on_connected, this.on_disconnected);
-        if(c) c();
+        if (c) c();
     }
     connect(opened_callback, closed_callback) {
         // console.log(this.address.address);
@@ -87,10 +90,11 @@ class GAMA extends React.Component {
                 };
             }
         }, this.executor_speed);
+
     }
 
     on_connected(myself) {
-        console.log("connected");       
+        console.log("connected");
     }
 
     on_disconnected() {
@@ -110,6 +114,7 @@ class GAMA extends React.Component {
     }
 
     evalExpr(q, c) {
+
         var cmd = {
             "type": "expression",
             "socket_id": this.socket_id,
@@ -117,6 +122,7 @@ class GAMA extends React.Component {
             "expr": q,
             "callback": c
         };
+        // console.log("eval " + cmd.expr);
         this.requestCommand(cmd);
     }
 
@@ -161,33 +167,59 @@ class GAMA extends React.Component {
         var myself = this;
         this.state = "launch";
         this.execute(this.state, function (e) {
-            // console.log(e);
             var result = JSON.parse(e);
             if (result.exp_id) myself.exp_id = result.exp_id;
             if (result.socket_id) myself.socket_id = result.socket_id;
-            if (c) c();
+            if (c) {
+                // console.log(e);
+                c();
+            }
         });
     }
 
     play(c) {
+        clearInterval(this.output_executor);
+
         // this.queue.length = 0;
         this.state = "play";
         this.execute(this.state);
-        if (c) c();
+        if (c) c(); 
+        this.output_executor = setInterval(() => {
+            this.updateOutputs();
+        }, 10);
     }
+    updateOutputs(){
+        
+        let _this = this;
+        if (this.pendingoutput <= 0) {
+            this.pendingoutput = this.outputs.size;
+            this.outputs.forEach((values, keys) => {
 
+                values.update(function () { _this.pendingoutput-- });
+            });
+        }
+    }
     pause(c) {
         // this.queue.length = 0;
         this.state = "pause";
         this.execute(this.state);
         if (c) c();
     }
-
+    // serial(asyncFunctions) {
+    //     return asyncFunctions.map(function (functionChain, nextFunction) {
+    //         return functionChain
+    //             .then((previousResult) => nextFunction(previousResult))
+    //             .then(result => ({ status: 'fulfilled', result }))
+    //             .catch(error => ({ status: 'rejected', error }));
+    //     }, Promise.resolve());
+    // }
     step(c) {
         // this.queue.length = 0;
+        clearInterval(this.output_executor);
         this.state = "step";
         this.execute(this.state);
-        if (c) c();
+        if (c) c(); 
+        this.updateOutputs();
     }
 
     reload(c) {
@@ -197,10 +229,14 @@ class GAMA extends React.Component {
         if (c) c();
     }
 
-
-    // componentWillUnmount() {
-    //     this.wSocket.close();
-    // }
+    addOutput(id, o) {
+        this.outputs.set(id, o);
+    }
+    componentWillUnmount() {
+        clearInterval(this.executor);
+        clearInterval(this.output_executor);
+        // this.wSocket.close();
+    }
     render() {
 
 

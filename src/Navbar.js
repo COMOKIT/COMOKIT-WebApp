@@ -68,7 +68,7 @@ class NavigationBar extends React.Component {
                 <option value="ws://51.255.46.42:6001">Gama ovh</option>
                 <option value="ws://localhost:6868">Local</option>
               </select></td>
-              <td><Button color="primary" size="sm" onClick={this.tryConnect}>Connect</Button></td>
+              {/* <td><Button color="primary" size="sm" onClick={this.tryConnect}>Connect</Button></td> */}
               <td>
                 <select
                   id="select_model"
@@ -113,7 +113,7 @@ class NavigationBar extends React.Component {
   }
   tryConnect() {
     if (!this.gama.current.wSocket) {// && this.gama.current.wSocket.readyState!==1
-      var _this = this;
+      // var _this = this;
       this.gama.current.doConnect( );
 
     }
@@ -132,7 +132,8 @@ class NavigationBar extends React.Component {
 
       // var modelPath = 'C:/git/gama/msi.gama.models/models/Tutorials/Road Traffic/models/Model 05.gaml';
       // var experimentName = 'road_traffic';
-      this.gama.current.launch();
+      var _this=this;
+      this.gama.current.launch();// _this.tryPlay
 
     }
     // window.$gama.doConnect();
@@ -143,7 +144,7 @@ class NavigationBar extends React.Component {
     if (this.gama.current && this.gama.current.wSocket) {// && this.gama.current.wSocket.readyState!== 
 
       this.gama.current.queue.length = 0;
-      this.gama.current.play();
+      this.gama.current.play( );
     }
     // window.$gama.doConnect();
   }

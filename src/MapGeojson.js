@@ -34,6 +34,9 @@ class MapGeojson extends React.Component {
                 }
             ]
         };
+
+        window.$gama.addOutput(this, this);
+        // console.log(window.$gama.outputs);
         setTimeout(() => {
 
             var myself = this;
@@ -47,8 +50,8 @@ class MapGeojson extends React.Component {
     on_connected(myself) {
         const attribute1Name = 'state';
         const attribute2Name = 'zone_id';
-        console.log("connected");
-        console.log(this.props.map);
+        // console.log("connected");
+        // console.log(this.props.map);
         var mymyself = myself;
 
         this.props.map.current.on('load', async () => {
@@ -146,11 +149,34 @@ class MapGeojson extends React.Component {
         console.log("disconnected");
     }
 
+    componentWillUnmount() {
+
+        window.$gama.outputs.delete(this);
+        // console.log(window.$gama.outputs);
+    }
+    update(c) {
+        const species1Name = 'Individual';
+        const attribute1Name = 'state';
+        var myself = this;
+        window.$gama.getPopulation(species1Name, [attribute1Name], "EPSG:4326", function (message) {
+            if (typeof message.data == "object") {
+
+            } else {
+                myself.geojson = null;
+                myself.geojson = JSON.parse(message);
+                // console.log(geojson);
+                if (myself.props.map.current.getSource('source1'))
+                    myself.props.map.current.getSource('source1').setData(myself.geojson);
+
+                if (c) {
+                    c();
+                }
+            }
+        });
+    }
 
     start_renderer() {
 
-        const species1Name = 'Individual';
-        const attribute1Name = 'state';
         const species2Name = 'Building';
         const attribute2Name = 'zone_id';
 
@@ -176,18 +202,8 @@ class MapGeojson extends React.Component {
             }
         });
 
-        this.updateSource = setInterval(() => {
-            window.$gama.getPopulation(species1Name, [attribute1Name], "EPSG:4326", function (message) {
-                if (typeof message.data == "object") {
-
-                } else {
-                    myself.geojson = null;
-                    myself.geojson = JSON.parse(message);
-                    // console.log(geojson);
-                    myself.props.map.current.getSource('source1').setData(myself.geojson);
-                }
-            });
-        }, 1000);
+        // this.updateSource = setInterval(() => {
+        // }, 1000);
     }
 
 

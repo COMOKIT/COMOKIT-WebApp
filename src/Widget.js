@@ -156,7 +156,6 @@ class Widget extends React.Component {
       );
     }
     if (this.state.chartType === "expression") {
-
       return <Charts expr={this.state.expression}></Charts>;
     }
     return (
