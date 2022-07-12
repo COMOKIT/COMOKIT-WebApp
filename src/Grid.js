@@ -56,9 +56,9 @@ class Grid extends React.Component {
       x: 0,
       y: 0,
       w: 2,
-      h: 1,
-      maxH: 2,
-      maxW: 4
+      h: 2,
+      maxH: 4,
+      maxW: 8
     };
     const layouts = this.state.widgets.map((item) => (
       <div className="widget" key={item.id} data-grid={config}>
@@ -100,8 +100,8 @@ class Grid extends React.Component {
         <ResponsiveGridLayout
           className="layout"
           breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }}
-          cols={{ lg: 6, md: 3, sm: 2, xs: 1, xxs: 1 }}
-          rowHeight={370}
+          cols={{ lg: 8, md: 4, sm: 2, xs: 1, xxs: 1 }}
+          rowHeight={185}
           draggableHandle={".dragHandle"}
           layouts={this.state.layouts}
           onLayoutChange={(layout, layouts) => this.onLayoutChange(layout, layouts)}
