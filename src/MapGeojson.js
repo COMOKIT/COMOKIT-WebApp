@@ -168,9 +168,9 @@ class MapGeojson extends React.Component {
                 if (myself.props.map.current.getSource('source1'))
                     myself.props.map.current.getSource('source1').setData(myself.geojson);
 
-                if (c) {
-                    c();
-                }
+            }
+            if (c) {
+                c();
             }
         });
     }
