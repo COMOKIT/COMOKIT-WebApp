@@ -43,8 +43,7 @@ class GAMA extends React.Component {
 
     }
     doConnect(c) {
-        this.connect(this.on_connected, this.on_disconnected);
-        if (c) c();
+        this.connect(c, this.on_disconnected);
     }
     connect(opened_callback, closed_callback) {
         // console.log(this.address.address);
@@ -66,10 +65,10 @@ class GAMA extends React.Component {
         });
         this.executor = setInterval(() => {
             if (this.queue.length > 0 && this.req === "") {
-                // console.log(this.queue);
                 this.req = this.queue.shift();
                 this.req.exp_id = this.exp_id;
                 this.req.socket_id = this.socket_id;
+                // console.log(this.req);
                 this.wSocket.send(JSON.stringify(this.req)); // console.log("request " + JSON.stringify(this.req));
 
                 if (this.logger) {
@@ -93,8 +92,9 @@ class GAMA extends React.Component {
 
     }
 
-    on_connected(myself) {
+    on_connected(c) {
         console.log("connected");
+        if (c) c();
     }
 
     on_disconnected() {

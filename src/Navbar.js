@@ -93,7 +93,7 @@ class NavigationBar extends React.Component {
                 <option value="Closures">Closures</option>
                 <option value="road_traffic">road_traffic</option>
               </select></td>
-              <td><Button color="primary" size="sm" onClick={this.tryLaunch}>Launch</Button> </td>
+              <td><Button color="primary" size="sm" onClick={this.tryConnect}>Launch</Button> </td>
               <td><Button color="primary" size="sm" onClick={this.tryPlay}>Play</Button> </td>
               <td><Button color="primary" size="sm" onClick={this.tryPause}>Pause</Button> </td>
               <td><Button color="primary" size="sm" onClick={this.tryStep}>Step</Button> </td>
@@ -113,17 +113,18 @@ class NavigationBar extends React.Component {
   }
   tryConnect() {
     if (!this.gama.current.wSocket) {// && this.gama.current.wSocket.readyState!==1
-      // var _this = this;
-      this.gama.current.doConnect( );
+      var _this = this;
+      this.gama.current.doConnect(  _this.tryLaunch);
 
     }
     // window.$gama.doConnect();
   }
 
   tryLaunch() {
-    if (!this.gama.current.wSocket) {
-      this.tryConnect();
-    }
+    console.log("connected");
+    // if (!this.gama.current.wSocket) {
+    //   this.tryConnect();
+    // }
     if (this.gama.current && this.gama.current.wSocket) {// && this.gama.current.wSocket.readyState!==1
 
 
@@ -141,10 +142,11 @@ class NavigationBar extends React.Component {
 
 
   tryPlay() {
+    console.log("launched");
     if (this.gama.current && this.gama.current.wSocket) {// && this.gama.current.wSocket.readyState!== 
 
       this.gama.current.queue.length = 0;
-      this.gama.current.play( );
+      this.gama.current.play( console.log("play"));
     }
     // window.$gama.doConnect();
   }
