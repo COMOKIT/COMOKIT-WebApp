@@ -182,14 +182,13 @@ class GAMA extends React.Component {
 
         // this.queue.length = 0;
         this.state = "play";
-        this.execute(this.state);
-        if (c) c(); 
+        this.execute(this.state, c);
         this.output_executor = setInterval(() => {
             this.updateOutputs();
-        }, 10);
+        }, 100);
     }
-    updateOutputs(){
-        
+    updateOutputs() {
+
         let _this = this;
         if (this.pendingoutput <= 0) {
             this.pendingoutput = this.outputs.size;
@@ -199,11 +198,48 @@ class GAMA extends React.Component {
             });
         }
     }
+
+    autoStep(c) {
+        // this.queue.length = 0;
+        clearInterval(this.output_executor);
+        this.state = "step";
+        this.execute(this.state, () => {
+            this.output_executor = setInterval(() => {
+                this.updateOutputs(); 
+                this.autoStep(c);
+            }, 1000);
+        });
+
+        // let _this = this;
+        // this.output_executor = setInterval(() => {
+        //     _this.updateOutputs();
+        // }, 100);
+        // this.output_executor = setInterval(() => {
+        //     console.log(_this.pendingoutput);
+        //     if (_this.pendingoutput <= 0) {
+        //         _this.queue.length = 0; 
+        //         _this.state = "step";
+        //         _this.execute(_this.state, () => {
+        //             // if (c) c();
+        //             _this.updateOutputs();
+        //         });
+        //     }
+        // }, 100);
+    }
+
+    step(c) {
+        // this.queue.length = 0;
+        clearInterval(this.output_executor);
+        this.state = "step";
+        this.execute(this.state,()=>{
+            if (c) c(); 
+            this.updateOutputs();
+        });
+    }
     pause(c) {
         // this.queue.length = 0;
         this.state = "pause";
-        this.execute(this.state);
-        if (c) c();
+        this.execute(this.state,c);
     }
     // serial(asyncFunctions) {
     //     return asyncFunctions.map(function (functionChain, nextFunction) {
@@ -213,14 +249,6 @@ class GAMA extends React.Component {
     //             .catch(error => ({ status: 'rejected', error }));
     //     }, Promise.resolve());
     // }
-    step(c) {
-        // this.queue.length = 0;
-        clearInterval(this.output_executor);
-        this.state = "step";
-        this.execute(this.state);
-        if (c) c(); 
-        this.updateOutputs();
-    }
 
     reload(c) {
         // this.queue.length = 0;

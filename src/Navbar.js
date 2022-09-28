@@ -146,7 +146,7 @@ class NavigationBar extends React.Component {
     if (this.gama.current && this.gama.current.wSocket) {// && this.gama.current.wSocket.readyState!== 
 
       this.gama.current.queue.length = 0;
-      this.gama.current.play( console.log("play"));
+      this.gama.current.autoStep( console.log("autoStep"));
     }
     // window.$gama.doConnect();
   }
