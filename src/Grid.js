@@ -87,7 +87,7 @@ class Grid extends React.Component {
         </div>
       </div>
     ));
- 
+
 
     return (
       <><div>
@@ -118,7 +118,7 @@ function getFromLS(key) {
   if (global.localStorage) {
     try {
       ls = JSON.parse(global.localStorage.getItem("rdv_layout")) || {};
-      // console.log(ls);
+      console.log(ls);
     } catch (e) {
       console.log(e);
     }

@@ -117,6 +117,8 @@ class GAMA extends React.Component {
 
         var cmd = {
             "type": "expression",
+            "model": this.modelPath,
+            "experiment": this.experimentName,
             "socket_id": this.socket_id,
             "exp_id": this.exp_id,
             "expr": q,
@@ -133,9 +135,13 @@ class GAMA extends React.Component {
             "experiment": this.experimentName,
             "socket_id": this.socket_id,
             "exp_id": this.exp_id,
+            "console":false,
+            "status":false,
+            "dialog":false,
             "auto-export": false,
             "parameters": this.param,
             "until": this.endCondition,
+            "sync": true,
             "callback": c
         };
         this.requestCommand(cmd);
@@ -165,13 +171,14 @@ class GAMA extends React.Component {
     launch(c) {
         this.queue.length = 0;
         var myself = this;
-        this.state = "launch";
+        this.state = "load";
         this.execute(this.state, function (e) {
-            var result = JSON.parse(e);
+             
+            var result = JSON.parse(e).content;
+            // console.log(e);
             if (result.exp_id) myself.exp_id = result.exp_id;
             if (result.socket_id) myself.socket_id = result.socket_id;
             if (c) {
-                // console.log(e);
                 c();
             }
         });
@@ -207,24 +214,8 @@ class GAMA extends React.Component {
             this.output_executor = setInterval(() => {
                 this.updateOutputs(); 
                 this.autoStep(c);
-            }, 1000);
+            }, 100);
         });
-
-        // let _this = this;
-        // this.output_executor = setInterval(() => {
-        //     _this.updateOutputs();
-        // }, 100);
-        // this.output_executor = setInterval(() => {
-        //     console.log(_this.pendingoutput);
-        //     if (_this.pendingoutput <= 0) {
-        //         _this.queue.length = 0; 
-        //         _this.state = "step";
-        //         _this.execute(_this.state, () => {
-        //             // if (c) c();
-        //             _this.updateOutputs();
-        //         });
-        //     }
-        // }, 100);
     }
 
     step(c) {

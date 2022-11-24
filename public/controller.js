@@ -29,7 +29,7 @@ function on_disconnected() {
 function start_sim() { 
 	experiment.launch();
 	experiment.evalExpr("CRS_transform(world.location,\"EPSG:4326\")", function (ee) {
-		ee = JSON.parse(ee).result.replace(/[{}]/g, "");
+		ee = JSON.parse(ee).content.result.replace(/[{}]/g, "");
 		var eee = ee.split(",");
 		console.log(eee[0]);
 		console.log(eee[1]);
@@ -54,7 +54,7 @@ function start_renderer() {
 
 		} else {
 			geojson = null;
-			geojson = JSON.parse(message);
+			geojson = JSON.parse(message).content;
 			// console.log(geojson);
 			map.getSource('source2').setData(geojson);
 		} 
@@ -66,7 +66,7 @@ function start_renderer() {
 
 			} else {
 				geojson = null;
-				geojson = JSON.parse(message);
+				geojson = JSON.parse(message).content;
 				// console.log(geojson);
 				map.getSource('source1').setData(geojson);
 				canCallStaticLayer = true;

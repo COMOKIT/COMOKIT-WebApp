@@ -129,7 +129,8 @@ class MapGeojson extends React.Component {
             myself.start_renderer();
         });
         window.$gama.evalExpr("CRS_transform(world.location,\"EPSG:4326\")", function (ee) {
-            ee = JSON.parse(ee).result.replace(/[{}]/g, "");
+            console.log(ee);
+            ee = JSON.parse(ee).content.result.replace(/[{}]/g, "");
             var eee = ee.split(",");
             console.log(eee[0]);
             console.log(eee[1]);
@@ -163,8 +164,8 @@ class MapGeojson extends React.Component {
 
             } else {
                 myself.geojson = null;
-                myself.geojson = JSON.parse(message);
-                // console.log(geojson);
+                // console.log(message);
+                myself.geojson = JSON.parse(message).content;
                 if (myself.props.map.current.getSource('source1'))
                     myself.props.map.current.getSource('source1').setData(myself.geojson);
 
@@ -192,8 +193,9 @@ class MapGeojson extends React.Component {
             } else {
                 try {
                     myself.geojson = null;
-                    myself.geojson = JSON.parse(message);
-                    // console.log(geojson);
+                    // myself.geojson = JSON.parse(message).content;
+                    
+                // console.log(myself.geojson);
                     myself.props.map.current.getSource('source2').setData(myself.geojson);
                     // console.log(ls);
                 } catch (e) {

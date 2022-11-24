@@ -30,6 +30,8 @@ class NavigationBar extends React.Component {
     this.tryStep = this.tryStep.bind(this);
     this.tryReload = this.tryReload.bind(this);
     this.tryAdd = this.tryAdd.bind(this);
+    this.trySave = this.trySave.bind(this);
+    this.tryLoad = this.tryLoad.bind(this);
   }
 
   handleChange(e) {
@@ -51,7 +53,7 @@ class NavigationBar extends React.Component {
   render() {
     var addr = this.state.url;
     // if (this.gama.current && this.gama.current.wSocket && this.gama.current.wSocket.readyState === 1) {
-    
+
     return (<><GAMA ref={this.gama} address={addr}  ></GAMA>
       <div>
         <Navbar color="faded" light className="navBar">
@@ -99,6 +101,8 @@ class NavigationBar extends React.Component {
               <td><Button color="primary" size="sm" onClick={this.tryStep}>Step</Button> </td>
               <td><Button color="primary" size="sm" onClick={this.tryReload}>Reload</Button> </td>
               <td><Button color="primary" size="sm" onClick={this.tryAdd}>Add Chart Widget</Button></td>
+              <td><Button color="primary" size="sm" onClick={this.trySave}>Save layout</Button> </td>
+              <td><Button color="primary" size="sm" onClick={this.tryLoad}>Load layout</Button> </td>
             </tr></tbody></table>
           </NavbarBrand>
         </Navbar>
@@ -108,13 +112,19 @@ class NavigationBar extends React.Component {
   }
 
 
+  tryLoad() {
+    getLocalstorageToFile("layout.txt");
+  }
+  trySave() {
+    getLocalstorageToFile("layout.txt");
+  }
   tryAdd() {
     this.props.grid.current.addWidget();
   }
   tryConnect() {
     if (!this.gama.current.wSocket) {// && this.gama.current.wSocket.readyState!==1
       var _this = this;
-      this.gama.current.doConnect(  _this.tryLaunch);
+      this.gama.current.doConnect(_this.tryLaunch);
 
     }
     // window.$gama.doConnect();
@@ -133,8 +143,8 @@ class NavigationBar extends React.Component {
 
       // var modelPath = 'C:/git/gama/msi.gama.models/models/Tutorials/Road Traffic/models/Model 05.gaml';
       // var experimentName = 'road_traffic';
-      var _this=this;
-      this.gama.current.launch( _this.tryPlay);
+      var _this = this;
+      this.gama.current.launch(_this.tryPlay);
 
     }
     // window.$gama.doConnect();
@@ -146,7 +156,8 @@ class NavigationBar extends React.Component {
     if (this.gama.current && this.gama.current.wSocket) {// && this.gama.current.wSocket.readyState!== 
 
       this.gama.current.queue.length = 0;
-      this.gama.current.autoStep( console.log("autoStep"));
+      this.gama.current.autoStep(console.log("autoStep"));
+      // this.gama.current.play(console.log("play"));
     }
     // window.$gama.doConnect();
   }
@@ -195,6 +206,40 @@ class NavigationBar extends React.Component {
       );
     }
   }
+}
+
+function getLocalstorageToFile(fileName) {
+
+  /* dump local storage to string */
+
+  var a = {};
+  for (var i = 0; i < localStorage.length; i++) {
+    var k = localStorage.key(i);
+    var v = localStorage.getItem(k);
+    a[k] = v;
+  }
+
+  /* save as blob */
+
+  var textToSave = JSON.stringify(a)
+  var textToSaveAsBlob = new Blob([textToSave], {
+    type: "text/plain"
+  });
+  var textToSaveAsURL = window.URL.createObjectURL(textToSaveAsBlob);
+
+  /* download without button hack */
+
+  var downloadLink = document.createElement("a");
+  downloadLink.download = fileName;
+  downloadLink.innerHTML = "Download File";
+  downloadLink.href = textToSaveAsURL;
+  downloadLink.onclick = function (event) {
+    document.body.removeChild(event.target);
+  };
+  downloadLink.style.display = "none";
+  document.body.appendChild(downloadLink);
+  downloadLink.click();
+
 }
 
 export default NavigationBar;
