@@ -7,7 +7,7 @@ class GAMA extends React.Component {
         this.socket_id = 0;
         this.exp_id = 0;
         this.wSocket = void 0;
-        this.state = "";
+        this.status = "";
         this.queue = [];
         this.req = "";
         this.result = "";
@@ -170,9 +170,9 @@ class GAMA extends React.Component {
 
     launch(c) {
         this.queue.length = 0;
-        var myself = this;
-        this.state = "load";
-        this.execute(this.state, function (e) {
+        var myself = this; 
+        this.status = "load";
+        this.execute(this.status, function (e) {
              
             var result = JSON.parse(e).content;
             // console.log(e);
@@ -188,8 +188,8 @@ class GAMA extends React.Component {
         clearInterval(this.output_executor);
 
         // this.queue.length = 0;
-        this.state = "play";
-        this.execute(this.state, c);
+        this.status = "play";
+        this.execute(this.status, c);
         this.output_executor = setInterval(() => {
             this.updateOutputs();
         }, 100);
@@ -209,8 +209,8 @@ class GAMA extends React.Component {
     autoStep(c) {
         // this.queue.length = 0;
         clearInterval(this.output_executor);
-        this.state = "step";
-        this.execute(this.state, () => {
+        this.status = "step";
+        this.execute(this.status, () => {
             this.output_executor = setInterval(() => {
                 this.updateOutputs(); 
                 this.autoStep(c);
@@ -221,16 +221,16 @@ class GAMA extends React.Component {
     step(c) {
         // this.queue.length = 0;
         clearInterval(this.output_executor);
-        this.state = "step";
-        this.execute(this.state,()=>{
+        this.status = "step";
+        this.execute(this.status,()=>{
             if (c) c(); 
             this.updateOutputs();
         });
     }
     pause(c) {
         // this.queue.length = 0;
-        this.state = "pause";
-        this.execute(this.state,c);
+        this.status = "pause";
+        this.execute(this.status,c);
     }
     // serial(asyncFunctions) {
     //     return asyncFunctions.map(function (functionChain, nextFunction) {
@@ -243,8 +243,8 @@ class GAMA extends React.Component {
 
     reload(c) {
         // this.queue.length = 0;
-        this.state = "reload";
-        this.execute(this.state);
+        this.status = "reload";
+        this.execute(this.status);
         if (c) c();
     }
 
