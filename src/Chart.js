@@ -47,7 +47,7 @@ class Charts extends React.Component {
     //  console.log(ex.toString());
     window.$gama.evalExpr("[" + ex.toString() + "]", function (ee) {
       // console.log(JSON.parse(ee));
-      ee = JSON.parse(ee).content.result.replace(/[[\]]/g, "");
+      ee = JSON.parse(ee).content.replace(/[[\]]/g, "");
       var eee = ee.split(",");
 
       for (var index = 0; index < eee.length; index++) {

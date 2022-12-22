@@ -2,12 +2,12 @@
 var modelPath = 'C:\\git\\PROJECT\\COMOKIT-Model\\COMOKIT\\Meso\\Models\\Experiments\\Activity Restrictions\\School and Workplace Closure.gaml';
 var experimentName = 'Closures';
 var species1Name = 'Individual';
-var attribute1Name = 'state'; 
+var attribute1Name = 'state';
 const species2Name = 'Building';
 const attribute2Name = 'zone_id';
 
 
- 
+
 // var modelPath =  'C:\\git\\gama/msi.gama.models/models/Tutorials/Road Traffic/models/Model 05.gaml';
 // var experimentName = 'road_traffic';
 // var species1Name = 'people';
@@ -19,37 +19,38 @@ const experiment = new GAMA("ws://localhost:6868/", modelPath, experimentName);
 var updateSource;
 experiment.connect(on_connected, on_disconnected);
 function on_connected() {
-    start_sim();
-} 
+	start_sim();
+}
 
 function on_disconnected() {
 	clearInterval(updateSource);
-} 
+}
 
-function start_sim() { 
+function start_sim() {
 	experiment.launch();
 	experiment.evalExpr("CRS_transform(world.location,\"EPSG:4326\")", function (ee) {
-		ee = JSON.parse(ee).content.result.replace(/[{}]/g, "");
+		ee = JSON.parse(ee).content.replace(/[{}]/g, "");
 		var eee = ee.split(",");
 		console.log(eee[0]);
 		console.log(eee[1]);
 		map.flyTo({
 			center: [eee[0], eee[1]],
 			essential: true,
-            duration: 0,
-			zoom: 15 
+			duration: 0,
+			zoom: 15
 		});
 		// document.getElementById('div-loader').remove();
 		request = "";//IMPORTANT FLAG TO ACCOMPLISH CURRENT TRANSACTION
 	});
- 
+
 	experiment.play();
 }
 
 
 function start_renderer() {
 
-	experiment.getPopulation(species2Name, [attribute2Name], "EPSG:4326", function (message) {
+	// experiment.getPopulation(species2Name, [attribute2Name], "EPSG:4326", function (message) {
+	experiment.evalExpr("to_geojson(" + species2Name + ",\"EPSG:4326\")", function (message) {
 		if (typeof event.data == "object") {
 
 		} else {
@@ -57,11 +58,12 @@ function start_renderer() {
 			geojson = JSON.parse(message).content;
 			// console.log(geojson);
 			map.getSource('source2').setData(geojson);
-		} 
-	});
-	 
-	updateSource = setInterval(() => { 
-		experiment.getPopulation(species1Name, [attribute1Name], "EPSG:4326",function (message) {
+		}
+	}, true);
+
+	updateSource = setInterval(() => {
+		// experiment.getPopulation(species1Name, [attribute1Name], "EPSG:4326",function (message) {
+		experiment.evalExpr("to_geojson(" + species1Name + ",\"EPSG:4326\")", function (message) {
 			if (typeof event.data == "object") {
 
 			} else {
@@ -70,22 +72,22 @@ function start_renderer() {
 				// console.log(geojson);
 				map.getSource('source1').setData(geojson);
 				canCallStaticLayer = true;
-			} 
-		}); 
+			}
+		}, true);
 	}, 100);
 }
 
 mapboxgl.accessToken = 'pk.eyJ1IjoiaHFuZ2hpODgiLCJhIjoiY2t0N2w0cGZ6MHRjNTJ2bnJtYm5vcDB0YyJ9.oTjisOggN28UFY8q1hiAug';
 const map = new mapboxgl.Map({
-    container: mapid ,
-    style: 'mapbox://styles/mapbox/satellite-streets-v11',
-    pitch: 45,
-    // bearing: -17.6,
-    antialias: true,
-    center: [105.8249019, 21.0076181], // TLU -84.5, 38.05starting position 
-    zoom: 15 // starting zoom
-  });
-  
+	container: mapid,
+	style: 'mapbox://styles/mapbox/satellite-streets-v11',
+	pitch: 45,
+	// bearing: -17.6,
+	antialias: true,
+	center: [105.8249019, 21.0076181], // TLU -84.5, 38.05starting position 
+	zoom: 15 // starting zoom
+});
+
 var geojson = {
 	'type': 'FeatureCollection',
 	'features': [
@@ -127,7 +129,7 @@ map.on('load', async () => {
 				"presymptomatic", 'red',
 				"asymptomatic", 'red',
 				"symptomatic", 'red',
-				"removed", 'blue', 
+				"removed", 'blue',
 				'gray'],
 
 		},
@@ -206,7 +208,7 @@ map.on('load', async () => {
 		'url': 'mapbox://mapbox.terrain-rgb',
 		'tileSize': 512,
 		'maxzoom': 14
-	}); 
+	});
 	map.setTerrain({ 'source': 'mapbox-dem', 'exaggeration': 1.5 });
 	map.setLight({ anchor: 'map' });
 	start_renderer();

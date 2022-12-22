@@ -113,7 +113,7 @@ class GAMA extends React.Component {
         this.req = "";
     }
 
-    evalExpr(q, c) {
+    evalExpr(q, c, es) {
 
         var cmd = {
             "type": "expression",
@@ -121,6 +121,7 @@ class GAMA extends React.Component {
             "experiment": this.experimentName,
             "socket_id": this.socket_id,
             "exp_id": this.exp_id,
+            "escaped": es?es:false,
             "expr": q,
             "callback": c
         };
@@ -147,18 +148,18 @@ class GAMA extends React.Component {
         this.requestCommand(cmd);
     }
 
-    getPopulation(q, att, crs, c) {
-        var cmd = {
-            'type': 'output',
-            'species': q,
-            'attributes': att,
-            "crs": crs,
-            'socket_id': this.socket_id,
-            'exp_id': this.exp_id,
-            "callback": c
-        };
-        this.requestCommand(cmd);
-    }
+    // getPopulation(q, att, crs, c) {
+    //     var cmd = {
+    //         'type': 'output',
+    //         'species': q,
+    //         'attributes': att,
+    //         "crs": crs,
+    //         'socket_id': this.socket_id,
+    //         'exp_id': this.exp_id,
+    //         "callback": c
+    //     };
+    //     this.requestCommand(cmd);
+    // }
 
     setParameters(p) {
         this.param = p;

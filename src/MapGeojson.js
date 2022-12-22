@@ -130,7 +130,7 @@ class MapGeojson extends React.Component {
         });
         window.$gama.evalExpr("CRS_transform(world.location,\"EPSG:4326\")", function (ee) {
             console.log(ee);
-            ee = JSON.parse(ee).content.result.replace(/[{}]/g, "");
+            ee = JSON.parse(ee).content.replace(/[{}]/g, "");
             var eee = ee.split(",");
             console.log(eee[0]);
             console.log(eee[1]);
@@ -159,21 +159,28 @@ class MapGeojson extends React.Component {
         const species1Name = 'Individual';
         const attribute1Name = 'state';
         var myself = this;
-        window.$gama.getPopulation(species1Name, [attribute1Name], "EPSG:4326", function (message) {
+
+        // .getPopulation(species1Name, [attribute1Name], 
+        window.$gama.evalExpr("to_geojson(" + species1Name + ",\"EPSG:4326\",[\""+attribute1Name+"\"])", function (message) {
             if (typeof message.data == "object") {
 
             } else {
-                myself.geojson = null;
                 // console.log(message);
-                myself.geojson = JSON.parse(message).content;
-                if (myself.props.map.current.getSource('source1'))
-                    myself.props.map.current.getSource('source1').setData(myself.geojson);
+                var gjs = JSON.parse(message);
+                var tmp = gjs.content;
+                if (tmp && gjs.type === "CommandExecutedSuccessfully") {
+                    myself.geojson = null;
+
+                    myself.geojson = tmp;
+                    if (myself.props.map.current.getSource('source1'))
+                        myself.props.map.current.getSource('source1').setData(myself.geojson);
+                }
 
             }
             if (c) {
                 c();
             }
-        });
+        }, true);
     }
 
     start_renderer() {
@@ -187,22 +194,23 @@ class MapGeojson extends React.Component {
         // const attribute2Name = 'name';
 
         var myself = this;
-        window.$gama.getPopulation(species2Name, [attribute2Name], "EPSG:4326", function (message) {
+        // window.$gama.getPopulation(species2Name, [attribute2Name], "EPSG:4326", function (message) {
+        window.$gama.evalExpr("to_geojson(" + species2Name + ",\"EPSG:4326\",[\""+attribute2Name+"\")", function (message) {
             if (typeof message.data == "object") {
 
             } else {
                 try {
                     myself.geojson = null;
                     // myself.geojson = JSON.parse(message).content;
-                    
-                // console.log(myself.geojson);
+
+                    // console.log(myself.geojson);
                     myself.props.map.current.getSource('source2').setData(myself.geojson);
                     // console.log(ls);
                 } catch (e) {
                     console.log(e);
                 }
             }
-        });
+        }, true);
 
         // this.updateSource = setInterval(() => {
         // }, 1000);
