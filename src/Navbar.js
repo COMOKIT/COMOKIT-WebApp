@@ -144,8 +144,11 @@ class NavigationBar extends React.Component {
 
       // var modelPath = 'C:/git/gama/msi.gama.models/models/Tutorials/Road Traffic/models/Model 05.gaml';
       // var experimentName = 'road_traffic';
-      var _this = this;
-      this.gama.current.launch(_this.tryPlay);
+      // var _this = this;
+      this.gama.current.launch(() =>  {
+        console.log("loaded");
+      });
+      // this.gama.current.launch(_this.tryPlay);
 
     }
     // window.$gama.doConnect();
@@ -153,11 +156,11 @@ class NavigationBar extends React.Component {
 
 
   tryPlay() {
-    console.log("launched");
     if (this.gama.current && this.gama.current.wSocket) {// && this.gama.current.wSocket.readyState!== 
 
       this.gama.current.queue.length = 0;
-      this.gama.current.autoStep(console.log("autoStep"));
+      // this.gama.current.autoStep(console.log("autoStep"));
+      this.gama.current.step(console.log("step"));
       // this.gama.current.play(console.log("play"));
     }
     // window.$gama.doConnect();
