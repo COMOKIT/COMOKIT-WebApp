@@ -47,17 +47,26 @@ class Charts extends React.Component {
     //  console.log(ex.toString());
     window.$gama.evalExpr("[" + ex.toString() + "]", function (ee) {
       // console.log(JSON.parse(ee));
-      ee = JSON.parse(ee).content.replace(/[[\]]/g, "");
-      var eee = ee.split(",");
 
-      for (var index = 0; index < eee.length; index++) {
-        // console.log("finish "+eee[index]);
-        let vv = _this.expressions[index];
-        _this.state.series[index].data.push(parseFloat(eee[index]));
-        _this.state.series[index].color = `rgba(${vv.color.r}, ${vv.color.g}, ${vv.color.b}, ${vv.color.a})`;
+      if (JSON.parse(ee).content && JSON.parse(ee).type === "CommandExecutedSuccessfully") {
 
+        try {
+
+          ee = JSON.parse(ee).content.replace(/[[\]]/g, "");
+          var eee = ee.split(",");
+
+          for (var index = 0; index < eee.length; index++) {
+            // console.log("finish "+eee[index]);
+            let vv = _this.expressions[index];
+            _this.state.series[index].data.push(parseFloat(eee[index]));
+            _this.state.series[index].color = `rgba(${vv.color.r}, ${vv.color.g}, ${vv.color.b}, ${vv.color.a})`;
+
+          }
+          _this.setState({ series: _this.state.series });
+        } catch (e) {
+          console.log(e);
+        }
       }
-      _this.setState({ series: _this.state.series });
       if (c) {
         c();
       }

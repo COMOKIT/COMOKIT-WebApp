@@ -5,7 +5,7 @@ import { Button } from "reactstrap";
 const default_Nav_state = {
   // url: "ws://51.255.46.42:6001",
   // model_path: "/var/www/github/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml",
-  url: "ws://localhost:6868",
+  url: "wss://localhost:6868",
   // model_path:"C:/git/PROJECT/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml",
   // exp_name: "Closures",
 
@@ -68,7 +68,7 @@ class NavigationBar extends React.Component {
               // defaultValue={"ws://51.255.46.42:6001"}
               >
                 <option value="ws://51.255.46.42:6001">Gama ovh</option>
-                <option value="ws://localhost:6868">Local</option>
+                <option value="wss://localhost:6868">Local</option>
               </select></td>
               {/* <td><Button color="primary" size="sm" onClick={this.tryConnect}>Connect</Button></td> */}
               <td>
@@ -159,8 +159,8 @@ class NavigationBar extends React.Component {
     if (this.gama.current && this.gama.current.wSocket) {// && this.gama.current.wSocket.readyState!== 
 
       this.gama.current.queue.length = 0;
-      // this.gama.current.autoStep(console.log("autoStep"));
-      this.gama.current.step(console.log("step"));
+      this.gama.current.autoStep(console.log("autoStep"));
+      // this.gama.current.step(console.log("step"));
       // this.gama.current.play(console.log("play"));
     }
     // window.$gama.doConnect();

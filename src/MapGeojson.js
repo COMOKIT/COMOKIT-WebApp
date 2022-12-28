@@ -102,21 +102,21 @@ class MapGeojson extends React.Component {
 
                 },
             });
-            // Add some fog in the background
-            this.props.map.current.setFog({
-                'range': [-0.5, 5],
-                'color': 'white',
-                'horizon-blend': 0.2
-            });
-            // Add a sky layer over the horizon
-            this.props.map.current.addLayer({
-                'id': 'sky',
-                'type': 'sky',
-                'paint': {
-                    'sky-type': 'atmosphere',
-                    'sky-atmosphere-color': 'rgba(85, 151, 210, 0.5)'
-                }
-            });
+            // // Add some fog in the background
+            // this.props.map.current.setFog({
+            //     'range': [-0.5, 5],
+            //     'color': 'white',
+            //     'horizon-blend': 0.2
+            // });
+            // // Add a sky layer over the horizon
+            // this.props.map.current.addLayer({
+            //     'id': 'sky',
+            //     'type': 'sky',
+            //     'paint': {
+            //         'sky-type': 'atmosphere',
+            //         'sky-atmosphere-color': 'rgba(85, 151, 210, 0.5)'
+            //     }
+            // });
             // Add terrain source, with slight exaggeration
             this.props.map.current.addSource('mapbox-dem', {
                 'type': 'raster-dem',
@@ -124,24 +124,26 @@ class MapGeojson extends React.Component {
                 'tileSize': 512,
                 'maxzoom': 14
             });
-            this.props.map.current.setTerrain({ 'source': 'mapbox-dem', 'exaggeration': 1.5 });
+            // this.props.map.current.setTerrain({ 'source': 'mapbox-dem', 'exaggeration': 1.5 });
             this.props.map.current.setLight({ anchor: 'map' });
             myself.start_renderer();
         });
         window.$gama.evalExpr("CRS_transform(world.location,\"EPSG:4326\")", function (ee) {
             console.log(ee);
-            ee = JSON.parse(ee).content.replace(/[{}]/g, "");
-            var eee = ee.split(",");
-            console.log(eee[0]);
-            console.log(eee[1]);
-            myself.props.map.current.flyTo({
-                center: [eee[0], eee[1]],
-                essential: true,
-                duration: 0,
-                zoom: 15
-            });
-            // document.getElementById('div-loader').remove();
-            // window.$gama.request = "";//IMPORTANT FLAG TO ACCOMPLISH CURRENT TRANSACTION
+            if (JSON.parse(ee).type === "CommandExecutedSuccessfully") {
+                ee = JSON.parse(ee).content.replace(/[{}]/g, "");
+                var eee = ee.split(",");
+                console.log(eee[0]);
+                console.log(eee[1]);
+                myself.props.map.current.flyTo({
+                    center: [eee[0], eee[1]],
+                    essential: true,
+                    duration: 0,
+                    zoom: 15
+                });
+                // document.getElementById('div-loader').remove();
+                // window.$gama.request = "";//IMPORTANT FLAG TO ACCOMPLISH CURRENT TRANSACTION
+            }
         });
 
     }
@@ -161,14 +163,14 @@ class MapGeojson extends React.Component {
         var myself = this;
 
         // .getPopulation(species1Name, [attribute1Name], 
-        window.$gama.evalExpr("to_geojson(" + species1Name + ",\"EPSG:4326\",[\""+attribute1Name+"\"])", function (message) {
+        window.$gama.evalExpr("to_geojson(" + species1Name + ",\"EPSG:4326\",[\"" + attribute1Name + "\"])", function (message) {
             if (typeof message.data == "object") {
 
             } else {
-                // console.log(message);
                 var gjs = JSON.parse(message);
-                var tmp = gjs.content;
-                if (tmp && gjs.type === "CommandExecutedSuccessfully") {
+                if (gjs.content && gjs.type === "CommandExecutedSuccessfully") {
+                    var tmp = gjs.content;
+                    // console.log(message);
                     myself.geojson = null;
 
                     myself.geojson = tmp;
@@ -195,7 +197,7 @@ class MapGeojson extends React.Component {
 
         var myself = this;
         // window.$gama.getPopulation(species2Name, [attribute2Name], "EPSG:4326", function (message) {
-        window.$gama.evalExpr("to_geojson(" + species2Name + ",\"EPSG:4326\",[\""+attribute2Name+"\")", function (message) {
+        window.$gama.evalExpr("to_geojson(" + species2Name + ",\"EPSG:4326\",[\"" + attribute2Name + "\")", function (message) {
             if (typeof message.data == "object") {
 
             } else {
