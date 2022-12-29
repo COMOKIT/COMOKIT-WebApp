@@ -19,15 +19,6 @@ const default_Widget_state = {
       b: '19',
       a: '1',
     }
-  }, {
-    expr: "s",
-    displayColorPicker: false,
-    color: {
-      r: '241',
-      g: '112',
-      b: '19',
-      a: '1',
-    }
   }]
 };
 class Widget extends React.Component {
@@ -188,6 +179,7 @@ class Widget extends React.Component {
         },
       },
     });
+
     if (this.state.loading)
       return (
         <div style={{ height: "300px", lineHeight: "300px" }}>
@@ -206,48 +198,7 @@ class Widget extends React.Component {
           <Card body><CardTitle>  </CardTitle>
             <table>
               <tbody>
-                {/* <tr><td>GAMA Server< /td><td>
-                  <select
-                    id="select_host"
-                    className="form-control"
-                    name="url"
-                    onChange={this.handleChange}
-                    defaultValue={this.state.url}
-                  // defaultValue={"ws://51.255.46.42:6001"}
-                  >
-                    <option value="ws://51.255.46.42:6001">Gama ovh</option>
-                    <option value="ws://localhost:6868">Local ws://localhost:6868/</option>
-                  </select>
-                </td></tr>
-                <tr><td>Model</td><td>
-                  <select
-                    id="select_model"
-                    className="form-control"
-                    name="model_path"
-                    onChange={this.handleChange}
-                    // defaultValue={"/var/www/github/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml"}                    
-                    defaultValue={this.state.model_path}
-                  >
-                    <option value="/var/www/github/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml">Comokit ovh</option>
-                    <option value="C:/git/PROJECT/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml">Comokit local</option>
-                    <option value="C:/git/gama/msi.gama.models/models/Tutorials/Road Traffic/models/Model 05.gaml">Road Traffic 05.gaml</option>
-                  </select>
-                </td></tr>
-                <tr><td>Experiment</td><td>
-                  <select
-                    id="select_exp"
-                    className="form-control"
-                    name="exp_name"
-                    onChange={this.handleChange}
-                    // defaultValue={"Closures"}
-                    defaultValue={this.state.exp_name}
-                  >
-                    <option value="Closures">Closures</option>
-                    <option value="road_traffic">road_traffic</option>
-                  </select>
-                </td></tr>*/}
                 <tr><td>Display type</td><td>
-
                   <select
                     id="select1"
                     className="form-control"
@@ -274,7 +225,7 @@ class Widget extends React.Component {
               Connect
             </Button>
             <form  >
-              {this.state.expressions.map((element, index) => (
+              {this.state.chartType === "expression" && this.state.expressions.map((element, index) => (
 
                 <div className="form-inline" key={index}>
                   <div><label>Expression</label></div>
@@ -313,11 +264,11 @@ class Widget extends React.Component {
                 </div>
               ))
               }
-
-              <Button color="primary" onClick={() => this.addFormFields()}>
-                Add Expression
-              </Button>
-
+              {this.state.chartType === "expression" &&
+                <Button color="primary" onClick={() => this.addFormFields()}>
+                  Add Expression
+                </Button>
+              }
             </form>
           </Card>
         </div>
