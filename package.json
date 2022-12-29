@@ -11,6 +11,8 @@
     "highcharts": "8.2.0",
     "highcharts-react-official": "3.0.0",
     "mapbox-gl": "^2.9.1",
+    "raw-loader": "^4.0.2",
+    "raw.macro": "^0.7.0",
     "react": "16.12.0",
     "react-color": "^2.19.3",
     "react-dom": "16.12.0",
@@ -20,14 +22,19 @@
     "reactstrap": "8.5.1"
   },
   "devDependencies": {
+    "react-native-wss": "^1.1.0",
     "typescript": "3.8.3"
   },
   "scripts": {
     "ostart": "react-scripts start",
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "react-scripts --openssl-legacy-provider start",
+    "build": "react-scripts --openssl-legacy-provider build",
     "test": "react-scripts test --env=jsdom",
+    "postinstall": "node node_modules/react-native-wss/scripts/postinstall.js",
     "eject": "react-scripts eject"
+  },
+  "browser": {
+    "fs": false
   },
   "browserslist": [
     ">0.2%",

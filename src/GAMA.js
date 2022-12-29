@@ -1,4 +1,8 @@
-import React from 'react'
+import React from 'react' 
+// eslint-disable-next-line import/no-webpack-loader-syntax
+import certtext from '!!raw-loader!./cert.pem';
+// eslint-disable-next-line import/no-webpack-loader-syntax
+import keytext from '!!raw-loader!./key.pem';
 
 class GAMA extends React.Component {
     constructor(addr, md, exp, mmap) {
@@ -49,8 +53,15 @@ class GAMA extends React.Component {
         // console.log(this.address.address);
         this.modelPath = this.address.modelPath;
         this.experimentName = this.address.experimentName;
-        this.map = this.address.map;
-        this.wSocket = new WebSocket(this.address.address);
+        this.map = this.address.map; 
+        // console.log(keytext);
+        this.wSocket = new WebSocket(this.address.address, [], {
+            cert: certtext,
+            key: keytext,
+            protocolVersion: 8,
+            origin: 'https://localhost:6868',
+            rejectUnauthorized: false
+        });
 
         this.wSocket.onclose = function (event) {
             clearInterval(this.executor);
@@ -121,7 +132,7 @@ class GAMA extends React.Component {
             "experiment": this.experimentName,
             "socket_id": this.socket_id,
             "exp_id": this.exp_id,
-            "escaped": es?es:false,
+            "escaped": es ? es : false,
             "expr": q,
             "callback": c
         };
@@ -136,9 +147,9 @@ class GAMA extends React.Component {
             "experiment": this.experimentName,
             "socket_id": this.socket_id,
             "exp_id": this.exp_id,
-            "console":false,
-            "status":false,
-            "dialog":false,
+            "console": false,
+            "status": false,
+            "dialog": false,
             "auto-export": false,
             "parameters": this.param,
             "until": this.endCondition,
@@ -171,10 +182,10 @@ class GAMA extends React.Component {
 
     launch(c) {
         this.queue.length = 0;
-        var myself = this; 
+        var myself = this;
         this.status = "load";
         this.execute(this.status, function (e) {
-             
+
             var result = JSON.parse(e).content;
             // console.log(e);
             if (result.exp_id) myself.exp_id = result.exp_id;
@@ -213,7 +224,7 @@ class GAMA extends React.Component {
         this.status = "step";
         this.execute(this.status, () => {
             this.output_executor = setInterval(() => {
-                this.updateOutputs(); 
+                this.updateOutputs();
                 this.autoStep(c);
             }, 100);
         });
@@ -223,15 +234,15 @@ class GAMA extends React.Component {
         // this.queue.length = 0;
         clearInterval(this.output_executor);
         this.status = "step";
-        this.execute(this.status,()=>{
-            if (c) c(); 
+        this.execute(this.status, () => {
+            if (c) c();
             this.updateOutputs();
         });
     }
     pause(c) {
         // this.queue.length = 0;
         this.status = "pause";
-        this.execute(this.status,c);
+        this.execute(this.status, c);
     }
     // serial(asyncFunctions) {
     //     return asyncFunctions.map(function (functionChain, nextFunction) {
