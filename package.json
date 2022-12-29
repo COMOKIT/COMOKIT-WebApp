@@ -30,7 +30,6 @@
     "start": "react-scripts --openssl-legacy-provider start",
     "build": "react-scripts --openssl-legacy-provider build",
     "test": "react-scripts test --env=jsdom",
-    "postinstall": "node node_modules/react-native-wss/scripts/postinstall.js",
     "eject": "react-scripts eject"
   },
   "browser": {
