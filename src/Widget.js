@@ -7,8 +7,8 @@ import BaseMap from "./BaseMap";
 const default_Widget_state = {
   data: [],
   loading: false,
+  title: "",
   chartType: "geojson",
-
 
   expressions: [{
     expr: "",
@@ -93,6 +93,7 @@ class Widget extends React.Component {
 
   addFormFields() {
     this.setState(({
+      title: this.state.title,
       expressions: [...this.state.expressions, {
         expr: "",
         displayColorPicker: false,
@@ -225,6 +226,12 @@ class Widget extends React.Component {
               Connect
             </Button>
             <form  >
+
+              {this.state.chartType === "expression" &&
+                <div>
+                  <Input type="text" name="title" value={this.state.title || ""}
+                    onChange={this.handleChange} /></div>
+              }
               {this.state.chartType === "expression" && this.state.expressions.map((element, index) => (
 
                 <div className="form-inline" key={index}>
@@ -275,7 +282,7 @@ class Widget extends React.Component {
       );
     }
     if (this.state.chartType === "expression") {
-      return <Charts expr={this.state.expressions}></Charts>;
+      return <Charts   props={this.state}></Charts>;
     }
     return (
       <BaseMap parent={this} />

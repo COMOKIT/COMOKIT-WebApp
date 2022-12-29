@@ -9,16 +9,17 @@ class Charts extends React.Component {
     super(props);
     this.state = {
       title: {
-        text: props.expr
+        text: "aaa"
       },
       series: [
       ]
     };
 
     window.$gama.addOutput(this, this);
-    // console.log(window.$gama.outputs);
-    this.expressions = props.expr;
-    let _this = this;
+    this.title = props.props.title;
+    this.expressions = props.props.expressions;
+    this.state.title.text=(this.title);
+    let _this = this; 
     this.expressions.forEach((value, index, array) => {
 
       _this.state.series.push({

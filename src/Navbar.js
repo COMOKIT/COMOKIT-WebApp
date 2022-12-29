@@ -5,7 +5,7 @@ import { Button } from "reactstrap";
 const default_Nav_state = {
   // url: "ws://51.255.46.42:6001",
   // model_path: "/var/www/github/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml",
-  url: "wss://localhost:6868",
+  url: "ws://localhost:6868",
   // model_path:"C:/git/PROJECT/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml",
   // exp_name: "Closures",
 
@@ -68,7 +68,7 @@ class NavigationBar extends React.Component {
               // defaultValue={"ws://51.255.46.42:6001"}
               >
                 <option value="ws://51.255.46.42:6001">Gama ovh</option>
-                <option value="wss://localhost:6868">Local</option>
+                <option value="ws://localhost:6868">Local</option>
               </select></td>
               {/* <td><Button color="primary" size="sm" onClick={this.tryConnect}>Connect</Button></td> */}
               <td>

@@ -118,14 +118,14 @@ class MapGeojson extends React.Component {
             //     }
             // });
             // Add terrain source, with slight exaggeration
-            this.props.map.current.addSource('mapbox-dem', {
-                'type': 'raster-dem',
-                'url': 'mapbox://mapbox.terrain-rgb',
-                'tileSize': 512,
-                'maxzoom': 14
-            });
+            // this.props.map.current.addSource('mapbox-dem', {
+            //     'type': 'raster-dem',
+            //     'url': 'mapbox://mapbox.terrain-rgb',
+            //     'tileSize': 512,
+            //     'maxzoom': 14
+            // });
             // this.props.map.current.setTerrain({ 'source': 'mapbox-dem', 'exaggeration': 1.5 });
-            this.props.map.current.setLight({ anchor: 'map' });
+            // this.props.map.current.setLight({ anchor: 'map' });
             myself.start_renderer();
         });
         window.$gama.evalExpr("CRS_transform(world.location,\"EPSG:4326\")", function (ee) {

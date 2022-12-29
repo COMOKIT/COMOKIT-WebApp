@@ -1,8 +1,8 @@
 import React from 'react' 
-// eslint-disable-next-line import/no-webpack-loader-syntax
-import certtext from '!!raw-loader!./cert.pem';
-// eslint-disable-next-line import/no-webpack-loader-syntax
-import keytext from '!!raw-loader!./key.pem';
+// // eslint-disable-next-line import/no-webpack-loader-syntax
+// import certtext from '!!raw-loader!./cert.pem';
+// // eslint-disable-next-line import/no-webpack-loader-syntax
+// import keytext from '!!raw-loader!./key.pem';
 
 class GAMA extends React.Component {
     constructor(addr, md, exp, mmap) {
@@ -55,13 +55,14 @@ class GAMA extends React.Component {
         this.experimentName = this.address.experimentName;
         this.map = this.address.map; 
         // console.log(keytext);
-        this.wSocket = new WebSocket(this.address.address, [], {
-            cert: certtext,
-            key: keytext,
-            protocolVersion: 8,
-            origin: 'https://localhost:6868',
-            rejectUnauthorized: false
-        });
+        this.wSocket = new WebSocket(this.address.address);
+        // this.wSocket = new WebSocket(this.address.address, [], {
+        //     cert: certtext,
+        //     key: keytext,
+        //     protocolVersion: 8,
+        //     origin: 'https://localhost:6868',
+        //     rejectUnauthorized: false
+        // });
 
         this.wSocket.onclose = function (event) {
             clearInterval(this.executor);
