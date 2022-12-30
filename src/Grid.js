@@ -9,6 +9,7 @@ const ResponsiveGridLayout = WidthProvider(Responsive);
 const default_Layout = {
   widgets: [{ id: 1 }],
   widgetSequence: 1,
+  id_param: -1,
   layouts: {}
 };
 const originalLayouts = getFromLS("Layout") || default_Layout;
@@ -18,12 +19,24 @@ class Grid extends React.Component {
     super();
     this.state = originalLayouts;
 
+    this.addParam = this.addParam.bind(this);
     this.addWidget = this.addWidget.bind(this);
     this.removeWidget = this.removeWidget.bind(this);
   }
 
   exportPdf() {
     exportToPdf();
+  }
+
+  addParam() {
+    // console.log("xxxxxxx "+this.state.id_param);
+    if (!this.state.id_param || this.state.id_param < 0) {
+      this.setState((prevState) => ({
+        widgets: [...prevState.widgets, { id: prevState.widgetSequence + 1 }],
+        id_param: prevState.widgetSequence + 1,
+        widgetSequence: prevState.widgetSequence + 1
+      }));
+    }
   }
 
   addWidget() {
@@ -37,6 +50,7 @@ class Grid extends React.Component {
   removeWidget(id) {
     this.setState((prevState) => ({
       widgets: prevState.widgets.filter((item) => item.id !== id),
+      id_param: id === prevState.id_param ? -1 : prevState.id_param,
       //do not decrement sequence, since each new widget must
       //have unique value
       widgetSequence: prevState.widgetSequence
