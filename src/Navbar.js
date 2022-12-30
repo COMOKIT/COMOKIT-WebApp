@@ -25,6 +25,7 @@ class NavigationBar extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.tryConnect = this.tryConnect.bind(this);
     this.tryLaunch = this.tryLaunch.bind(this);
+    this.tryGenParam = this.tryGenParam.bind(this);
     this.tryPlay = this.tryPlay.bind(this);
     this.tryPause = this.tryPause.bind(this);
     this.tryStep = this.tryStep.bind(this);
@@ -144,16 +145,43 @@ class NavigationBar extends React.Component {
 
       // var modelPath = 'C:/git/gama/msi.gama.models/models/Tutorials/Road Traffic/models/Model 05.gaml';
       // var experimentName = 'road_traffic';
-      // var _this = this;
-      this.gama.current.launch(() =>  {
+      var _this = this;
+      this.gama.current.launch(() => {
         console.log("loaded");
+        _this.tryGenParam();
       });
       // this.gama.current.launch(_this.tryPlay);
 
     }
     // window.$gama.doConnect();
   }
+  tryGenParam() {
 
+    if (this.gama.current && this.gama.current.wSocket) {// && this.gama.current.wSocket.readyState!==1 
+      this.gama.current.evalExpr("experiment.parameters.pairs", function (ee) {
+
+        console.log(JSON.parse(ee).content);
+        ee = JSON.parse(ee).content.replace(/[\])}[{(]/g, '').replace(/['"]+/g, '');
+        var eee = ee.split(",");
+        var t = "";
+        var parameters = new Map();
+        eee.forEach((e1) => {
+          var e2 = e1.split("::");
+          // console.log(e2[0]);
+          // console.log(e2[1]);
+          if (!("" + e2[1]).startsWith("file")) {
+
+            parameters.set(e2[0], e2[1]);
+            t += '<tr><td class="tdparam" width="150px">' + e2[0] + '</td><td  width="200px"> <input type="text" id="param_' + e2[0] + '" value="' + e2[1] + '">';
+            t += '</td><td><input type="checkbox" value="1" id="use_param_' + e2[0] + '" /></td></tr>';
+          }
+        });
+        t += '<tr><td> End Condition:</td><td> <input type="text" id="param_end_condition" value="cycle>1000"></td><td><input type="checkbox" value="1" id="use_param_end_condition" /></td></tr>';
+        console.log(t);
+
+      });
+    }
+  }
 
   tryPlay() {
     if (this.gama.current && this.gama.current.wSocket) {// && this.gama.current.wSocket.readyState!== 
@@ -183,7 +211,7 @@ class NavigationBar extends React.Component {
   tryReload() {
     if (this.gama.current && this.gama.current.wSocket) {// && this.gama.current.wSocket.readyState!== 
       this.gama.current.queue.length = 0;
-      this.gama.current.reload();
+      this.gama.current.reload(() => { console.log("reloaded"); });
     }
     // window.$gama.doConnect();
   }

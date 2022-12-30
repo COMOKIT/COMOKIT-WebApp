@@ -18,8 +18,8 @@ class Charts extends React.Component {
     window.$gama.addOutput(this, this);
     this.title = props.props.title;
     this.expressions = props.props.expressions;
-    this.state.title.text=(this.title);
-    let _this = this; 
+    this.state.title.text = (this.title);
+    let _this = this;
     this.expressions.forEach((value, index, array) => {
 
       _this.state.series.push({
@@ -57,10 +57,12 @@ class Charts extends React.Component {
           var eee = ee.split(",");
 
           for (var index = 0; index < eee.length; index++) {
-            // console.log("finish "+eee[index]);
-            let vv = _this.expressions[index];
-            _this.state.series[index].data.push(parseFloat(eee[index]));
-            _this.state.series[index].color = `rgba(${vv.color.r}, ${vv.color.g}, ${vv.color.b}, ${vv.color.a})`;
+            if (_this.state.series[index]) {
+              // console.log("finish "+eee[index]);
+              let vv = _this.expressions[index];
+              _this.state.series[index].data.push(parseFloat(eee[index]));
+              _this.state.series[index].color = `rgba(${vv.color.r}, ${vv.color.g}, ${vv.color.b}, ${vv.color.a})`;
+            }
 
           }
           _this.setState({ series: _this.state.series });

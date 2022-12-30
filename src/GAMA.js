@@ -241,7 +241,8 @@ class GAMA extends React.Component {
         });
     }
     pause(c) {
-        // this.queue.length = 0;
+        this.queue.length = 0;
+        clearInterval(this.output_executor);
         this.status = "pause";
         this.execute(this.status, c);
     }
@@ -257,8 +258,7 @@ class GAMA extends React.Component {
     reload(c) {
         // this.queue.length = 0;
         this.status = "reload";
-        this.execute(this.status);
-        if (c) c();
+        this.execute(this.status, c); 
     }
 
     addOutput(id, o) {
