@@ -31,8 +31,10 @@ class Widget extends React.Component {
     //   Widget.id += 1;
     // }
     // this.id = "m" + Widget.id;
+    this._id = param.id;
     this.id = "m" + param.id;
     this.state = this.getWFromLS("Widget" + this.id) || default_Widget_state;
+    this.grid = param.grid;
 
     this.fetchFile = this.fetchFile.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -188,7 +190,12 @@ class Widget extends React.Component {
         </div>
       );
 
+    // console.log(this.state.expressions);
+    // console.log(this.grid.state.param_str);
+
     if (this.state.data.length < 1) {
+      // console.log(this.id);
+      // console.log(this.grid.state.id_param);
       return (
         <div
           style={{
@@ -196,93 +203,110 @@ class Widget extends React.Component {
             width: "100%"
           }}
         >
-          <Card body><CardTitle>  </CardTitle>
-            <table>
-              <tbody>
-                <tr><td>Display type</td><td>
-                  <select
-                    id="select1"
-                    className="form-control"
-                    name="chartType"
-                    onChange={this.handleChange}
-                    // defaultValue={"geojson"}
-                    defaultValue={this.state.chartType}
-                  >
-                    <option value="geojson">Geojson</option>
-                    <option value="expression">Expression</option>
-                    <option value="image">Image</option>
-                  </select>
-                </td></tr>
-                {/* <tr><td>Expression</td><td>
+          <Card body><CardTitle>  {this._id === this.grid.state.id_param && "Parameters"} </CardTitle>
+
+            {this._id === this.grid.state.id_param && this.grid.state.param_str.map((e) => (
+              <table key={e['key']}>
+                <tbody>
+                  <tr><td width="150px">{e['key']}</td>
+                    <td width="200px"> <Input type="text" name={"param_" + e['key']} defaultValue={e['value']} />
+                    </td><td><input type="checkbox" value="1" id="use_param_' + e['key'] + '" /></td></tr>
+
+                </tbody>
+              </table>
+
+            ))}
+            {
+              this._id !== this.grid.state.id_param &&
+              <table>
+                <tbody>
+                  <tr><td>Type</td><td>
+                    <select
+                      id="select1"
+                      className="form-control"
+                      name="chartType"
+                      onChange={this.handleChange}
+                      // defaultValue={"geojson"}
+                      defaultValue={this.state.chartType}
+                    >
+                      <option value="geojson">Geojson</option>
+                      <option value="expression">Expression</option>
+                    </select>
+                  </td>
+                    <td>
+                      <Button color="primary" onClick={this.fetchFile}>
+                        Connect
+                      </Button></td>
+                  </tr>
+                  {/* <tr><td>Expression</td><td>
 
                   <Input id="input1" name="expression" onChange={this.handleChange}
                     defaultValue={this.state.expression}></Input>
 
                 </td></tr> */}
-              </tbody>
-            </table>
-
-            <Button color="primary" onClick={this.fetchFile}>
-              Connect
-            </Button>
-            <form  >
-
-              {this.state.chartType === "expression" &&
+                </tbody>
+              </table>
+            }
+            < form >
+              {
+                this.state.chartType === "expression" &&
                 <div>
                   <Input type="text" name="title" value={this.state.title || ""}
                     onChange={this.handleChange} /></div>
               }
-              {this.state.chartType === "expression" && this.state.expressions.map((element, index) => (
+              {
+                this.state.chartType === "expression" && this.state.expressions.map((element, index) => (
 
-                <div className="form-inline" key={index}>
-                  <div><label>Expression</label></div>
-                  <div>
-                    <Input type="text" name="expr" value={element.expr || ""} onChange={e => this.handleChangeE(index, e)} /></div>
-                  <div>
+                  <div className="form-inline" key={index}>
+                    <div><label>Expression</label></div>
                     <div>
-                      <div style={styles.swatch} onClick={() => this.handleClick(index)}>
-                        <div style={{
-                          width: '36px',
-                          height: '14px',
-                          borderRadius: '2px',
-                          background: `rgba(${element.color.r}, ${element.color.g}, ${element.color.b}, ${element.color.a})`,
-                        }} />
-                      </div>
-                      {element.displayColorPicker ? <div style={styles.popover}>
-                        <div style={styles.cover} onClick={() => this.handleClose(index)} />
-                        <SketchPicker color={element.color} onChange={e => this.handleChangeColor(index, e)} />
-                      </div> : null}
+                      <Input type="text" name="expr" value={element.expr || ""} onChange={e => this.handleChangeE(index, e)} /></div>
+                    <div>
+                      <div>
+                        <div style={styles.swatch} onClick={() => this.handleClick(index)}>
+                          <div style={{
+                            width: '36px',
+                            height: '14px',
+                            borderRadius: '2px',
+                            background: `rgba(${element.color.r}, ${element.color.g}, ${element.color.b}, ${element.color.a})`,
+                          }} />
+                        </div>
+                        {element.displayColorPicker ? <div style={styles.popover}>
+                          <div style={styles.cover} onClick={() => this.handleClose(index)} />
+                          <SketchPicker color={element.color} onChange={e => this.handleChangeColor(index, e)} />
+                        </div> : null}
 
-                    </div></div>
-                  <div>
-                    {/* <input type="text" name="color" value={element.color || ""} /> */}
-                    {index ?
-                      <Button
-                        className="closeBtn"
-                        color="danger"
-                        size="sm"
-                        onClick={() => this.removeFormFields(index)}
-                      >
-                        X
-                      </Button>
+                      </div></div>
+                    <div>
+                      {/* <input type="text" name="color" value={element.color || ""} /> */}
+                      {index ?
+                        <Button
+                          className="closeBtn"
+                          color="danger"
+                          size="sm"
+                          onClick={() => this.removeFormFields(index)}
+                        >
+                          X
+                        </Button>
 
-                      : null}
+                        : null}
+                    </div>
                   </div>
-                </div>
-              ))
+                ))
               }
-              {this.state.chartType === "expression" &&
+              {
+                this.state.chartType === "expression" &&
                 <Button color="primary" onClick={() => this.addFormFields()}>
                   Add Expression
                 </Button>
               }
             </form>
           </Card>
-        </div>
+        </div >
       );
     }
     if (this.state.chartType === "expression") {
-      return <Charts   props={this.state}></Charts>;
+      return <Charts props={this.state}></Charts>;
     }
     return (
       <BaseMap parent={this} />

@@ -162,25 +162,7 @@ class NavigationBar extends React.Component {
       var _this = this;
       this.gama.current.evalExpr("experiment.parameters.pairs", function (ee) {
 
-        _this.props.grid.current.addParam();
-        console.log(JSON.parse(ee).content);
-        ee = JSON.parse(ee).content.replace(/[\])}[{(]/g, '').replace(/['"]+/g, '');
-        var eee = ee.split(",");
-        var t = "";
-        var parameters = new Map();
-        eee.forEach((e1) => {
-          var e2 = e1.split("::");
-          // console.log(e2[0]);
-          // console.log(e2[1]);
-          if (!("" + e2[1]).startsWith("file")) {
-
-            parameters.set(e2[0], e2[1]);
-            t += '<tr><td class="tdparam" width="150px">' + e2[0] + '</td><td  width="200px"> <input type="text" id="param_' + e2[0] + '" value="' + e2[1] + '">';
-            t += '</td><td><input type="checkbox" value="1" id="use_param_' + e2[0] + '" /></td></tr>';
-          }
-        });
-        t += '<tr><td> End Condition:</td><td> <input type="text" id="param_end_condition" value="cycle>1000"></td><td><input type="checkbox" value="1" id="use_param_end_condition" /></td></tr>';
-        console.log(t);
+        _this.props.grid.current.addParam(ee);
 
       });
     }

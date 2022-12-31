@@ -10,6 +10,7 @@ const default_Layout = {
   widgets: [{ id: 1 }],
   widgetSequence: 1,
   id_param: -1,
+  param_str: [],
   layouts: {}
 };
 const originalLayouts = getFromLS("Layout") || default_Layout;
@@ -28,15 +29,41 @@ class Grid extends React.Component {
     exportToPdf();
   }
 
-  addParam() {
-    // console.log("xxxxxxx "+this.state.id_param);
+  addParam(ee) {
+
+    // console.log(JSON.parse(ee).content);
+    ee = JSON.parse(ee).content.replace(/[\])}[{(]/g, '').replace(/['"]+/g, '');
+    var eee = ee.split(",");
+    // var t = "";
+    var parameters = [];
+    eee.forEach((e1) => {
+      var e2 = e1.split("::");
+      // console.log(e2[0]);
+      // console.log(e2[1]);
+      if (!("" + e2[1]).startsWith("msi.gama.util.file")) {
+        var et0 = e2[0];
+        var et1 = e2[1];
+        var obj = {};
+        obj["key"] = (" " + et0).trim();
+        obj["value"] = et1;
+        parameters.push(obj);
+        // t += '<tr><td class="tdparam" width="150px">' + e2[0] + '</td><td  width="200px"> <input type="text" id="param_' + e2[0] + '" value="' + e2[1] + '">';
+        // t += '</td><td><input type="checkbox" value="1" id="use_param_' + e2[0] + '" /></td></tr>';
+      }
+    });
+    // t += '<tr><td> End Condition:</td><td> <input type="text" id="param_end_condition" value="cycle>1000"></td><td><input type="checkbox" value="1" id="use_param_end_condition" /></td></tr>';
+    this.setState((prevState) => ({ 
+      param_str: parameters
+    }));
+    saveToLS("Layout", this.state);
+
     if (!this.state.id_param || this.state.id_param < 0) {
       this.setState((prevState) => ({
-        widgets: [...prevState.widgets, { id: prevState.widgetSequence + 1 }],
+        widgets: [...prevState.widgets, { id: prevState.widgetSequence + 1 }], 
         id_param: prevState.widgetSequence + 1,
         widgetSequence: prevState.widgetSequence + 1
       }));
-    }
+    }  
   }
 
   addWidget() {
@@ -97,7 +124,7 @@ class Grid extends React.Component {
             </table>
 
           </div>
-          <Widget id={item.id}></Widget>
+          <Widget grid={this} id={item.id}></Widget>
         </div>
       </div>
     ));
