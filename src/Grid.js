@@ -25,6 +25,9 @@ class Grid extends React.Component {
     this.removeWidget = this.removeWidget.bind(this);
   }
 
+  componentDidMount(props) {
+    this.removeWidget(this.state.id_param);
+  }
   exportPdf() {
     exportToPdf();
   }

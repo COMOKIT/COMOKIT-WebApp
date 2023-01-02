@@ -158,12 +158,13 @@ class NavigationBar extends React.Component {
   tryGenParam() {
 
     if (this.gama.current && this.gama.current.wSocket) {// && this.gama.current.wSocket.readyState!==1 
-      
+
       var _this = this;
       this.gama.current.evalExpr("experiment.parameters.pairs", function (ee) {
 
-        _this.props.grid.current.addParam(ee);
-
+        if (JSON.parse(ee).content && JSON.parse(ee).type === "CommandExecutedSuccessfully") {
+          _this.props.grid.current.addParam(ee);
+        }
       });
     }
   }

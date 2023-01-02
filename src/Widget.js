@@ -203,14 +203,16 @@ class Widget extends React.Component {
             width: "100%"
           }}
         >
-          <Card body><CardTitle>  {this._id === this.grid.state.id_param && "Parameters"} </CardTitle>
+          <Card body className="p-1"><CardTitle>
+            {this._id === this.grid.state.id_param && <div style={{ padding: 0 }}> "Parameters"</div>}
+          </CardTitle>
 
             {this._id === this.grid.state.id_param && this.grid.state.param_str.map((e) => (
               <table key={e['key']}>
                 <tbody>
                   <tr><td width="150px">{e['key']}</td>
                     <td width="200px"> <Input type="text" name={"param_" + e['key']} defaultValue={e['value']} />
-                    </td><td><input type="checkbox" value="1" id="use_param_' + e['key'] + '" /></td></tr>
+                    </td><td><input type="checkbox" value="1" id={"use_param_" + e['key']} /></td></tr>
 
                 </tbody>
               </table>
@@ -234,7 +236,7 @@ class Widget extends React.Component {
                     </select>
                   </td>
                     <td>
-                      <Button color="primary" onClick={this.fetchFile}>
+                      <Button color="primary" size="sm" onClick={this.fetchFile}>
                         Connect
                       </Button></td>
                   </tr>
@@ -254,49 +256,47 @@ class Widget extends React.Component {
                   <Input type="text" name="title" value={this.state.title || ""}
                     onChange={this.handleChange} /></div>
               }
-              {
-                this.state.chartType === "expression" && this.state.expressions.map((element, index) => (
-
-                  <div className="form-inline" key={index}>
-                    <div><label>Expression</label></div>
+              {this.state.chartType === "expression" && this.state.expressions.map((element, index) => (
+                <div className="form-inline" key={index}>
+                  <div><label>Expression</label></div>
+                  <div>
+                    <Input type="text" name="expr" value={element.expr || ""} onChange={e => this.handleChangeE(index, e)} /></div>
+                  <div>
                     <div>
-                      <Input type="text" name="expr" value={element.expr || ""} onChange={e => this.handleChangeE(index, e)} /></div>
-                    <div>
-                      <div>
-                        <div style={styles.swatch} onClick={() => this.handleClick(index)}>
-                          <div style={{
-                            width: '36px',
-                            height: '14px',
-                            borderRadius: '2px',
-                            background: `rgba(${element.color.r}, ${element.color.g}, ${element.color.b}, ${element.color.a})`,
-                          }} />
-                        </div>
-                        {element.displayColorPicker ? <div style={styles.popover}>
-                          <div style={styles.cover} onClick={() => this.handleClose(index)} />
-                          <SketchPicker color={element.color} onChange={e => this.handleChangeColor(index, e)} />
-                        </div> : null}
+                      <div style={styles.swatch} onClick={() => this.handleClick(index)}>
+                        <div style={{
+                          width: '36px',
+                          height: '14px',
+                          borderRadius: '2px',
+                          background: `rgba(${element.color.r}, ${element.color.g}, ${element.color.b}, ${element.color.a})`,
+                        }} />
+                      </div>
+                      {element.displayColorPicker ? <div style={styles.popover}>
+                        <div style={styles.cover} onClick={() => this.handleClose(index)} />
+                        <SketchPicker color={element.color} onChange={e => this.handleChangeColor(index, e)} />
+                      </div> : null}
 
-                      </div></div>
-                    <div>
-                      {/* <input type="text" name="color" value={element.color || ""} /> */}
-                      {index ?
-                        <Button
-                          className="closeBtn"
-                          color="danger"
-                          size="sm"
-                          onClick={() => this.removeFormFields(index)}
-                        >
-                          X
-                        </Button>
+                    </div></div>
+                  <div>
+                    {/* <input type="text" name="color" value={element.color || ""} /> */}
+                    {index ?
+                      <Button
+                        className="closeBtn"
+                        color="danger"
+                        size="sm"
+                        onClick={() => this.removeFormFields(index)}
+                      >
+                        X
+                      </Button>
 
-                        : null}
-                    </div>
+                      : null}
                   </div>
-                ))
+                </div>
+              ))
               }
               {
                 this.state.chartType === "expression" &&
-                <Button color="primary" onClick={() => this.addFormFields()}>
+                <Button color="primary" size="sm" onClick={() => this.addFormFields()}>
                   Add Expression
                 </Button>
               }

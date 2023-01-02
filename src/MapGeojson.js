@@ -128,6 +128,10 @@ class MapGeojson extends React.Component {
             // this.props.map.current.setLight({ anchor: 'map' });
             myself.start_renderer();
         });
+         
+        // window.$gama.evalExpr("species(world).microspecies", function (ee) {
+        //     console.log(ee);
+        // });
         window.$gama.evalExpr("CRS_transform(world.location,\"EPSG:4326\")", function (ee) {
             console.log(ee);
             if (JSON.parse(ee).type === "CommandExecutedSuccessfully") {
