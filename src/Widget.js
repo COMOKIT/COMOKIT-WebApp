@@ -9,7 +9,7 @@ const default_Widget_state = {
   loading: false,
   title: "",
   chartType: "geojson",
-
+  param: [],
   expressions: [{
     expr: "",
     displayColorPicker: false,
@@ -39,9 +39,18 @@ class Widget extends React.Component {
     this.fetchFile = this.fetchFile.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleChangeColor = this.handleChangeColor.bind(this);
+    this.handleChangeCBBOX = this.handleChangeCBBOX.bind(this);
     this.handleChangeE = this.handleChangeE.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.handleClose = this.handleClose.bind(this);
+    this.handleFuel = this.handleFuel.bind(this);
+  }
+
+  handleFuel(event) {
+    // let checkbox = event.target.checked;  
+    // console.log(event.target); 
+    console.log(event.target.value);
+    // this.setState({ values: nValues });
   }
 
   handleChange(e) {
@@ -83,6 +92,24 @@ class Widget extends React.Component {
       // this.getWFromLS("Widget" + this.id);
     });
   };
+
+  componentDidMount(props) {
+    if (this._id === this.grid.state.id_param) {
+      this.setState({ param: this.grid.state.param_str }, () => {
+        this.saveWToLS("Widget" + this.id, this.state);
+        // this.getWFromLS("Widget" + this.id);
+      });
+    }
+  }
+  handleChangeCBBOX(i, e) {
+    let formValues = this.state.param;
+    formValues[i]["value"] = e.target.value;
+    // console.log(formValues[i]);
+    this.setState({ param: formValues }, () => {
+      this.saveWToLS("Widget" + this.id, this.state);
+      // this.getWFromLS("Widget" + this.id);
+    });
+  }
 
   handleChangeE(i, e) {
     let formValues = this.state.expressions;
@@ -207,12 +234,15 @@ class Widget extends React.Component {
             {this._id === this.grid.state.id_param && <div style={{ padding: 0 }}> "Parameters"</div>}
           </CardTitle>
 
-            {this._id === this.grid.state.id_param && this.grid.state.param_str.map((e) => (
+            {this._id === this.grid.state.id_param && this.state.param.map((e, index) => (
               <table key={e['key']}>
                 <tbody>
                   <tr><td width="150px">{e['key']}</td>
-                    <td width="200px"> <Input type="text" name={"param_" + e['key']} defaultValue={e['value']} />
-                    </td><td><input type="checkbox" value="1" id={"use_param_" + e['key']} /></td></tr>
+                    <td width="200px"> <Input type="text" name={"param_" + e['key']}  
+                     value={e['value'] || ""} onChange={e => this.handleChangeCBBOX(index, e)}  
+                    />
+                    </td><td><Input type="checkbox" value={e['value']} id={"use_param_" + e['key']}
+                      onChange={(e) => this.handleFuel(e)} /></td></tr>
 
                 </tbody>
               </table>
