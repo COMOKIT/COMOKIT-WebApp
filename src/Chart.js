@@ -67,11 +67,14 @@ class Charts extends React.Component {
           }
           _this.setState({ series: _this.state.series });
         } catch (e) {
-          console.log(e);
+          console.log(e + " " + (ex) + " " + (JSON.parse(ee).command));
+          // console.log((JSON.parse(ee).command));
         }
       }
       if (c) {
         c();
+        // console.log("callback chart");
+        // console.log((JSON.parse(ee)));
       }
     });
   }

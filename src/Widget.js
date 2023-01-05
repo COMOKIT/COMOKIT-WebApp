@@ -230,8 +230,8 @@ class Widget extends React.Component {
             width: "100%"
           }}
         >
-          <Card body className="p-1"><CardTitle>
-            {this._id === this.grid.state.id_param && <div style={{ padding: 0 }}> "Parameters"</div>}
+          <Card body><CardTitle>
+            {this._id === this.grid.state.id_param && <div style={{ padding: 0 }}>Parameters</div>}
           </CardTitle>
 
             {this._id === this.grid.state.id_param && this.state.param.map((e, index) => (

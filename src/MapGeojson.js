@@ -71,9 +71,9 @@ class MapGeojson extends React.Component {
                 'layout': {},
                 'paint': {
                     'circle-radius': {
-                        'base': 1.75,
+                        'base': 100.75,
                         'stops': [
-                            [12, 1],
+                            [12, 10],
                             [22, 50]
                         ]
                     },
@@ -171,7 +171,6 @@ class MapGeojson extends React.Component {
             if (typeof message.data == "object") {
 
             } else {
-                // console.log(message);
                 var gjs = JSON.parse(message);
                 if (gjs.content && gjs.type === "CommandExecutedSuccessfully") {
                     var tmp = gjs.content;
@@ -185,6 +184,8 @@ class MapGeojson extends React.Component {
             }
             if (c) {
                 c();
+                // console.log("callback mapgeojson");
+                // if(!JSON.parse(message).command){console.log(JSON.parse(message));}
             }
         }, true);
     }

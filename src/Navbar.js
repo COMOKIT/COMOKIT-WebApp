@@ -26,6 +26,7 @@ class NavigationBar extends React.Component {
     this.tryConnect = this.tryConnect.bind(this);
     this.tryLaunch = this.tryLaunch.bind(this);
     this.tryGenParam = this.tryGenParam.bind(this);
+    this.tryAutoStep = this.tryAutoStep.bind(this);
     this.tryPlay = this.tryPlay.bind(this);
     this.tryPause = this.tryPause.bind(this);
     this.tryStep = this.tryStep.bind(this);
@@ -98,6 +99,7 @@ class NavigationBar extends React.Component {
                 <option value="road_traffic">road_traffic</option>
               </select></td>
               <td><Button color="primary" size="sm" onClick={this.tryConnect}>Launch</Button> </td>
+              <td><Button color="primary" size="sm" onClick={this.tryAutoStep}>AutoStep</Button> </td>
               <td><Button color="primary" size="sm" onClick={this.tryPlay}>Play</Button> </td>
               <td><Button color="primary" size="sm" onClick={this.tryPause}>Pause</Button> </td>
               <td><Button color="primary" size="sm" onClick={this.tryStep}>Step</Button> </td>
@@ -169,13 +171,24 @@ class NavigationBar extends React.Component {
     }
   }
 
-  tryPlay() {
+  tryAutoStep() {
     if (this.gama.current && this.gama.current.wSocket) {// && this.gama.current.wSocket.readyState!== 
 
       this.gama.current.queue.length = 0;
       this.gama.current.autoStep(console.log("autoStep"));
       // this.gama.current.step(console.log("step"));
       // this.gama.current.play(console.log("play"));
+    }
+    // window.$gama.doConnect();
+  }
+
+  tryPlay() {
+    if (this.gama.current && this.gama.current.wSocket) {// && this.gama.current.wSocket.readyState!== 
+
+      this.gama.current.queue.length = 0;
+      // this.gama.current.autoStep(console.log("autoStep"));
+      // this.gama.current.step(console.log("step"));
+      this.gama.current.play(console.log("play"));
     }
     // window.$gama.doConnect();
   }

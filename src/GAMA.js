@@ -1,4 +1,4 @@
-import React from 'react' 
+import React from 'react'
 // // eslint-disable-next-line import/no-webpack-loader-syntax
 // import certtext from '!!raw-loader!./cert.pem';
 // // eslint-disable-next-line import/no-webpack-loader-syntax
@@ -53,7 +53,7 @@ class GAMA extends React.Component {
         // console.log(this.address.address);
         this.modelPath = this.address.modelPath;
         this.experimentName = this.address.experimentName;
-        this.map = this.address.map; 
+        this.map = this.address.map;
         // console.log(keytext);
         this.wSocket = new WebSocket(this.address.address);
         // this.wSocket = new WebSocket(this.address.address, [], {
@@ -90,13 +90,14 @@ class GAMA extends React.Component {
                 var myself = this;
 
                 this.wSocket.onmessage = function (event) {
-                    // console.log(myself.req);
-                    if (event.data instanceof Blob) { } else {
-                        if (myself.req.callback) {
-                            myself.req.callback(event.data);
+                    if (myself.req !== "") {
+                        // console.log(myself.req);
+                        if (event.data instanceof Blob) { } else {
+                            if (myself.req.callback) {
+                                myself.req.callback(event.data);
+                            }
+                            myself.endRequest();
                         }
-
-                        myself.endRequest();
                     }
                 };
             }
@@ -123,17 +124,23 @@ class GAMA extends React.Component {
 
     endRequest() {
         this.req = "";
+        // console.log("end request");
     }
 
     evalExpr(q, c, es) {
 
         var cmd = {
+            "atimestamp":Math.floor(Math.random() * Date.now()).toString(16),
             "type": "expression",
             "model": this.modelPath,
             "experiment": this.experimentName,
             "socket_id": this.socket_id,
             "exp_id": this.exp_id,
+            "console": false,
+            "status": false,
+            "dialog": false,
             "escaped": es ? es : false,
+            "sync": true,
             "expr": q,
             "callback": c
         };
@@ -143,6 +150,7 @@ class GAMA extends React.Component {
 
     execute(q, c) {
         var cmd = {
+            "atimestamp":Math.floor(Math.random() * Date.now()).toString(16),
             "type": q,
             "model": this.modelPath,
             "experiment": this.experimentName,
@@ -258,7 +266,7 @@ class GAMA extends React.Component {
     reload(c) {
         // this.queue.length = 0;
         this.status = "reload";
-        this.execute(this.status, c); 
+        this.execute(this.status, c);
     }
 
     addOutput(id, o) {
