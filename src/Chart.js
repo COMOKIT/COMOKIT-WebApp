@@ -73,8 +73,8 @@ class Charts extends React.Component {
       }
       if (c) {
         c();
-        // console.log("callback chart");
-        // console.log((JSON.parse(ee)));
+        console.log("callback chart");
+        console.log((JSON.parse(ee)));
       }
     });
   }

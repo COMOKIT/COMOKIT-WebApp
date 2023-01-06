@@ -11,9 +11,9 @@ const BaseMap = (props) => {
     mymap.current = new mapboxgl.Map({
       container: props.parent.id,
       style: 'mapbox://styles/mapbox/satellite-streets-v11',
-      pitch: 45,
+      // pitch: 45,
       // bearing: -17.6,
-      antialias: true,
+      antialias: false,
       center: [105.8249019, 21.0076181], // TLU -84.5, 38.05starting position 
       zoom: 15 // starting zoom
     });

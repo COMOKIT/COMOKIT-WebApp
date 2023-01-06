@@ -71,7 +71,7 @@ class MapGeojson extends React.Component {
                 'layout': {},
                 'paint': {
                     'circle-radius': {
-                        'base': 100.75,
+                        'base': 5.75,
                         'stops': [
                             [12, 10],
                             [22, 50]
@@ -202,7 +202,7 @@ class MapGeojson extends React.Component {
 
         var myself = this;
         // window.$gama.getPopulation(species2Name, [attribute2Name], "EPSG:4326", function (message) {
-        window.$gama.evalExpr("to_geojson(" + species2Name + ",\"EPSG:4326\",[\"" + attribute2Name + "\")", function (message) {
+        window.$gama.evalExpr("to_geojson(" + species2Name + ",\"EPSG:4326\",[\"" + attribute2Name  + "\"])", function (message) {
             if (typeof message.data == "object") {
 
             } else {
