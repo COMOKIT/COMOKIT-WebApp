@@ -2,13 +2,8 @@ import React from 'react'
 import reactCSS from 'reactcss'
 import { SketchPicker } from 'react-color'
 import Charts from "./Chart";
-import { Spinner, Card, Button, CardTitle } from "reactstrap";
+import { Input, Spinner, Card, Button, CardTitle } from "reactstrap";
 import BaseMap from "./BaseMap";
-import { Input, IconButton, Whisper, Tooltip } from "rsuite";
-import { Conversion, Plus } from '@rsuite/icons';
-import "rsuite/dist/rsuite.min.css";
-
-const ButtonStyle = { margin: "5px 5px" };
 const default_Widget_state = {
   data: [],
   loading: false,
@@ -271,10 +266,9 @@ class Widget extends React.Component {
                     </select>
                   </td>
                     <td>
-                      <Whisper placement="bottom" controlId="control-id-hover" trigger="hover" speaker={<Tooltip>Activate</Tooltip>}>
-                        <IconButton icon={<Conversion />} color="blue"
-                          appearance="primary" style={ButtonStyle} onClick={this.fetchFile} /></Whisper>
-                    </td>
+                      <Button color="primary" size="sm" onClick={this.fetchFile}>
+                        Connect
+                      </Button></td>
                   </tr>
                   {/* <tr><td>Expression</td><td>
 
@@ -292,17 +286,11 @@ class Widget extends React.Component {
                   <Input type="text" name="title" value={this.state.title || ""}
                     onChange={this.handleChange} /></div>
               }
-              {
-                this.state.chartType === "expression" && <div className="form-inline" ><label>Expressions  </label><IconButton icon={<Plus />} color="blue"
-                  appearance="primary" style={ButtonStyle} onClick={() => this.addFormFields()} /></div>
-              }
               {this.state.chartType === "expression" && this.state.expressions.map((element, index) => (
                 <div className="form-inline" key={index}>
-
+                  <div><label>Expression</label></div>
                   <div>
-                    <Input type="text" name="expr" value={element.expr || ""} onChange={e => this.handleChangeE(index, e)} />
-
-                  </div>
+                    <Input type="text" name="expr" value={element.expr || ""} onChange={e => this.handleChangeE(index, e)} /></div>
                   <div>
                     <div>
                       <div style={styles.swatch} onClick={() => this.handleClick(index)}>
@@ -335,6 +323,12 @@ class Widget extends React.Component {
                   </div>
                 </div>
               ))
+              }
+              {
+                this.state.chartType === "expression" &&
+                <Button color="primary" size="sm" onClick={() => this.addFormFields()}>
+                  Add Expression
+                </Button>
               }
             </form>
           </Card>

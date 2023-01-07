@@ -1,9 +1,7 @@
 import React from 'react'
 import { Navbar, NavbarBrand } from "reactstrap";
 import GAMA from "./GAMA";
-import { IconButton, Whisper, Tooltip } from "rsuite";
-import { Plus, Export, Import, PlayOutline, PauseOutline, Reload, ChangeList, PageEnd, Send } from '@rsuite/icons';
-import "rsuite/dist/rsuite.min.css";
+import { Button } from "reactstrap";
 const default_Nav_state = {
   // url: "ws://51.255.46.42:6001",
   // model_path: "/var/www/github/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml",
@@ -11,11 +9,10 @@ const default_Nav_state = {
   // model_path:"C:/git/PROJECT/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml",
   // exp_name: "Closures",
 
-  loaded: false,
+  loading: false,
   model_path: 'C:/git/gama/msi.gama.models/models/Tutorials/Road Traffic/models/Model 05.gaml',
   exp_name: 'road_traffic'
 };
-const ButtonStyle = { margin: "1px 1px" };
 
 class NavigationBar extends React.Component {
   constructor(param) {
@@ -63,18 +60,6 @@ class NavigationBar extends React.Component {
         <Navbar color="faded" light className="navBar">
           <NavbarBrand className="mr-auto" width="100%">
             <table><tbody><tr width="100%">
-
-              <td>
-
-                <Whisper placement="bottom" controlId="control-id-hover" trigger="hover" speaker={<Tooltip>Add Widget</Tooltip>}>
-                  <IconButton icon={<Plus />} color="blue"
-                    appearance="primary" style={ButtonStyle} onClick={this.tryAdd} /></Whisper> </td>
-              <td><Whisper placement="bottom" controlId="control-id-hover" trigger="hover" speaker={<Tooltip>Save layout</Tooltip>}>
-                <IconButton icon={<Export />} color="blue"
-                  appearance="primary" style={ButtonStyle} onClick={this.trySave} /></Whisper> </td>
-              <td><Whisper placement="bottom" controlId="control-id-hover" trigger="hover" speaker={<Tooltip>Load layout</Tooltip>}>
-                <IconButton icon={<Import />} color="blue"
-                  appearance="primary" style={ButtonStyle} onClick={this.tryLoad} /></Whisper> </td>
               <td> <select
                 id="select_host"
                 className="form-control"
@@ -112,26 +97,17 @@ class NavigationBar extends React.Component {
                 <option value="Closures">Closures</option>
                 <option value="road_traffic">road_traffic</option>
               </select></td>
-              <td><Whisper placement="bottom" controlId="control-id-hover" trigger="hover" speaker={<Tooltip>Launch Experiment</Tooltip>}>
-                <IconButton icon={<Send />} color="blue"
-                  appearance="primary" style={ButtonStyle} onClick={this.tryConnect} /></Whisper> </td>
+                  <td><Button color="primary" size="sm" onClick={this.tryConnect}>Launch</Button> </td>
               <td>
                 {this.state.loaded && <div><table><tbody><tr width="100%">
-                  <td><Whisper placement="bottom" controlId="control-id-hover" trigger="hover" speaker={<Tooltip>Auto Step</Tooltip>}>
-                    <IconButton icon={<ChangeList />} color="blue"
-                      appearance="primary" style={ButtonStyle} onClick={this.tryAutoStep} /></Whisper>  </td>
-                  <td><Whisper placement="bottom" controlId="control-id-hover" trigger="hover" speaker={<Tooltip>Play</Tooltip>}>
-                    <IconButton icon={<PlayOutline />} color="blue"
-                    appearance="primary" style={ButtonStyle} onClick={this.tryPlay} /></Whisper></td>
-                  <td><Whisper placement="bottom" controlId="control-id-hover" trigger="hover" speaker={<Tooltip>Pause</Tooltip>}>
-                    <IconButton icon={<PauseOutline />} color="blue"
-                    appearance="primary" style={ButtonStyle} onClick={this.tryPause} /></Whisper> </td>
-                  <td><Whisper placement="bottom" controlId="control-id-hover" trigger="hover" speaker={<Tooltip>Step</Tooltip>}>
-                    <IconButton icon={<PageEnd />} color="blue"
-                    appearance="primary" style={ButtonStyle} onClick={this.tryStep} /></Whisper> </td>
-                  <td><Whisper placement="bottom" controlId="control-id-hover" trigger="hover" speaker={<Tooltip>Reload</Tooltip>}>
-                    <IconButton icon={<Reload />} color="blue"
-                    appearance="primary" style={ButtonStyle} onClick={this.tryReload} /></Whisper> </td>
+                  <td><Button color="primary" size="sm" onClick={this.tryAutoStep}>AutoStep</Button> </td>
+                  <td><Button color="primary" size="sm" onClick={this.tryPlay}>Play</Button> </td>
+                  <td><Button color="primary" size="sm" onClick={this.tryPause}>Pause</Button> </td>
+                  <td><Button color="primary" size="sm" onClick={this.tryStep}>Step</Button> </td>
+                  <td><Button color="primary" size="sm" onClick={this.tryReload}>Reload</Button> </td>
+                  <td><Button color="primary" size="sm" onClick={this.tryAdd}>Add Chart Widget</Button></td>
+                  <td><Button color="primary" size="sm" onClick={this.trySave}>Save layout</Button> </td>
+                  <td><Button color="primary" size="sm" onClick={this.tryLoad}>Load layout</Button> </td>
                 </tr></tbody></table></div>
                 }</td>
             </tr></tbody></table>
@@ -215,7 +191,7 @@ class NavigationBar extends React.Component {
   tryPlay() {
     if (this.gama.current && this.gama.current.wSocket) {// && this.gama.current.wSocket.readyState!== 
 
-      // this.gama.current.queue.length = 0;
+      this.gama.current.queue.length = 0;
       // this.gama.current.autoStep(console.log("autoStep"));
       // this.gama.current.step(console.log("step"));
       this.gama.current.play(console.log("play"));
@@ -239,7 +215,7 @@ class NavigationBar extends React.Component {
   }
   tryReload() {
     if (this.gama.current && this.gama.current.wSocket) {// && this.gama.current.wSocket.readyState!== 
-      // this.gama.current.queue.length = 0;
+      this.gama.current.queue.length = 0;
       this.gama.current.reload(() => { console.log("reloaded"); });
     }
     // window.$gama.doConnect();

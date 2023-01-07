@@ -7,8 +7,7 @@
   "description": "",
   "keywords": [],
   "main": "src/index.js",
-  "dependencies": {
-    "@rsuite/icons": "^1.0.2",
+  "dependencies": { 
     "highcharts": "8.2.0",
     "highcharts-react-official": "3.0.0",
     "mapbox-gl": "^2.9.1",
@@ -17,8 +16,7 @@
     "react-dom": "16.12.0",
     "react-grid-layout": "1.0.0",
     "react-scripts": "3.0.1",
-    "reactstrap": "8.5.1",
-    "rsuite": "^5.24.0"
+    "reactstrap": "8.5.1"
   },
   "devDependencies": {
     "react-native-wss": "^1.1.0",
