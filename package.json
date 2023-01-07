@@ -12,13 +12,10 @@
     "highcharts": "8.2.0",
     "highcharts-react-official": "3.0.0",
     "mapbox-gl": "^2.9.1",
-    "raw-loader": "^4.0.2",
-    "raw.macro": "^0.7.0",
     "react": "16.12.0",
     "react-color": "^2.19.3",
     "react-dom": "16.12.0",
     "react-grid-layout": "1.0.0",
-    "react-icons": "3.11.0",
     "react-scripts": "3.0.1",
     "reactstrap": "8.5.1",
     "rsuite": "^5.24.0"

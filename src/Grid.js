@@ -2,7 +2,6 @@ import React from "react";
 import { Button } from "reactstrap";
 import { Responsive, WidthProvider } from "react-grid-layout";
 import Widget from "./Widget";
-import { RiDragMove2Fill } from "react-icons/ri";
 import exportToPdf from "./exportToPdf";
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
@@ -113,7 +112,7 @@ class Grid extends React.Component {
 
                 <tr><td width="100%"><div className="dragHandle">
 
-                  <RiDragMove2Fill className="dragIcon"></RiDragMove2Fill>
+                  +
                 </div></td>
                   <td> <Button
                     className="closeBtn"
