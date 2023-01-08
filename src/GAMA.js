@@ -71,10 +71,15 @@ class GAMA extends React.Component {
             if (closed_callback) closed_callback(myself);
         };
 
+        var _this = this;
         this.wSocket.addEventListener('open', event => {
-            var myself = this;
-            if (opened_callback) opened_callback(myself);
+            if (opened_callback) opened_callback(_this);
+            _this.initExecutor();
         });
+
+    }
+    initExecutor() {
+
         this.executor = setInterval(() => {
             if (this.queue.length > 0 && this.req === "") {
                 this.req = this.queue.shift();
@@ -102,9 +107,7 @@ class GAMA extends React.Component {
                 };
             }
         }, this.executor_speed);
-
     }
-
     on_connected(c) {
         console.log("connected");
         if (c) c();
@@ -130,7 +133,7 @@ class GAMA extends React.Component {
     evalExpr(q, c, es) {
 
         var cmd = {
-            "atimestamp":Math.floor(Math.random() * Date.now()).toString(16),
+            "atimestamp": Math.floor(Math.random() * Date.now()).toString(16),
             "type": "expression",
             "model": this.modelPath,
             "experiment": this.experimentName,
@@ -150,7 +153,7 @@ class GAMA extends React.Component {
 
     execute(q, c) {
         var cmd = {
-            "atimestamp":Math.floor(Math.random() * Date.now()).toString(16),
+            "atimestamp": Math.floor(Math.random() * Date.now()).toString(16),
             "type": q,
             "model": this.modelPath,
             "experiment": this.experimentName,

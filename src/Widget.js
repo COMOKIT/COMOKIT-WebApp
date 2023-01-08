@@ -221,7 +221,7 @@ class Widget extends React.Component {
     // console.log(this.grid.state.param_str);
 
     if (this.state.data.length < 1) {
-      // console.log(this.id);
+      // console.log(this._id);
       // console.log(this.grid.state.id_param);
       return (
         <div
@@ -231,10 +231,10 @@ class Widget extends React.Component {
           }}
         >
           <Card body><CardTitle>
-            {this._id === this.grid.state.id_param && <div style={{ padding: 0 }}>Parameters</div>}
+            {(this.grid.state && (this._id === this.grid.state.id_param)) && <div style={{ padding: 0 }}>Parameters</div>}
           </CardTitle>
 
-            {this._id === this.grid.state.id_param && this.state.param.map((e, index) => (
+            {(this.grid.state && (this._id === this.grid.state.id_param)) && this.state.param.map((e, index) => (
               <table key={e['key']}>
                 <tbody>
                   <tr><td width="150px">{e['key']}</td>
@@ -249,7 +249,8 @@ class Widget extends React.Component {
 
             ))}
             {
-              this._id !== this.grid.state.id_param &&
+              (this.grid.state &&
+                (this._id !== this.grid.state.id_param)) &&
               <table>
                 <tbody>
                   <tr><td>Type</td><td>
@@ -270,12 +271,6 @@ class Widget extends React.Component {
                         Connect
                       </Button></td>
                   </tr>
-                  {/* <tr><td>Expression</td><td>
-
-                  <Input id="input1" name="expression" onChange={this.handleChange}
-                    defaultValue={this.state.expression}></Input>
-
-                </td></tr> */}
                 </tbody>
               </table>
             }

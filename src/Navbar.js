@@ -154,17 +154,18 @@ class NavigationBar extends React.Component {
     this.props.grid.current.addWidget();
   }
   tryConnect() {
+    var _this = this;
     if (!this.gama.current.wSocket) {// && this.gama.current.wSocket.readyState!==1
-      var _this = this;
-      _this.checkConnect();
-      this.gama.current.doConnect(() => { _this.tryLaunch() });
+      this.gama.current.doConnect(() => {
+        _this.checkConnect();
+        console.log("connected");
+      });
 
     }
     // window.$gama.doConnect();
   }
 
   tryLaunch() {
-    console.log("connected");
     // if (!this.gama.current.wSocket) {
     //   this.tryConnect();
     // }
