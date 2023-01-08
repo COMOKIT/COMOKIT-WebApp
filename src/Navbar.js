@@ -18,7 +18,7 @@ class NavigationBar extends React.Component {
   constructor(param) {
     super(param);
     this.id = "m" + param.id;
-    this.state = this.getNFromLS("Nav") || default_Nav_state;
+    this.state = default_Nav_state;
     this.gama = React.createRef();
     this.grid = param.grid;
     this.fetchFile = this.fetchFile.bind(this);
