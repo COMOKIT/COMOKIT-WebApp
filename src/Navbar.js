@@ -146,7 +146,7 @@ class NavigationBar extends React.Component {
     // if (!this.gama.current.wSocket) {
     //   this.tryConnect();
     // }
-    if (this.gama.current && this.gama.current.wSocket) {// && this.gama.current.wSocket.readyState!==1
+    if (this.gama.current && this.gama.current.wSocket && this.gama.current.wSocket.readyState===1) {
 
 
       this.gama.current.modelPath = this.state.model_path;
