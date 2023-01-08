@@ -267,7 +267,7 @@ class Widget extends React.Component {
                     </select>
                   </td>
                     <td>
-                      <Button color="primary" size="sm" onClick={this.fetchFile}>
+                      <Button color="primary" size="sm" onClick={this.fetchFile} disabled={this.grid.state.waiting}>
                         Connect
                       </Button></td>
                   </tr>

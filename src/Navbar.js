@@ -156,6 +156,7 @@ class NavigationBar extends React.Component {
   tryConnect() {
     var _this = this;
     if (!this.gama.current.wSocket) {// && this.gama.current.wSocket.readyState!==1
+
       this.gama.current.doConnect(() => {
         _this.checkConnect();
         console.log("connected");
@@ -171,7 +172,7 @@ class NavigationBar extends React.Component {
     // }
     if (this.gama.current && this.gama.current.wSocket && this.gama.current.wSocket.readyState === 1) {
 
-
+      this.props.grid.current.waiting(true);
       this.gama.current.modelPath = this.state.model_path;
       this.gama.current.experimentName = this.state.exp_name;
 
@@ -183,6 +184,7 @@ class NavigationBar extends React.Component {
         _this.fetchFile();
 
         console.log("loaded " + this.state.loaded);
+        this.props.grid.current.waiting(false);
         _this.tryGenParam();
       });
       // this.gama.current.launch(_this.tryPlay);
@@ -229,7 +231,7 @@ class NavigationBar extends React.Component {
   tryStep() {
     if (this.gama.current && this.gama.current.wSocket) {// && this.gama.current.wSocket.readyState!== 
       this.gama.current.queue.length = 0;
-      this.gama.current.step();
+      this.gama.current.step(() => { console.log("step") });
     }
     // window.$gama.doConnect();
   }

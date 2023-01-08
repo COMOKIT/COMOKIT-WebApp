@@ -268,6 +268,7 @@ class GAMA extends React.Component {
 
     reload(c) {
         // this.queue.length = 0;
+        clearInterval(this.output_executor);
         this.status = "reload";
         this.execute(this.status, c);
     }

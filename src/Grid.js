@@ -2,13 +2,14 @@ import React from "react";
 import { Button } from "reactstrap";
 import { Responsive, WidthProvider } from "react-grid-layout";
 import Widget from "./Widget";
-import exportToPdf from "./exportToPdf";
+// import { Eclipse } from "react-loading-io";
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 const default_Layout = {
   widgets: [{ id: 1 }],
   widgetSequence: 1,
   id_param: -1,
+  waiting: true,
   param_str: [],
   layouts: {}
 };
@@ -21,15 +22,20 @@ class Grid extends React.Component {
 
     this.addParam = this.addParam.bind(this);
     this.addWidget = this.addWidget.bind(this);
+    this.waiting = this.waiting.bind(this);
     this.removeWidget = this.removeWidget.bind(this);
+  }
+
+  waiting(b) {
+    this.setState((prevState) => ({
+      waiting: b
+    }));
   }
 
   componentDidMount(props) {
     this.removeWidget(this.state.id_param);
-  }
-  exportPdf() {
-    exportToPdf();
-  }
+    this.waiting(true);
+  } 
 
   addParam(ee) {
 
@@ -54,18 +60,18 @@ class Grid extends React.Component {
       }
     });
     // t += '<tr><td> End Condition:</td><td> <input type="text" id="param_end_condition" value="cycle>1000"></td><td><input type="checkbox" value="1" id="use_param_end_condition" /></td></tr>';
-    this.setState((prevState) => ({ 
+    this.setState((prevState) => ({
       param_str: parameters
     }));
     saveToLS("Layout", this.state);
 
     if (!this.state.id_param || this.state.id_param < 0) {
       this.setState((prevState) => ({
-        widgets: [...prevState.widgets, { id: prevState.widgetSequence + 1 }], 
+        widgets: [...prevState.widgets, { id: prevState.widgetSequence + 1 }],
         id_param: prevState.widgetSequence + 1,
         widgetSequence: prevState.widgetSequence + 1
       }));
-    }  
+    }
   }
 
   addWidget() {
@@ -132,6 +138,9 @@ class Grid extends React.Component {
     ));
 
 
+    // if (this.state.waiting) {
+    //   return <Eclipse size={64} />
+    // }
     return (
       <><div>
         <div className="toolBar">
