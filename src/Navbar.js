@@ -9,6 +9,7 @@ const default_Nav_state = {
   // model_path:"C:/git/PROJECT/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml",
   // exp_name: "Closures",
 
+  connected: false,
   loading: false,
   model_path: 'C:/git/gama/msi.gama.models/models/Tutorials/Road Traffic/models/Model 05.gaml',
   exp_name: 'road_traffic'
@@ -21,6 +22,7 @@ class NavigationBar extends React.Component {
     this.state = this.getNFromLS("Nav") || default_Nav_state;
     this.gama = React.createRef();
     this.grid = param.grid;
+    this.checkConnect = this.checkConnect.bind(this);
     this.fetchFile = this.fetchFile.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.tryConnect = this.tryConnect.bind(this);
@@ -37,6 +39,13 @@ class NavigationBar extends React.Component {
     this.tryLoad = this.tryLoad.bind(this);
   }
 
+  componentDidMount(props) {
+    this.setState((prevState) => ({
+      connected: false,
+      loaded: false
+    }));
+  }
+
   handleChange(e) {
     this.setState({
       [e.target.name]: e.target.value
@@ -45,6 +54,12 @@ class NavigationBar extends React.Component {
       // this.getWFromLS("Widget" + this.id);
     });
   }
+  checkConnect() {
+    this.setState((prevState) => ({
+      connected: true
+    }));
+  }
+
 
   fetchFile() {
     this.setState((prevState) => ({
@@ -100,7 +115,13 @@ class NavigationBar extends React.Component {
                 <option value="Closures">Closures</option>
                 <option value="road_traffic">road_traffic</option>
               </select></td>
-              <td><Button color="primary" size="sm" onClick={this.tryConnect}>Launch</Button> </td>
+              <td><Button color="primary" size="sm" onClick={this.tryConnect}>Connect</Button> </td>
+              <td>
+                {this.state.connected && <div><table><tbody><tr width="100%">
+                  <td><Button color="primary" size="sm" onClick={this.tryLaunch}>Launch</Button> </td>
+                </tr></tbody></table></div>
+                }
+              </td>
               <td>
                 {this.state.loaded && <div><table><tbody><tr width="100%">
                   <td><Button color="primary" size="sm" onClick={this.tryAutoStep}>AutoStep</Button> </td>
@@ -111,9 +132,9 @@ class NavigationBar extends React.Component {
                   <td><Button color="primary" size="sm" onClick={this.tryClose}>Close</Button> </td>
                 </tr></tbody></table></div>
                 }</td>
-                <td><Button color="primary" size="sm" onClick={this.tryAdd}>Add Chart Widget</Button></td>
-                <td><Button color="primary" size="sm" onClick={this.trySave}>Save layout</Button> </td>
-                <td><Button color="primary" size="sm" onClick={this.tryLoad}>Load layout</Button> </td>
+              <td><Button color="primary" size="sm" onClick={this.tryAdd}>Add Chart Widget</Button></td>
+              <td><Button color="primary" size="sm" onClick={this.trySave}>Save layout</Button> </td>
+              <td><Button color="primary" size="sm" onClick={this.tryLoad}>Load layout</Button> </td>
             </tr></tbody></table>
           </NavbarBrand>
         </Navbar>
@@ -135,6 +156,7 @@ class NavigationBar extends React.Component {
   tryConnect() {
     if (!this.gama.current.wSocket) {// && this.gama.current.wSocket.readyState!==1
       var _this = this;
+      _this.checkConnect();
       this.gama.current.doConnect(() => { _this.tryLaunch() });
 
     }
@@ -146,7 +168,7 @@ class NavigationBar extends React.Component {
     // if (!this.gama.current.wSocket) {
     //   this.tryConnect();
     // }
-    if (this.gama.current && this.gama.current.wSocket && this.gama.current.wSocket.readyState===1) {
+    if (this.gama.current && this.gama.current.wSocket && this.gama.current.wSocket.readyState === 1) {
 
 
       this.gama.current.modelPath = this.state.model_path;
