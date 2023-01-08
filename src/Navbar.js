@@ -31,6 +31,7 @@ class NavigationBar extends React.Component {
     this.tryPause = this.tryPause.bind(this);
     this.tryStep = this.tryStep.bind(this);
     this.tryReload = this.tryReload.bind(this);
+    this.tryClose = this.tryClose.bind(this);
     this.tryAdd = this.tryAdd.bind(this);
     this.trySave = this.trySave.bind(this);
     this.tryLoad = this.tryLoad.bind(this);
@@ -69,7 +70,9 @@ class NavigationBar extends React.Component {
               // defaultValue={"ws://51.255.46.42:6001"}
               >
                 <option value="ws://51.255.46.42:6001">Gama ovh</option>
+                <option value="wss://51.255.46.42:6001">Secure Gama ovh</option>
                 <option value="ws://localhost:6868">Local</option>
+                <option value="wss://localhost:6868">Secure Local</option>
               </select></td>
               {/* <td><Button color="primary" size="sm" onClick={this.tryConnect}>Connect</Button></td> */}
               <td>
@@ -97,7 +100,7 @@ class NavigationBar extends React.Component {
                 <option value="Closures">Closures</option>
                 <option value="road_traffic">road_traffic</option>
               </select></td>
-                  <td><Button color="primary" size="sm" onClick={this.tryConnect}>Launch</Button> </td>
+              <td><Button color="primary" size="sm" onClick={this.tryConnect}>Launch</Button> </td>
               <td>
                 {this.state.loaded && <div><table><tbody><tr width="100%">
                   <td><Button color="primary" size="sm" onClick={this.tryAutoStep}>AutoStep</Button> </td>
@@ -105,11 +108,12 @@ class NavigationBar extends React.Component {
                   <td><Button color="primary" size="sm" onClick={this.tryPause}>Pause</Button> </td>
                   <td><Button color="primary" size="sm" onClick={this.tryStep}>Step</Button> </td>
                   <td><Button color="primary" size="sm" onClick={this.tryReload}>Reload</Button> </td>
-                  <td><Button color="primary" size="sm" onClick={this.tryAdd}>Add Chart Widget</Button></td>
-                  <td><Button color="primary" size="sm" onClick={this.trySave}>Save layout</Button> </td>
-                  <td><Button color="primary" size="sm" onClick={this.tryLoad}>Load layout</Button> </td>
+                  <td><Button color="primary" size="sm" onClick={this.tryClose}>Close</Button> </td>
                 </tr></tbody></table></div>
                 }</td>
+                <td><Button color="primary" size="sm" onClick={this.tryAdd}>Add Chart Widget</Button></td>
+                <td><Button color="primary" size="sm" onClick={this.trySave}>Save layout</Button> </td>
+                <td><Button color="primary" size="sm" onClick={this.tryLoad}>Load layout</Button> </td>
             </tr></tbody></table>
           </NavbarBrand>
         </Navbar>
@@ -214,6 +218,13 @@ class NavigationBar extends React.Component {
     // window.$gama.doConnect();
   }
   tryReload() {
+    if (this.gama.current && this.gama.current.wSocket) {// && this.gama.current.wSocket.readyState!== 
+      this.gama.current.queue.length = 0;
+      this.gama.current.reload(() => { console.log("reloaded"); });
+    }
+    // window.$gama.doConnect();
+  }
+  tryClose() {
     if (this.gama.current && this.gama.current.wSocket) {// && this.gama.current.wSocket.readyState!== 
       this.gama.current.queue.length = 0;
       this.gama.current.reload(() => { console.log("reloaded"); });
