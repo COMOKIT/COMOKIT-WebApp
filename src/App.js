@@ -51,7 +51,10 @@ class App extends React.Component {
             onSetOpen={this.onSetSidebarOpen}
             styles={{ sidebar: { background: "white" } }}
           >
-            <Button color="primary" size="sm" onClick={() => this.onSetSidebarOpen(true)}>Open sidebar</Button>
+            <div className="position-absolute top-0 start-0" >
+
+            <Button color="primary" size="sm" onClick={() => this.onSetSidebarOpen(true)}>[=]</Button>
+            </div>
           </Sidebar>
           <Grid ref={mygrid} ></Grid>
         </Container>
