@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
+import registerServiceWorker from "./registerServiceWorker";
 window.$gama = "";
  
 // process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = '1';
@@ -12,3 +13,4 @@ ReactDOM.render(
 );
 
 
+registerServiceWorker();

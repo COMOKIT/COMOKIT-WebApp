@@ -1,5 +1,4 @@
 import React from 'react'
-import { Navbar, NavbarBrand } from "reactstrap";
 import GAMA from "./GAMA";
 import { Button } from "reactstrap";
 const default_Nav_state = {
@@ -73,71 +72,76 @@ class NavigationBar extends React.Component {
 
     return (<><GAMA ref={this.gama} address={addr}  ></GAMA>
       <div>
-        <Navbar color="faded" light className="navBar">
-          <NavbarBrand className="mr-auto" width="100%">
-            <table><tbody><tr width="100%">
-              <td> <select
-                id="select_host"
-                className="form-control"
-                name="url"
-                onChange={this.handleChange}
-                defaultValue={this.state.url}
-              // defaultValue={"ws://51.255.46.42:6001"}
-              >
-                <option value="ws://51.255.46.42:6001">Gama ovh</option>
-                <option value="wss://51.255.46.42:6001">Secure Gama ovh</option>
-                <option value="ws://localhost:6868">Local</option>
-                <option value="wss://localhost:6868">Secure Local</option>
-              </select></td>
-              {/* <td><Button color="primary" size="sm" onClick={this.tryConnect}>Connect</Button></td> */}
-              <td>
-                <select
-                  id="select_model"
-                  className="form-control"
-                  name="model_path"
-                  onChange={this.handleChange}
-                  // defaultValue={"/var/www/github/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml"}                    
-                  defaultValue={this.state.model_path}
-                >
-                  <option value="/var/www/github/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml">Comokit ovh</option>
-                  <option value="C:/git/PROJECT/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml">Comokit local</option>
-                  <option value="/Users/hqn88/git/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml">mac Comokit local</option>
-                  <option value="C:/git/gama/msi.gama.models/models/Tutorials/Road Traffic/models/Model 05.gaml">Road Traffic 05.gaml</option>
-                </select>
-              </td><td><select
-                id="select_exp"
-                className="form-control"
-                name="exp_name"
-                onChange={this.handleChange}
-                // defaultValue={"Closures"}
-                defaultValue={this.state.exp_name}
-              >
-                <option value="Closures">Closures</option>
-                <option value="road_traffic">road_traffic</option>
-              </select></td>
-              <td><Button color="primary" size="sm" onClick={this.tryConnect}>Connect</Button> </td>
-              <td>
-                {this.state.connected && <div><table><tbody><tr width="100%">
-                  <td><Button color="primary" size="sm" onClick={this.tryLaunch}>Launch</Button> </td>
-                </tr></tbody></table></div>
-                }
-              </td>
-              <td>
-                {this.state.loaded && <div><table><tbody><tr width="100%">
-                  <td><Button color="primary" size="sm" onClick={this.tryAutoStep}>AutoStep</Button> </td>
-                  <td><Button color="primary" size="sm" onClick={this.tryPlay}>Play</Button> </td>
-                  <td><Button color="primary" size="sm" onClick={this.tryPause}>Pause</Button> </td>
-                  <td><Button color="primary" size="sm" onClick={this.tryStep}>Step</Button> </td>
-                  <td><Button color="primary" size="sm" onClick={this.tryReload}>Reload</Button> </td>
-                  <td><Button color="primary" size="sm" onClick={this.tryClose}>Close</Button> </td>
-                </tr></tbody></table></div>
-                }</td>
-              <td><Button color="primary" size="sm" onClick={this.tryAdd}>Add Chart Widget</Button></td>
-              <td><Button color="primary" size="sm" onClick={this.trySave}>Save layout</Button> </td>
-              <td><Button color="primary" size="sm" onClick={this.tryLoad}>Load layout</Button> </td>
+        <table><tbody><tr>
+          <td>
+
+            
+        <table><tbody><tr>
+            <td><Button color="primary" size="sm" onClick={this.tryAdd}>Add Widget</Button></td>
+            <td><Button color="primary" size="sm" onClick={this.trySave}>Save layout</Button> </td>
+            <td><Button color="primary" size="sm" onClick={this.tryLoad}>Load layout</Button> </td>
             </tr></tbody></table>
-          </NavbarBrand>
-        </Navbar>
+
+          </td>
+          </tr><tr>
+            <td> <select
+              id="select_host"
+              className="form-control"
+              name="url"
+              onChange={this.handleChange}
+              defaultValue={this.state.url}
+            // defaultValue={"ws://51.255.46.42:6001"}
+            >
+              <option value="ws://51.255.46.42:6001">Gama ovh</option>
+              <option value="wss://51.255.46.42:6001">Secure Gama ovh</option>
+              <option value="ws://localhost:6868">Local</option>
+              <option value="wss://localhost:6868">Secure Local</option>
+            </select></td></tr><tr>
+            <td>
+              <select
+                id="select_model"
+                className="form-control"
+                name="model_path"
+                onChange={this.handleChange}
+                // defaultValue={"/var/www/github/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml"}                    
+                defaultValue={this.state.model_path}
+              >
+                <option value="/var/www/github/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml">Comokit ovh</option>
+                <option value="C:/git/PROJECT/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml">Comokit local</option>
+                <option value="/Users/hqn88/git/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml">mac Comokit local</option>
+                <option value="C:/git/gama/msi.gama.models/models/Tutorials/Road Traffic/models/Model 05.gaml">Road Traffic 05.gaml</option>
+              </select>
+            </td></tr><tr><td><select
+              id="select_exp"
+              className="form-control"
+              name="exp_name"
+              onChange={this.handleChange}
+              // defaultValue={"Closures"}
+              defaultValue={this.state.exp_name}
+            >
+              <option value="Closures">Closures</option>
+              <option value="road_traffic">road_traffic</option>
+            </select></td></tr><tr>
+            <td><div><table><tbody><tr width="100%">
+              <td><Button color="primary" size="sm" onClick={this.tryConnect}>Connect</Button></td>
+              {this.state.connected &&  
+                <td><Button color="primary" size="sm" onClick={this.tryLaunch}>Launch</Button> </td> 
+              }
+            </tr></tbody></table></div>
+            </td></tr> 
+            <tr>
+            <td>
+              {this.state.loaded && <div><table width="100%"><tbody><tr>
+                <td><Button color="primary" size="sm" onClick={this.tryAutoStep}>AutoStep</Button> </td> 
+                <td><Button color="primary" size="sm" onClick={this.tryPlay}>Play</Button> </td> 
+                <td><Button color="primary" size="sm" onClick={this.tryPause}>Pause</Button> </td></tr><tr>
+                <td><Button color="primary" size="sm" onClick={this.tryStep}>Step</Button> </td> 
+                <td><Button color="primary" size="sm" onClick={this.tryReload}>Reload</Button> </td> 
+                <td><Button color="primary" size="sm" onClick={this.tryClose}>Close</Button> </td>
+              </tr></tbody></table></div>
+              }</td></tr>
+
+        </tbody></table>
       </div></>
     );
 
