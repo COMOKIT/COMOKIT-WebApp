@@ -57,12 +57,11 @@ class App extends React.Component {
             touch={true}
             touchHandleWidth={50}
             onSetOpen={this.onSetSidebarOpen}
-            styles={{ sidebar: { background: "white" } }}
-          >
-            <div className="position-absolute top-0 start-0" >
+            styles={{ sidebar: {backgroundColor: "rgba(255,255,255,1)"} }}
+          > 
 
             <Button color="primary" style={bstyle} size="sm" onClick={() => this.onSetSidebarOpen(!this.state.sidebarOpen)}>|||</Button>
-            </div>
+   
           </Sidebar>
           <Grid ref={mygrid} ></Grid>
         </Container>
