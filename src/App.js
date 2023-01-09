@@ -6,7 +6,15 @@ import Grid from "./Grid";
 import NavigationBar from "./Navbar";
 import Sidebar from "react-sidebar";
 
-
+const bstyle = {
+  margin: 0,
+  bottom: 'auto',
+  left: 2,
+  top: 2,
+  right: 'auto',
+  position: 'fixed',
+  zIndex:9999999
+};
 const mql = window.matchMedia(`(min-width: 800px)`);
 class App extends React.Component {
 
@@ -53,7 +61,7 @@ class App extends React.Component {
           >
             <div className="position-absolute top-0 start-0" >
 
-            <Button color="primary" size="sm" onClick={() => this.onSetSidebarOpen(true)}>[=]</Button>
+            <Button color="primary" style={bstyle} size="sm" onClick={() => this.onSetSidebarOpen(!this.state.sidebarOpen)}>|||</Button>
             </div>
           </Sidebar>
           <Grid ref={mygrid} ></Grid>

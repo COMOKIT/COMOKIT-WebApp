@@ -72,7 +72,9 @@ class NavigationBar extends React.Component {
 
     return (<><GAMA ref={this.gama} address={addr}  ></GAMA>
       <div>
-        <table><tbody><tr>
+        <table><tbody>
+          <tr><td height={30}></td></tr>
+          <tr>
           <td>
 
             
