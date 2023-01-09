@@ -2,7 +2,6 @@ import React from "react";
 import { Button } from "reactstrap";
 import { Responsive, WidthProvider } from "react-grid-layout";
 import Widget from "./Widget";
-// import { Eclipse } from "react-loading-io";
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 const default_Layout = {
@@ -137,10 +136,6 @@ class Grid extends React.Component {
       </div>
     ));
 
-
-    // if (this.state.waiting) {
-    //   return <Eclipse size={64} />
-    // }
     return (
       <><div>
         <div className="toolBar">

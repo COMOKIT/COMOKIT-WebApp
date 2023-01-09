@@ -21,7 +21,6 @@ class Charts extends React.Component {
     this.state.title.text = (this.title);
     let _this = this;
     this.expressions.forEach((value, index, array) => {
-
       _this.state.series.push({
         data: [],
         name: value.expr,
@@ -38,6 +37,21 @@ class Charts extends React.Component {
     //     // console.log(eee[1]);
     //   });
     // }, 1000);
+  }
+
+  reset(c) {
+
+    this.setState({ series: [] });
+    let _this = this;
+    this.expressions.forEach((value, index, array) => {
+      _this.state.series.push({
+        data: [],
+        name: value.expr,
+        color: value.color
+      });
+    }
+    );
+    this.setState({ series: this.state.series });
   }
 
   update(c) {

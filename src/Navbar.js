@@ -1,6 +1,7 @@
 import React from 'react'
 import GAMA from "./GAMA";
-import { Button } from "reactstrap";
+import { Button } from "reactstrap"; 
+import { DualRing } from 'react-loading-io/dist/DualRing';
 const default_Nav_state = {
   // url: "ws://51.255.46.42:6001",
   // model_path: "/var/www/github/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml",
@@ -10,6 +11,7 @@ const default_Nav_state = {
 
   connected: false,
   loading: false,
+  waiting: true,
   model_path: 'C:/git/gama/msi.gama.models/models/Tutorials/Road Traffic/models/Model 05.gaml',
   exp_name: 'road_traffic'
 };
@@ -36,12 +38,20 @@ class NavigationBar extends React.Component {
     this.tryAdd = this.tryAdd.bind(this);
     this.trySave = this.trySave.bind(this);
     this.tryLoad = this.tryLoad.bind(this);
+    this.waiting = this.waiting.bind(this);
   }
 
   componentDidMount(props) {
     this.setState((prevState) => ({
       connected: false,
       loaded: false
+    }));
+    // this.waiting(true);
+  }
+
+  waiting(b) {
+    this.setState((prevState) => ({
+      waiting: b
     }));
   }
 
@@ -75,16 +85,16 @@ class NavigationBar extends React.Component {
         <table><tbody>
           <tr><td height={32}></td></tr>
           <tr>
-          <td>
+            <td>
 
-            
-        <table><tbody><tr>
-            <td><Button color="primary" size="sm" onClick={this.tryAdd}>Add Widget</Button></td>
-            <td><Button color="primary" size="sm" onClick={this.trySave}>Save layout</Button> </td>
-            <td><Button color="primary" size="sm" onClick={this.tryLoad}>Load layout</Button> </td>
-            </tr></tbody></table>
 
-          </td>
+              <table><tbody><tr>
+                <td><Button color="primary" style={{ width: "100px" }} size="sm" onClick={this.tryAdd}>Add Widget</Button></td>
+                <td><Button color="primary" style={{ width: "100px" }} size="sm" onClick={this.trySave}>Save layout</Button> </td>
+                <td><Button color="primary" style={{ width: "100px" }} size="sm" onClick={this.tryLoad}>Load layout</Button> </td>
+              </tr></tbody></table>
+
+            </td>
           </tr><tr>
             <td> <select
               id="select_host"
@@ -125,23 +135,29 @@ class NavigationBar extends React.Component {
               <option value="road_traffic">road_traffic</option>
             </select></td></tr><tr>
             <td><div><table><tbody><tr width="100%">
-              <td><Button color="primary" size="sm" onClick={this.tryConnect}>Connect</Button></td>
-              {this.state.connected &&  
-                <td><Button color="primary" size="sm" onClick={this.tryLaunch}>Launch</Button> </td> 
+              <td><Button color="primary" style={{ width: "100px" }} size="sm" onClick={this.tryConnect}>Connect</Button></td>
+              {this.state.connected &&
+                <td><Button color="primary" style={{ width: "100px" }} size="sm" onClick={this.tryLaunch}>Launch</Button> </td>
               }
             </tr></tbody></table></div>
-            </td></tr> 
-            <tr>
+            </td></tr>
+          <tr>
             <td>
               {this.state.loaded && <div><table width="100%"><tbody><tr>
-                <td><Button color="primary" size="sm" onClick={this.tryAutoStep}>AutoStep</Button> </td> 
-                <td><Button color="primary" size="sm" onClick={this.tryPlay}>Play</Button> </td> 
-                <td><Button color="primary" size="sm" onClick={this.tryPause}>Pause</Button> </td></tr><tr>
-                <td><Button color="primary" size="sm" onClick={this.tryStep}>Step</Button> </td> 
-                <td><Button color="primary" size="sm" onClick={this.tryReload}>Reload</Button> </td> 
-                <td><Button color="primary" size="sm" onClick={this.tryClose}>Close</Button> </td>
-              </tr></tbody></table></div>
+                <td><Button color="primary" style={{ width: "100px" }} size="sm" onClick={this.tryAutoStep}>AutoStep</Button> </td>
+                <td><Button color="primary" style={{ width: "100px" }} size="sm" onClick={this.tryPlay}>Play</Button> </td>
+                <td><Button color="primary" style={{ width: "100px" }} size="sm" onClick={this.tryPause}>Pause</Button> </td></tr><tr>
+                  <td><Button color="primary" style={{ width: "100px" }} size="sm" onClick={this.tryStep}>Step</Button> </td>
+                  <td><Button color="primary" style={{ width: "100px" }} size="sm" onClick={this.tryReload}>Reload</Button> </td>
+                  <td><Button color="primary" style={{ width: "100px" }} size="sm" onClick={this.tryClose}>Close</Button> </td>
+                </tr></tbody></table></div>
               }</td></tr>
+          <tr><td>
+            {
+              (this.state.waiting) && <DualRing size={64} color={"dodgerblue"} speed={3.14} width={16}/>
+
+
+            }</td></tr>
 
         </tbody></table>
       </div></>
@@ -163,8 +179,10 @@ class NavigationBar extends React.Component {
     var _this = this;
     if (!this.gama.current.wSocket) {// && this.gama.current.wSocket.readyState!==1
 
+      this.waiting(true);
       this.gama.current.doConnect(() => {
         _this.checkConnect();
+        _this.waiting(false);
         console.log("connected");
       });
 
@@ -179,6 +197,7 @@ class NavigationBar extends React.Component {
     if (this.gama.current && this.gama.current.wSocket && this.gama.current.wSocket.readyState === 1) {
 
       this.props.grid.current.waiting(true);
+      this.waiting(true);
       this.gama.current.modelPath = this.state.model_path;
       this.gama.current.experimentName = this.state.exp_name;
 
@@ -191,6 +210,7 @@ class NavigationBar extends React.Component {
 
         console.log("loaded " + this.state.loaded);
         this.props.grid.current.waiting(false);
+        this.waiting(false);
         _this.tryGenParam();
       });
       // this.gama.current.launch(_this.tryPlay);
@@ -237,7 +257,11 @@ class NavigationBar extends React.Component {
   tryStep() {
     if (this.gama.current && this.gama.current.wSocket) {// && this.gama.current.wSocket.readyState!== 
       this.gama.current.queue.length = 0;
-      this.gama.current.step(() => { console.log("step") });
+      this.waiting(true);
+      this.gama.current.step(() => {
+        console.log("step");
+        this.waiting(false);
+      });
     }
     // window.$gama.doConnect();
   }
@@ -251,7 +275,11 @@ class NavigationBar extends React.Component {
   tryReload() {
     if (this.gama.current && this.gama.current.wSocket) {// && this.gama.current.wSocket.readyState!== 
       this.gama.current.queue.length = 0;
-      this.gama.current.reload(() => { console.log("reloaded"); });
+      this.waiting(true);
+      this.gama.current.reload(() => {
+        console.log("reloaded");
+        this.waiting(false);
+      });
     }
     // window.$gama.doConnect();
   }

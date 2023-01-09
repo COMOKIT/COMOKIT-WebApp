@@ -161,6 +161,9 @@ class MapGeojson extends React.Component {
         window.$gama.outputs.delete(this);
         // console.log(window.$gama.outputs);
     }
+    reset(c){
+        
+    }
     update(c) {
         const species1Name = 'Individual';
         const attribute1Name = 'state';

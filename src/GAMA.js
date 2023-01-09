@@ -218,6 +218,12 @@ class GAMA extends React.Component {
             this.updateOutputs();
         }, 100);
     }
+    resetOutputs() {
+        this.pendingoutput = 0;
+        this.outputs.forEach((values, keys) => {
+            values.reset();
+        });
+    }
     updateOutputs() {
 
         let _this = this;
@@ -270,7 +276,10 @@ class GAMA extends React.Component {
         // this.queue.length = 0;
         clearInterval(this.output_executor);
         this.status = "reload";
-        this.execute(this.status, c);
+        this.execute(this.status, () => {
+            if (c) c();
+            this.resetOutputs();
+        });
     }
 
     addOutput(id, o) {
