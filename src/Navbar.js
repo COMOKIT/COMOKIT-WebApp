@@ -10,7 +10,7 @@ const default_Nav_state = {
 
   connected: false,
   loading: false,
-  waiting: true,
+  waiting: false,
   model_path: 'C:/git/gama/msi.gama.models/models/Tutorials/Road Traffic/models/Model 05.gaml',
   exp_name: 'road_traffic'
 };
@@ -107,7 +107,14 @@ class NavigationBar extends React.Component {
               <option value="wss://51.255.46.42:6001">Secure Gama ovh</option>
               <option value="ws://localhost:6868">Local</option>
               <option value="wss://localhost:6868">Secure Local</option>
-            </select></td></tr><tr>
+            </select></td></tr>
+            
+            <tr><td><div><table><tbody><tr width="100%">
+              <td><Button color="primary" style={{ width: "100px" }} size="sm" onClick={this.tryConnect}>Connect</Button></td>
+            </tr></tbody></table></div>
+            </td></tr>
+            
+            <tr>
             <td>
               <select
                 id="select_model"
@@ -132,9 +139,8 @@ class NavigationBar extends React.Component {
             >
               <option value="Closures">Closures</option>
               <option value="road_traffic">road_traffic</option>
-            </select></td></tr><tr>
-            <td><div><table><tbody><tr width="100%">
-              <td><Button color="primary" style={{ width: "100px" }} size="sm" onClick={this.tryConnect}>Connect</Button></td>
+            </select></td></tr>
+            <tr><td><div><table><tbody><tr width="100%">
               {this.state.connected &&
                 <td><Button color="primary" style={{ width: "100px" }} size="sm" onClick={this.tryLaunch}>Launch</Button> </td>
               }
@@ -158,7 +164,7 @@ class NavigationBar extends React.Component {
                 <Spinner
                   as="span"
                   animation="border"
-                  size="sm" 
+                  size="sm"
                   role="status"
                   aria-hidden="true"
                 />

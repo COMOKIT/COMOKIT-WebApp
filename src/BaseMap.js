@@ -10,7 +10,7 @@ const BaseMap = (props) => {
   useEffect(() => { 
     mymap.current = new mapboxgl.Map({
       container: props.parent.id,
-      style: 'mapbox://styles/mapbox/satellite-streets-v11',
+      style: 'mapbox://styles/mapbox/outdoors-v12',
       // pitch: 45,
       // bearing: -17.6,
       antialias: false,
@@ -20,16 +20,13 @@ const BaseMap = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mymap]); 
   
-  var addr = "ws://localhost:6868/"; 
-  var modelPath = 'C:/git/gama/msi.gama.models/models/Tutorials/Road Traffic/models/Model 05.gaml';
-  var experimentName = 'road_traffic';
   return (
     <><div id={props.parent.id} className="map">
 
     </div>
       <div>
 
-        <MapGeojson address={addr} modelPath={modelPath} experimentName={experimentName} map={mymap}></MapGeojson>
+        <MapGeojson props={props} map={mymap}></MapGeojson>
       </div></>
   );
 };

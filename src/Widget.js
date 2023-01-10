@@ -10,6 +10,10 @@ const default_Widget_state = {
   title: "",
   chartType: "geojson",
   param: [],
+  mapbox: [{
+    species: "",
+    attributes: "",
+  }],
   expressions: [{
     expr: "",
     displayColorPicker: false,
@@ -40,6 +44,8 @@ class Widget extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleChangeColor = this.handleChangeColor.bind(this);
     this.handleChangeCBBOX = this.handleChangeCBBOX.bind(this);
+    this.handleChangeM = this.handleChangeM.bind(this);
+    this.handleChangeM2 = this.handleChangeM2.bind(this);
     this.handleChangeE = this.handleChangeE.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.handleClose = this.handleClose.bind(this);
@@ -111,6 +117,23 @@ class Widget extends React.Component {
     });
   }
 
+  handleChangeM(i, e) {
+    let formValues = this.state.mapbox;
+    formValues[i].species = e.target.value;
+    this.setState({ formValues }, () => {
+      this.saveWToLS("Widget" + this.id, this.state);
+      // this.getWFromLS("Widget" + this.id);
+    });
+  }
+
+  handleChangeM2(i, e) {
+    let formValues = this.state.mapbox;
+    formValues[i].attributes = e.target.value;
+    this.setState({ formValues }, () => {
+      this.saveWToLS("Widget" + this.id, this.state);
+      // this.getWFromLS("Widget" + this.id);
+    });
+  }
   handleChangeE(i, e) {
     let formValues = this.state.expressions;
     formValues[i][e.target.name] = e.target.value;
@@ -138,8 +161,28 @@ class Widget extends React.Component {
     })
   }
 
+  addFormMapboxFields() {
+    this.setState(({
+      title: this.state.title,
+      mapbox: [...this.state.mapbox, {
+        species: "",
+        attributes: "",
+      }]
+    }), () => {
+      this.saveWToLS("Widget" + this.id, this.state);
+    })
+  }
+
   removeFormFields(i) {
     let formValues = this.state.expressions;
+    formValues.splice(i, 1);
+    this.setState({ formValues }, () => {
+      this.saveWToLS("Widget" + this.id, this.state);
+    });
+  }
+
+  removeFormMapBoxFields(i) {
+    let formValues = this.state.mapbox;
     formValues.splice(i, 1);
     this.setState({ formValues }, () => {
       this.saveWToLS("Widget" + this.id, this.state);
@@ -224,6 +267,32 @@ class Widget extends React.Component {
     if (this.state.data.length < 1) {
       // console.log(this._id);
       // console.log(this.grid.state.id_param);
+      const mapbox_layouts = this.state.mapbox.map((element, index) => (
+        <tr key={index}>
+          <td>Species</td>
+          <td>
+            <Input type="text" name="species" value={element.species || ""} onChange={e => this.handleChangeM(index, e)} />
+          </td>
+          <td>Attr</td>
+          <td>
+            <Input type="text" name="attr" value={element.attributes || ""} onChange={e => this.handleChangeM2(index, e)} />
+
+
+          </td>
+          <td>
+            {index ?
+              <Button
+                className="closeBtn"
+                color="danger"
+                size="sm"
+                onClick={() => this.removeFormMapBoxFields(index)}
+              >
+                X
+              </Button>
+
+              : null}
+          </td></tr>
+      ));
       const expressions_layouts = this.state.expressions.map((element, index) => (
         <tr key={index}>
           <td>Expr</td>
@@ -307,7 +376,7 @@ class Widget extends React.Component {
                     </select>
                   </td>
                     <td width={50}>
-                      <Button color="primary" size="sm" onClick={this.fetchFile} disabled={this.grid.state.waiting}>
+                      <Button color="primary" size="sm" onClick={this.fetchFile} disabled={false && this.grid.state.waiting}>
                         Show
                       </Button></td>
                   </tr>
@@ -315,6 +384,20 @@ class Widget extends React.Component {
               </table>
             }
             < form >
+              {(this.state.chartType === "geojson" && this.grid.state && this._id !== this.grid.state.id_param) &&
+                <><div>
+                  <table width={'100%'}><tbody><tr>
+                    <td>Title </td>
+                    <td colSpan={3}>
+                      <Input type="text" name="title" value={this.state.title || ""}
+                        onChange={this.handleChange} /></td></tr>
+                    {mapbox_layouts}</tbody></table>
+                </div>
+                  <Button color="primary" size="sm" onClick={() => this.addFormMapboxFields()}>
+                    Add Source
+                  </Button>
+                </>
+              }
               {this.state.chartType === "expression" &&
                 <><div>
                   <table width={'100%'}><tbody><tr>
@@ -338,7 +421,7 @@ class Widget extends React.Component {
       return <Charts props={this.state}></Charts>;
     }
     return (
-      <BaseMap parent={this} />
+      <BaseMap parent={this}  props={this.state} />
     )
       ;
   }
