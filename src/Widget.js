@@ -227,7 +227,7 @@ class Widget extends React.Component {
       const expressions_layouts = this.state.expressions.map((element, index) => (
         <tr key={index}>
           <td>Expr</td>
-          <td>
+          <td width={'100%'}>
             <Input type="text" name="expr" value={element.expr || ""} onChange={e => this.handleChangeE(index, e)} />
           </td>
           <td>
@@ -293,7 +293,7 @@ class Widget extends React.Component {
                 (this._id !== this.grid.state.id_param)) &&
               <table width={'100%'}>
                 <tbody>
-                  <tr><td>Type</td><td>
+                  <tr><td width={25}>Type</td><td colSpan={2}>
                     <select
                       id="select1"
                       className="form-control"
@@ -306,7 +306,7 @@ class Widget extends React.Component {
                       <option value="expression">Expression</option>
                     </select>
                   </td>
-                    <td>
+                    <td width={50}>
                       <Button color="primary" size="sm" onClick={this.fetchFile} disabled={this.grid.state.waiting}>
                         Show
                       </Button></td>
@@ -318,7 +318,7 @@ class Widget extends React.Component {
               {this.state.chartType === "expression" &&
                 <div>
                   <table width={'100%'}><tbody><tr>
-                    <td><label>Title</label></td>
+                    <td >Title </td>
                     <td colSpan={3}>
                       <Input type="text" name="title" value={this.state.title || ""}
                         onChange={this.handleChange} /></td></tr>
