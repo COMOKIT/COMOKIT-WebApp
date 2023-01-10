@@ -261,7 +261,17 @@ class Widget extends React.Component {
               : null}
           </td></tr>
       ));
+      const param_layouts = (this.grid.state && (this._id === this.grid.state.id_param)) ? this.state.param.map((e, index) => (
+        <tr key={e['key']} ><td width={50}>{e['key']}</td>
+          <td> <Input type="text" name={"param_" + e['key']}
+            value={e['value'] || ""} onChange={e => this.handleChangeCBBOX(index, e)}
+          />
+          </td>
+          <td width={50}><Input type="checkbox" value={e['value']} id={"use_param_" + e['key']}
+            onChange={(e) => this.handleFuel(e)} /></td></tr>
 
+
+      )) : null;
 
       return (
         <div
@@ -274,23 +284,13 @@ class Widget extends React.Component {
             {(this.grid.state && (this._id === this.grid.state.id_param)) && <div style={{ padding: 0 }}>Parameters</div>}
           </CardTitle>
 
-            {(this.grid.state && (this._id === this.grid.state.id_param)) && this.state.param.map((e, index) => (
-              <table key={e['key']}>
+            {(this.grid.state && (this._id === this.grid.state.id_param)) &&
+              <table width={'100%'}>
                 <tbody>
-                  <tr><td width="150px">{e['key']}</td>
-                    <td width="200px"> <Input type="text" name={"param_" + e['key']}
-                      value={e['value'] || ""} onChange={e => this.handleChangeCBBOX(index, e)}
-                    />
-                    </td><td><Input type="checkbox" value={e['value']} id={"use_param_" + e['key']}
-                      onChange={(e) => this.handleFuel(e)} /></td></tr>
-
+                  {param_layouts}
                 </tbody>
-              </table>
-
-            ))}
-            {
-              (this.grid.state &&
-                (this._id !== this.grid.state.id_param)) &&
+              </table>}
+            {(this.grid.state && (this._id !== this.grid.state.id_param)) &&
               <table width={'100%'}>
                 <tbody>
                   <tr><td width={25}>Type</td><td colSpan={2}>
@@ -316,20 +316,18 @@ class Widget extends React.Component {
             }
             < form >
               {this.state.chartType === "expression" &&
-                <div>
+                <><div>
                   <table width={'100%'}><tbody><tr>
-                    <td >Title </td>
+                    <td>Title </td>
                     <td colSpan={3}>
                       <Input type="text" name="title" value={this.state.title || ""}
                         onChange={this.handleChange} /></td></tr>
                     {expressions_layouts}</tbody></table>
                 </div>
-              }
-              {
-                this.state.chartType === "expression" &&
-                <Button color="primary" size="sm" onClick={() => this.addFormFields()}>
-                  Add Expression
-                </Button>
+                  <Button color="primary" size="sm" onClick={() => this.addFormFields()}>
+                    Add Expression
+                  </Button>
+                </>
               }
             </form>
           </Card>
