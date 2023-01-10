@@ -63,15 +63,15 @@ class MapGeojson extends React.Component {
             this.state.sources.forEach((v) => {
                 console.log(v);
 
-                this.props.map.current.addSource(v.species, {
+                this.props.map.current.addSource("S"+v.species, {
                     type: 'geojson',
                     data: mymyself.geojson
                 });
 
                 this.props.map.current.addLayer({
-                    'id': v.species,
+                    'id': "S"+v.species,
                     type: 'circle',
-                    'source': v.species,
+                    'source': "S"+v.species,
                     'layout': {},
                     'paint': {
                         'circle-radius': {
@@ -171,8 +171,8 @@ class MapGeojson extends React.Component {
                     myself.geojson = null;
 
                     myself.geojson = tmp;
-                    if (myself.props.map.current.getSource(species1Name))
-                        myself.props.map.current.getSource(species1Name).setData(myself.geojson);
+                    if (myself.props.map.current.getSource("S"+species1Name))
+                        myself.props.map.current.getSource("S"+species1Name).setData(myself.geojson);
                 }
 
             }
