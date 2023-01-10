@@ -1,7 +1,6 @@
 import React from 'react'
 import GAMA from "./GAMA";
-import { Button } from "reactstrap"; 
-import { DualRing } from 'react-loading-io/dist/DualRing';
+import { Button, Spinner } from "reactstrap";
 const default_Nav_state = {
   // url: "ws://51.255.46.42:6001",
   // model_path: "/var/www/github/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml",
@@ -154,10 +153,19 @@ class NavigationBar extends React.Component {
               }</td></tr>
           <tr><td>
             {
-              (this.state.waiting) && <DualRing size={64} color={"dodgerblue"} speed={3.14} width={16}/>
-
-
-            }</td></tr>
+              (this.state.waiting) &&
+              <Button variant="primary" disabled>
+                <Spinner
+                  as="span"
+                  animation="border"
+                  size="sm" 
+                  role="status"
+                  aria-hidden="true"
+                />
+                <span className="visually-hidden"> Loading...</span>
+              </Button>
+            }
+          </td></tr>
 
         </tbody></table>
       </div></>

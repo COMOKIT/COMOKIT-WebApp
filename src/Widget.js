@@ -2,7 +2,7 @@ import React from 'react'
 import reactCSS from 'reactcss'
 import { SketchPicker } from 'react-color'
 import Charts from "./Chart";
-import { Input, Spinner, Card, Button, CardTitle } from "reactstrap";
+import { Input, Card, Button, CardTitle } from "reactstrap";
 import BaseMap from "./BaseMap";
 const default_Widget_state = {
   data: [],
@@ -184,14 +184,15 @@ class Widget extends React.Component {
       'default': {
         color: {
           width: '36px',
-          height: '14px',
-          borderRadius: '2px',
+          height: '24px',
+          borderRadius: '0px',
           background: `rgba(241,112,19,1)`,
         },
         swatch: {
-          padding: '5px',
+          margin: '0px',
+          padding: '0px',
           background: '#fff',
-          borderRadius: '1px',
+          borderRadius: '0px',
           boxShadow: '0 0 0 1px rgba(0,0,0,.1)',
           display: 'inline-block',
           cursor: 'pointer',
@@ -210,12 +211,12 @@ class Widget extends React.Component {
       },
     });
 
-    if (this.state.loading)
-      return (
-        <div style={{ height: "300px", lineHeight: "300px" }}>
-          <Spinner color="secondary" />
-        </div>
-      );
+    // if (this.state.loading)
+    //   return (
+    //     <div style={{ height: "300px", lineHeight: "300px" }}>
+    //       <Spinner color="secondary" />
+    //     </div>
+    //   );
 
     // console.log(this.state.expressions);
     // console.log(this.grid.state.param_str);
@@ -223,6 +224,45 @@ class Widget extends React.Component {
     if (this.state.data.length < 1) {
       // console.log(this._id);
       // console.log(this.grid.state.id_param);
+      const expressions_layouts = this.state.expressions.map((element, index) => (
+        <tr key={index}>
+          <td>Expr</td>
+          <td>
+            <Input type="text" name="expr" value={element.expr || ""} onChange={e => this.handleChangeE(index, e)} />
+          </td>
+          <td>
+            <div>
+              <div style={{
+                margin: '0px',
+                cursor: 'pointer',
+                padding: '0px',
+                width: '32px',
+                height: '32px',
+                background: `rgba(${element.color.r}, ${element.color.g}, ${element.color.b}, ${element.color.a})`,
+              }} onClick={() => this.handleClick(index)} />
+              {element.displayColorPicker ? <div style={styles.popover}>
+                <div style={styles.cover} onClick={() => this.handleClose(index)} />
+                <SketchPicker color={element.color} onChange={e => this.handleChangeColor(index, e)} />
+              </div> : null}
+
+            </div>
+          </td>
+          <td>
+            {index ?
+              <Button
+                className="closeBtn"
+                color="danger"
+                size="sm"
+                onClick={() => this.removeFormFields(index)}
+              >
+                X
+              </Button>
+
+              : null}
+          </td></tr>
+      ));
+
+
       return (
         <div
           style={{
@@ -251,7 +291,7 @@ class Widget extends React.Component {
             {
               (this.grid.state &&
                 (this._id !== this.grid.state.id_param)) &&
-              <table>
+              <table width={'100%'}>
                 <tbody>
                   <tr><td>Type</td><td>
                     <select
@@ -268,56 +308,22 @@ class Widget extends React.Component {
                   </td>
                     <td>
                       <Button color="primary" size="sm" onClick={this.fetchFile} disabled={this.grid.state.waiting}>
-                        Connect
+                        Show
                       </Button></td>
                   </tr>
                 </tbody>
               </table>
             }
             < form >
-              {
-                this.state.chartType === "expression" &&
+              {this.state.chartType === "expression" &&
                 <div>
-                  <Input type="text" name="title" value={this.state.title || ""}
-                    onChange={this.handleChange} /></div>
-              }
-              {this.state.chartType === "expression" && this.state.expressions.map((element, index) => (
-                <div className="form-inline" key={index}>
-                  <div><label>Expression</label></div>
-                  <div>
-                    <Input type="text" name="expr" value={element.expr || ""} onChange={e => this.handleChangeE(index, e)} /></div>
-                  <div>
-                    <div>
-                      <div style={styles.swatch} onClick={() => this.handleClick(index)}>
-                        <div style={{
-                          width: '36px',
-                          height: '14px',
-                          borderRadius: '2px',
-                          background: `rgba(${element.color.r}, ${element.color.g}, ${element.color.b}, ${element.color.a})`,
-                        }} />
-                      </div>
-                      {element.displayColorPicker ? <div style={styles.popover}>
-                        <div style={styles.cover} onClick={() => this.handleClose(index)} />
-                        <SketchPicker color={element.color} onChange={e => this.handleChangeColor(index, e)} />
-                      </div> : null}
-
-                    </div>
-                  </div>
-                  <div>
-                    {index ?
-                      <Button
-                        className="closeBtn"
-                        color="danger"
-                        size="sm"
-                        onClick={() => this.removeFormFields(index)}
-                      >
-                        X
-                      </Button>
-
-                      : null}
-                  </div>
+                  <table width={'100%'}><tbody><tr>
+                    <td><label>Title</label></td>
+                    <td colSpan={3}>
+                      <Input type="text" name="title" value={this.state.title || ""}
+                        onChange={this.handleChange} /></td></tr>
+                    {expressions_layouts}</tbody></table>
                 </div>
-              ))
               }
               {
                 this.state.chartType === "expression" &&
