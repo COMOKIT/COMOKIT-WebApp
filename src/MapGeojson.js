@@ -35,7 +35,8 @@ class MapGeojson extends React.Component {
         this.mapdata.forEach((value, index, array) => {
             _this.state.sources.push({
                 species: value.species,
-                attr: value.attributes
+                attr: value.attributes,
+                style: value.style
             });
         }
         );
@@ -60,37 +61,17 @@ class MapGeojson extends React.Component {
 
         this.props.map.current.on('load', async () => {
             // Add the source1 location as a source.
-            this.state.sources.forEach((v) => {
-                console.log(v);
-
-                this.props.map.current.addSource("S"+v.species, {
+            this.state.sources.forEach((v) => { 
+                this.props.map.current.addSource("S" + v.species, {
                     type: 'geojson',
                     data: mymyself.geojson
-                });
-
+                }); 
                 this.props.map.current.addLayer({
-                    'id': "S"+v.species,
+                    'id': "S" + v.species,
                     type: 'circle',
-                    'source': "S"+v.species,
+                    'source': "S" + v.species,
                     'layout': {},
-                    'paint': {
-                        'circle-radius': {
-                            'base': 5.75,
-                            'stops': [
-                                [12, 10],
-                                [22, 50]
-                            ]
-                        },
-                        'circle-color': ['match', ['get', v.attr], // get the property
-                            "susceptible", 'green',
-                            "latent", 'orange',
-                            "presymptomatic", 'red',
-                            "asymptomatic", 'red',
-                            "symptomatic", 'red',
-                            "removed", 'blue',
-                            'gray'],
-
-                    },
+                    'paint':JSON.parse(v.style),
                 });
             });
             // this.props.map.current.addSource('source1', {
@@ -155,12 +136,12 @@ class MapGeojson extends React.Component {
         var myself = this;
 
         // .getPopulation(species1Name, [attribute1Name], 
-        
+
         this.state.sources.forEach((v) => {
-            this.singleUpdate(myself,v.species,v.attr,c);
+            this.singleUpdate(myself, v.species, v.attr, c);
         });
     }
-    singleUpdate(myself,species1Name,attribute1Name,c){        
+    singleUpdate(myself, species1Name, attribute1Name, c) {
         window.$gama.evalExpr("to_geojson(" + species1Name + ",\"EPSG:4326\",[\"" + attribute1Name + "\"])", function (message) {
             if (typeof message.data == "object") {
 
@@ -171,8 +152,8 @@ class MapGeojson extends React.Component {
                     myself.geojson = null;
 
                     myself.geojson = tmp;
-                    if (myself.props.map.current.getSource("S"+species1Name))
-                        myself.props.map.current.getSource("S"+species1Name).setData(myself.geojson);
+                    if (myself.props.map.current.getSource("S" + species1Name))
+                        myself.props.map.current.getSource("S" + species1Name).setData(myself.geojson);
                 }
 
             }

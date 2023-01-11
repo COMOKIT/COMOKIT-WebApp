@@ -13,6 +13,7 @@ const default_Widget_state = {
   mapbox: [{
     species: "",
     attributes: "",
+    style:"",
   }],
   expressions: [{
     expr: "",
@@ -45,6 +46,7 @@ class Widget extends React.Component {
     this.handleChangeColor = this.handleChangeColor.bind(this);
     this.handleChangeCBBOX = this.handleChangeCBBOX.bind(this);
     this.handleChangeM = this.handleChangeM.bind(this);
+    this.handleChangeM1 = this.handleChangeM1.bind(this);
     this.handleChangeM2 = this.handleChangeM2.bind(this);
     this.handleChangeE = this.handleChangeE.bind(this);
     this.handleClick = this.handleClick.bind(this);
@@ -126,9 +128,18 @@ class Widget extends React.Component {
     });
   }
 
-  handleChangeM2(i, e) {
+  handleChangeM1(i, e) {
     let formValues = this.state.mapbox;
     formValues[i].attributes = e.target.value;
+    this.setState({ formValues }, () => {
+      this.saveWToLS("Widget" + this.id, this.state);
+      // this.getWFromLS("Widget" + this.id);
+    });
+  }
+
+  handleChangeM2(i, e) {
+    let formValues = this.state.mapbox;
+    formValues[i].style = e.target.value;
     this.setState({ formValues }, () => {
       this.saveWToLS("Widget" + this.id, this.state);
       // this.getWFromLS("Widget" + this.id);
@@ -275,7 +286,13 @@ class Widget extends React.Component {
           </td>
           <td>Attr</td>
           <td>
-            <Input type="text" name="attr" value={element.attributes || ""} onChange={e => this.handleChangeM2(index, e)} />
+            <Input type="text" name="attr" value={element.attributes || ""} onChange={e => this.handleChangeM1(index, e)} />
+
+
+          </td>
+          <td>Style</td>
+          <td>
+            <Input type="text" name="style" value={element.style || ""} onChange={e => this.handleChangeM2(index, e)} />
 
 
           </td>
