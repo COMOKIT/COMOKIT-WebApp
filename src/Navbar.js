@@ -108,13 +108,13 @@ class NavigationBar extends React.Component {
               <option value="ws://localhost:6868">Local</option>
               <option value="wss://localhost:6868">Secure Local</option>
             </select></td></tr>
-            
-            <tr><td><div><table><tbody><tr width="100%">
-              <td><Button color="primary" style={{ width: "100px" }} size="sm" onClick={this.tryConnect}>Connect</Button></td>
-            </tr></tbody></table></div>
-            </td></tr>
-            
-            <tr>
+
+          <tr><td><div><table><tbody><tr width="100%">
+            <td><Button color="primary" style={{ width: "100px" }} size="sm" onClick={this.tryConnect}>Connect</Button></td>
+          </tr></tbody></table></div>
+          </td></tr>
+
+          <tr>
             <td>
               <select
                 id="select_model"
@@ -140,23 +140,26 @@ class NavigationBar extends React.Component {
               <option value="Closures">Closures</option>
               <option value="road_traffic">road_traffic</option>
             </select></td></tr>
-            <tr><td><div><table><tbody><tr width="100%">
+          <tr><td><div>
+            <table><tbody><tr width="100%">
               {this.state.connected &&
-                <td><Button color="primary" style={{ width: "100px" }} size="sm" onClick={this.tryLaunch}>Launch</Button> </td>
+                <td><Button color="primary" style={{ width: "100px" }} size="sm" onClick={this.tryLaunch}>Launch</Button></td>
               }
+              {this.state.loaded && <td><Button color="primary" size="sm" onClick={this.tryAutoStep}>↹</Button> </td>}
+
+              {this.state.loaded && <td><Button color="primary" size="sm" onClick={this.tryPlay}>▷</Button> </td>}
+
+              {this.state.loaded && <td><Button color="primary" size="sm" onClick={this.tryPause}>❚❚</Button> </td>}
+
+              {this.state.loaded && <td><Button color="primary" size="sm" onClick={this.tryStep}>⏯</Button> </td>}
+
+              {this.state.loaded && <td><Button color="primary" size="sm" onClick={this.tryReload}>↻</Button> </td>}
+
+              {this.state.loaded && <td><Button color="primary" size="sm" onClick={this.tryClose}>✕</Button> </td>}
             </tr></tbody></table></div>
-            </td></tr>
-          <tr>
+          </td>
             <td>
-              {this.state.loaded && <div><table width="100%"><tbody><tr>
-                <td><Button color="primary" style={{ width: "100px" }} size="sm" onClick={this.tryAutoStep}>AutoStep</Button> </td>
-                <td><Button color="primary" style={{ width: "100px" }} size="sm" onClick={this.tryPlay}>Play</Button> </td>
-                <td><Button color="primary" style={{ width: "100px" }} size="sm" onClick={this.tryPause}>Pause</Button> </td></tr><tr>
-                  <td><Button color="primary" style={{ width: "100px" }} size="sm" onClick={this.tryStep}>Step</Button> </td>
-                  <td><Button color="primary" style={{ width: "100px" }} size="sm" onClick={this.tryReload}>Reload</Button> </td>
-                  <td><Button color="primary" style={{ width: "100px" }} size="sm" onClick={this.tryClose}>Close</Button> </td>
-                </tr></tbody></table></div>
-              }</td></tr>
+            </td></tr>
           <tr><td>
             {
               (this.state.waiting) &&

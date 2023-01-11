@@ -115,9 +115,15 @@ class Grid extends React.Component {
             <table>
               <tbody>
 
-                <tr><td width="100%"><div className="dragHandle">
-
-                  +
+                <tr>
+                  <td > <Button 
+                    color="info"
+                    size="sm"
+                    onClick={() => this.removeWidget(item.id)}
+                  >
+                    ⚙
+                  </Button></td>
+                  <td width="100%"><div className="dragHandle"> 
                 </div></td>
                   <td> <Button
                     className="closeBtn"
