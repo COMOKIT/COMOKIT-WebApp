@@ -279,20 +279,20 @@ class Widget extends React.Component {
       // console.log(this._id);
       // console.log(this.grid.state.id_param);
       const mapbox_layouts = this.state.mapbox.map((element, index) => (
-        <tr key={index}>
+        <table key={index} width={'100%'}><tbody><tr>
           <td>Species</td>
           <td>
             <Input type="text" name="species" value={element.species || ""} onChange={e => this.handleChangeM(index, e)} />
-          </td>
+          </td></tr><tr>
           <td>Attr</td>
           <td>
             <Input type="text" name="attr" value={element.attributes || ""} onChange={e => this.handleChangeM1(index, e)} />
 
 
-          </td>
+          </td></tr><tr>
           <td>Style</td>
           <td>
-            <Input type="text" name="style" value={element.style || ""} onChange={e => this.handleChangeM2(index, e)} />
+            <Input type="textarea" name="style" value={element.style || ""} onChange={e => this.handleChangeM2(index, e)} />
 
 
           </td>
@@ -308,7 +308,7 @@ class Widget extends React.Component {
               </Button>
 
               : null}
-          </td></tr>
+          </td></tr></tbody></table>
       ));
       const expressions_layouts = this.state.expressions.map((element, index) => (
         <tr key={index}>
@@ -405,10 +405,11 @@ class Widget extends React.Component {
                 <><div>
                   <table width={'100%'}><tbody><tr>
                     <td>Title </td>
-                    <td colSpan={3}>
+                    <td>
                       <Input type="text" name="title" value={this.state.title || ""}
                         onChange={this.handleChange} /></td></tr>
-                    {mapbox_layouts}</tbody></table>
+                    </tbody></table>
+                    {mapbox_layouts}
                 </div>
                   <Button color="primary" size="sm" onClick={() => this.addFormMapboxFields()}>
                     Add Source
