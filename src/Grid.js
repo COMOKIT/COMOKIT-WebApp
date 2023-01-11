@@ -1,5 +1,4 @@
-import React from "react";
-import { Button } from "reactstrap";
+import React from "react"; 
 import { Responsive, WidthProvider } from "react-grid-layout";
 import Widget from "./Widget";
 
@@ -74,14 +73,13 @@ class Grid extends React.Component {
   }
 
   addWidget() {
-    console.log("xxxxxxx");
     this.setState((prevState) => ({
       widgets: [...prevState.widgets, { id: prevState.widgetSequence + 1 }],
       widgetSequence: prevState.widgetSequence + 1
     }));
   }
 
-  removeWidget(id) {
+  removeWidget(id) { 
     this.setState((prevState) => ({
       widgets: prevState.widgets.filter((item) => item.id !== id),
       id_param: id === prevState.id_param ? -1 : prevState.id_param,
@@ -111,32 +109,6 @@ class Grid extends React.Component {
     const layouts = this.state.widgets.map((item) => (
       <div className="widget" key={item.id} data-grid={config}>
         <div style={{ width: "100%", height: "100%" }}>
-          <div className="widgetHeader">
-            <table>
-              <tbody>
-
-                <tr>
-                  <td > <Button 
-                    color="info"
-                    size="sm"
-                    onClick={() => this.removeWidget(item.id)}
-                  >
-                    ⚙
-                  </Button></td>
-                  <td width="100%"><div className="dragHandle"> 
-                </div></td>
-                  <td> <Button
-                    className="closeBtn"
-                    color="danger"
-                    size="sm"
-                    onClick={() => this.removeWidget(item.id)}
-                  >
-                    X
-                  </Button></td></tr>
-              </tbody>
-            </table>
-
-          </div>
           <Widget grid={this} id={item.id}></Widget>
         </div>
       </div>

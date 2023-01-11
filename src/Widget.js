@@ -13,7 +13,7 @@ const default_Widget_state = {
   mapbox: [{
     species: "",
     attributes: "",
-    style:"",
+    style: "",
   }],
   expressions: [{
     expr: "",
@@ -41,6 +41,7 @@ class Widget extends React.Component {
     this.state = this.getWFromLS("Widget" + this.id) || default_Widget_state;
     this.grid = param.grid;
 
+    this.toConfig = this.toConfig.bind(this);
     this.fetchFile = this.fetchFile.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleChangeColor = this.handleChangeColor.bind(this);
@@ -233,6 +234,14 @@ class Widget extends React.Component {
     //   );
   }
 
+  toConfig() {
+    this.setState((prevState) => ({
+      data: [],
+      loading: false
+    }));
+
+  }
+
   render() {
     const styles = reactCSS({
       'default': {
@@ -284,31 +293,31 @@ class Widget extends React.Component {
           <td>
             <Input type="text" name="species" value={element.species || ""} onChange={e => this.handleChangeM(index, e)} />
           </td></tr><tr>
-          <td>Attr</td>
-          <td>
-            <Input type="text" name="attr" value={element.attributes || ""} onChange={e => this.handleChangeM1(index, e)} />
+            <td>Attr</td>
+            <td>
+              <Input type="text" name="attr" value={element.attributes || ""} onChange={e => this.handleChangeM1(index, e)} />
 
 
-          </td></tr><tr>
-          <td>Style</td>
-          <td>
-            <Input type="textarea" name="style" value={element.style || ""} onChange={e => this.handleChangeM2(index, e)} />
+            </td></tr><tr>
+            <td>Style</td>
+            <td>
+              <Input type="textarea" name="style" value={element.style || ""} onChange={e => this.handleChangeM2(index, e)} />
 
 
-          </td>
-          <td>
-            {index ?
-              <Button
-                className="closeBtn"
-                color="danger"
-                size="sm"
-                onClick={() => this.removeFormMapBoxFields(index)}
-              >
-                X
-              </Button>
+            </td>
+            <td>
+              {index ?
+                <Button
+                  className="closeBtn"
+                  color="danger"
+                  size="sm"
+                  onClick={() => this.removeFormMapBoxFields(index)}
+                >
+                  X
+                </Button>
 
-              : null}
-          </td></tr></tbody></table>
+                : null}
+            </td></tr></tbody></table>
       ));
       const expressions_layouts = this.state.expressions.map((element, index) => (
         <tr key={index}>
@@ -360,86 +369,156 @@ class Widget extends React.Component {
       )) : null;
 
       return (
-        <div
-          style={{
-            height: "300px",
-            width: "100%"
-          }}
-        >
-          <Card body><CardTitle>
-            {(this.grid.state && (this._id === this.grid.state.id_param)) && <div style={{ padding: 0 }}>Parameters</div>}
-          </CardTitle>
+        <><div className="widgetHeader">
+          <table>
+            <tbody>
 
-            {(this.grid.state && (this._id === this.grid.state.id_param)) &&
-              <table width={'100%'}>
-                <tbody>
-                  {param_layouts}
-                </tbody>
-              </table>}
-            {(this.grid.state && (this._id !== this.grid.state.id_param)) &&
-              <table width={'100%'}>
-                <tbody>
-                  <tr><td width={25}>Type</td><td colSpan={2}>
-                    <select
-                      id="select1"
-                      className="form-control"
-                      name="chartType"
-                      onChange={this.handleChange}
-                      // defaultValue={"geojson"}
-                      defaultValue={this.state.chartType}
-                    >
-                      <option value="geojson">Geojson</option>
-                      <option value="expression">Expression</option>
-                    </select>
-                  </td>
-                    <td width={50}>
-                      <Button color="primary" size="sm" onClick={this.fetchFile} disabled={false && this.grid.state.waiting}>
-                        Show
-                      </Button></td>
-                  </tr>
-                </tbody>
-              </table>
-            }
-            < form >
-              {(this.state.chartType === "geojson" && this.grid.state && this._id !== this.grid.state.id_param) &&
-                <><div>
-                  <table width={'100%'}><tbody><tr>
-                    <td>Title </td>
-                    <td>
-                      <Input type="text" name="title" value={this.state.title || ""}
-                        onChange={this.handleChange} /></td></tr>
+              <tr>
+                <td> <Button
+                  color="info"
+                  size="sm"
+                  onClick={() => this.toConfig()}
+                >
+                  ⚙
+                </Button></td>
+                <td width="100%"><div className="dragHandle">
+                </div></td>
+                <td> <Button
+                  className="closeBtn"
+                  color="danger"
+                  size="sm"
+                  onClick={() => this.grid.removeWidget(this._id)}
+                >
+                  X
+                </Button></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+          <div
+            style={{
+              height: "300px",
+              width: "100%"
+            }}
+          >
+            <Card body><CardTitle>
+              {(this.grid.state && (this._id === this.grid.state.id_param)) && <div style={{ padding: 0 }}>Parameters</div>}
+            </CardTitle>
+
+              {(this.grid.state && (this._id === this.grid.state.id_param)) &&
+                <table width={'100%'}>
+                  <tbody>
+                    {param_layouts}
+                  </tbody>
+                </table>}
+              {(this.grid.state && (this._id !== this.grid.state.id_param)) &&
+                <table width={'100%'}>
+                  <tbody>
+                    <tr><td width={25}>Type</td><td colSpan={2}>
+                      <select
+                        id="select1"
+                        className="form-control"
+                        name="chartType"
+                        onChange={this.handleChange}
+                        // defaultValue={"geojson"}
+                        defaultValue={this.state.chartType}
+                      >
+                        <option value="geojson">Geojson</option>
+                        <option value="expression">Expression</option>
+                      </select>
+                    </td>
+                      <td width={50}>
+                        <Button color="primary" size="sm" onClick={this.fetchFile} disabled={false && this.grid.state.waiting}>
+                          Show
+                        </Button></td>
+                    </tr>
+                  </tbody>
+                </table>}
+              <form>
+                {(this.state.chartType === "geojson" && this.grid.state && this._id !== this.grid.state.id_param) &&
+                  <><div>
+                    <table width={'100%'}><tbody><tr>
+                      <td>Title </td>
+                      <td>
+                        <Input type="text" name="title" value={this.state.title || ""}
+                          onChange={this.handleChange} /></td></tr>
                     </tbody></table>
                     {mapbox_layouts}
-                </div>
-                  <Button color="primary" size="sm" onClick={() => this.addFormMapboxFields()}>
-                    Add Source
-                  </Button>
-                </>
-              }
-              {this.state.chartType === "expression" &&
-                <><div>
-                  <table width={'100%'}><tbody><tr>
-                    <td>Title </td>
-                    <td colSpan={3}>
-                      <Input type="text" name="title" value={this.state.title || ""}
-                        onChange={this.handleChange} /></td></tr>
-                    {expressions_layouts}</tbody></table>
-                </div>
-                  <Button color="primary" size="sm" onClick={() => this.addFormFields()}>
-                    Add Expression
-                  </Button>
-                </>
-              }
-            </form>
-          </Card>
-        </div >
+                  </div>
+                    <Button color="primary" size="sm" onClick={() => this.addFormMapboxFields()}>
+                      Add Source
+                    </Button>
+                  </>}
+                {this.state.chartType === "expression" &&
+                  <><div>
+                    <table width={'100%'}><tbody><tr>
+                      <td>Title </td>
+                      <td colSpan={3}>
+                        <Input type="text" name="title" value={this.state.title || ""}
+                          onChange={this.handleChange} /></td></tr>
+                      {expressions_layouts}</tbody></table>
+                  </div>
+                    <Button color="primary" size="sm" onClick={() => this.addFormFields()}>
+                      Add Expression
+                    </Button>
+                  </>}
+              </form>
+            </Card>
+          </div></>
       );
     }
     if (this.state.chartType === "expression") {
-      return <Charts props={this.state}></Charts>;
+      return <><div className="widgetHeader">
+        <table>
+          <tbody>
+
+            <tr>
+              <td> <Button
+                color="info"
+                size="sm"
+                onClick={() => this.toConfig()}
+              >
+                ⚙
+              </Button></td>
+              <td width="100%"><div className="dragHandle">
+              </div></td>
+              <td> <Button
+                className="closeBtn"
+                color="danger"
+                size="sm"
+                onClick={() => this.grid.removeWidget(this._id)}
+              >
+                X
+              </Button></td></tr>
+          </tbody>
+        </table>
+      </div><Charts props={this.state}></Charts></>;
     }
-    return (
-      <BaseMap parent={this}  props={this.state} />
+    return (<><div className="widgetHeader">
+      <table>
+        <tbody>
+
+          <tr>
+            <td> <Button
+              color="info"
+              size="sm"
+              onClick={() => this.toConfig()}
+            >
+              ⚙
+            </Button></td>
+            <td width="100%"><div className="dragHandle">
+            </div></td>
+            <td> <Button
+              className="closeBtn"
+              color="danger"
+              size="sm"
+              onClick={() => this.grid.removeWidget(this._id)}
+            >
+              X
+            </Button></td></tr>
+        </tbody>
+      </table>
+    </div><BaseMap parent={this} props={this.state} /></>
     )
       ;
   }
