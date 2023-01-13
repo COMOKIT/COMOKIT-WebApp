@@ -17,6 +17,7 @@ const default_Widget_state = {
     style: "",
   }],
   expressions: [{
+    label:"",
     expr: "",
     displayColorPicker: false,
     color: {
@@ -156,6 +157,14 @@ class Widget extends React.Component {
   handleChangeM2(i, e) {
     let formValues = this.state.mapbox;
     formValues[i].style = e.target.value;
+    this.setState({ formValues }, () => {
+      this.saveWToLS("Widget" + this.id, this.state);
+      // this.getWFromLS("Widget" + this.id);
+    });
+  }
+  handleChangeL(i, e) {
+    let formValues = this.state.expressions;
+    formValues[i].label = e.target.value;
     this.setState({ formValues }, () => {
       this.saveWToLS("Widget" + this.id, this.state);
       // this.getWFromLS("Widget" + this.id);
@@ -379,8 +388,11 @@ class Widget extends React.Component {
 
             </div>
           </td>
-          <td width={'100%'}>
-            <Input type="text" name="expr" value={element.expr || ""} onChange={e => this.handleChangeE(index, e)} />
+          <td>
+            <Input type="text" name="label" placeholder="Label" value={element.label || ""} onChange={e => this.handleChangeL(index, e)} />
+          </td>
+          <td>
+            <Input type="text" name="expr" placeholder="Expression" value={element.expr || ""} onChange={e => this.handleChangeE(index, e)} />
           </td>
 
           <td>

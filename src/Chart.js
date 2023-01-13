@@ -23,7 +23,7 @@ class Charts extends React.Component {
     this.expressions.forEach((value, index, array) => {
       _this.state.series.push({
         data: [],
-        name: value.expr,
+        name: value.label,
         color: value.color
       });
     }
