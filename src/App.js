@@ -61,7 +61,7 @@ class App extends React.Component {
             styles={{ sidebar: {backgroundColor: "rgba(255,255,255,1)"} }}
           > 
 
-            <Button color="primary" style={bstyle} size="sm" onClick={() => this.onSetSidebarOpen(!this.state.sidebarOpen)}>☰</Button>
+            <Button color="primary" style={bstyle} size="lg" onClick={() => this.onSetSidebarOpen(!this.state.sidebarOpen)}>☰</Button>
    
           </Sidebar>
           <Grid ref={mygrid} ></Grid>

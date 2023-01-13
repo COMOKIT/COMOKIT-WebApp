@@ -256,6 +256,7 @@ class NavigationBar extends React.Component {
 
         if (JSON.parse(ee).content && JSON.parse(ee).type === "CommandExecutedSuccessfully") {
           _this.props.grid.current.addParam(ee);
+          _this.props.grid.current.onShowClick();
         }
       });
     }

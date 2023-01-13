@@ -10,6 +10,7 @@ const default_Layout = {
   id_param: -1,
   waiting: true,
   param_str: [],
+  triggerFunc: null,
   layouts: {}
 };
 const originalLayouts = getFromLS("Layout") || default_Layout;
@@ -18,13 +19,20 @@ class Grid extends React.Component {
   constructor() {
     super();
     this.state = originalLayouts;
-
     this.addParam = this.addParam.bind(this);
     this.addWidget = this.addWidget.bind(this);
     this.toggleEdit = this.toggleEdit.bind(this);
     this.waiting = this.waiting.bind(this);
+    this.onShowClick = this.onShowClick.bind(this);
     this.removeWidget = this.removeWidget.bind(this);
   }
+
+  onShowClick ()   {
+    // this.child.current.fetchFile();
+    // this.refs.child.fetchFile();
+    this.setState({ triggerFunc: () => {}})
+
+  };
 
   waiting(b) {
     this.setState((prevState) => ({
@@ -111,25 +119,25 @@ class Grid extends React.Component {
       y: 0,
       w: 4,
       h: 2,
-      maxH: 4,
-      maxW: 8
+      maxH: 10,
+      maxW: 16
     };
     const layouts = this.state.widgets.map((item) => (
       <div className="widget" key={item.id} data-grid={config}>
         <div  className="mscroll" style={{ width: "100%", height: "100%" }}>
-          <Widget grid={this} id={item.id}></Widget>
+          <Widget  triggerChildFunc={this.state.triggerFunc}   grid={this} id={item.id}></Widget>
         </div>
       </div>
     ));
 
     return (
       <><div>
-        <div className="toolBar">
+        {/* <div className="toolBar"> */}
           {/* <Button color="primary" size="sm" onClick={this.exportPdf}>
       Export to PDF
     </Button> */}
-        </div>
-        <br />
+        {/* </div> */}
+        {/* <br /> */}
         <ResponsiveGridLayout
           className="layout"
           breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 240 }}

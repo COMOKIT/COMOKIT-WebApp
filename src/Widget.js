@@ -101,7 +101,20 @@ class Widget extends React.Component {
       // this.getWFromLS("Widget" + this.id);
     });
   };
+  componentDidUpdate(prevProps) {
+    if (this.props.triggerChildFunc !== prevProps.triggerChildFunc) {
+      this.onParentTrigger();
+    }
+  }
 
+  onParentTrigger() { 
+    this.fetchFile();
+
+    // Let's call the passed variable from parent if it's a function
+    if (this.props.triggerChildFunc && {}.toString.call(this.props.triggerChildFunc) === '[object Function]') {
+      this.props.triggerChildFunc();
+    }
+  }
   componentDidMount(props) {
     // this.saveWToLS("Widget" + this.id, this.state);
     // if (this._id === this.grid.state.id_param) {
@@ -212,10 +225,12 @@ class Widget extends React.Component {
     // const chartType = this.state.chartType;
 
     // console.log(url);s
-    this.setState((prevState) => ({
-      data: [0, 1],
-      loading: false
-    }));
+    if (this.grid.state && (this._id !== this.grid.state.id_param)) {
+      this.setState((prevState) => ({
+        data: [0, 1],
+        loading: false
+      }));
+    }
 
     // fetch(url)
     //   .then((res) => res.json())
@@ -470,6 +485,9 @@ class Widget extends React.Component {
             </Card>
           </div></>
       );
+    }
+    if (this.props.updateMethod) {
+      this.Method();
     }
     if (this.state.chartType === "expression") {
       return <><div className="widgetHeader">
