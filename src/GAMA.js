@@ -243,6 +243,7 @@ class GAMA extends React.Component {
         this.execute(this.status, () => {
             this.output_executor = setInterval(() => {
                 this.updateOutputs();
+                if(c) c();
                 this.autoStep(c);
             }, 100);
         });

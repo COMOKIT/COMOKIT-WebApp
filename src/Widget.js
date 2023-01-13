@@ -10,6 +10,7 @@ const default_Widget_state = {
   title: "",
   chartType: "geojson",
   param: [],
+
   mapbox: [{
     species: "",
     attributes: "",
@@ -443,7 +444,7 @@ class Widget extends React.Component {
                         defaultValue={this.state.chartType}
                       >
                         <option value="geojson">Geojson</option>
-                        <option value="expression">Expression</option>
+                        <option value="series">SeriesChart</option>
                       </select>
                     </td>
                       <td width={50}>
@@ -468,7 +469,7 @@ class Widget extends React.Component {
                       Add Source
                     </Button>
                   </>}
-                {this.state.chartType === "expression" &&
+                {this.state.chartType === "series" &&
                   <><div>
                     <table width={'100%'}><tbody><tr>
                       <td>Title </td>
@@ -489,7 +490,7 @@ class Widget extends React.Component {
     if (this.props.updateMethod) {
       this.Method();
     }
-    if (this.state.chartType === "expression") {
+    if (this.state.chartType === "series") {
       return <><div className="widgetHeader">
         {(this.grid.state && (this.grid.state.editing)) && widgetHeader}
       </div><Charts props={this.state}></Charts></>;

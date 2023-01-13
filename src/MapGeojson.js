@@ -72,8 +72,22 @@ class MapGeojson extends React.Component {
                     'source': "S" + v.species,
                     'layout': {},
                     'paint': v.style ? JSON.parse(v.style) : {
-                        "circle-radius": 5,
-                        "circle-color": "red"
+                        'circle-radius': {
+                            'base': 1,
+                            'stops': [
+                                [12, 5],
+                                [22, 10]
+                            ]
+                        },
+                        'circle-color': ['match', ['get', v.attr], // get the property
+                            "susceptible", 'green',
+                            "latent", 'orange',
+                            "presymptomatic", 'red',
+                            "asymptomatic", 'red',
+                            "symptomatic", 'red',
+                            "removed", 'blue',
+                            'gray'],
+    
                     },
                 });
             });

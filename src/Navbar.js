@@ -279,7 +279,7 @@ class NavigationBar extends React.Component {
       this.gama.current.queue.length = 0;
       // this.gama.current.autoStep(console.log("autoStep"));
       // this.gama.current.step(console.log("step"));
-      this.gama.current.play(console.log("play"));
+      this.gama.current.play(() => {console.log("play")});
     }
     // window.$gama.doConnect();
   }
