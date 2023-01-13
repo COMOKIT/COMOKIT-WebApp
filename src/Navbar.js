@@ -35,6 +35,7 @@ class NavigationBar extends React.Component {
     this.tryReload = this.tryReload.bind(this);
     this.tryClose = this.tryClose.bind(this);
     this.tryAdd = this.tryAdd.bind(this);
+    this.tryEdit = this.tryEdit.bind(this);
     this.trySave = this.trySave.bind(this);
     this.tryLoad = this.tryLoad.bind(this);
     this.waiting = this.waiting.bind(this);
@@ -80,104 +81,112 @@ class NavigationBar extends React.Component {
     // if (this.gama.current && this.gama.current.wSocket && this.gama.current.wSocket.readyState === 1) {
 
     return (<><GAMA ref={this.gama} address={addr}  ></GAMA>
-      <div>
-        <table><tbody>
-          <tr><td height={32}></td></tr>
-          <tr>
-            <td>
+      <table height={"100%"}><tbody><tr><td valign="bottom">
+        <div>
+          <table><tbody>
 
-
-              <table><tbody><tr>
-                <td><Button color="primary" style={{ width: "100px" }} size="sm" onClick={this.tryAdd}>Add Widget</Button></td>
-                <td><Button color="primary" style={{ width: "100px" }} size="sm" onClick={this.trySave}>Save layout</Button> </td>
-                <td><Button color="primary" style={{ width: "100px" }} size="sm" onClick={this.tryLoad}>Load layout</Button> </td>
-              </tr></tbody></table>
-
-            </td>
-          </tr><tr>
-            <td> <select
-              id="select_host"
-              className="form-control"
-              name="url"
-              onChange={this.handleChange}
-              defaultValue={this.state.url}
-            // defaultValue={"ws://51.255.46.42:6001"}
-            >
-              <option value="ws://51.255.46.42:6001">Gama ovh</option>
-              <option value="wss://51.255.46.42:6001">Secure Gama ovh</option>
-              <option value="ws://localhost:6868">Local</option>
-              <option value="wss://localhost:6868">Secure Local</option>
-            </select></td></tr>
-
-          <tr><td><div><table><tbody><tr width="100%">
-            <td><Button color="primary" style={{ width: "100px" }} size="sm" onClick={this.tryConnect}>Connect</Button></td>
-          </tr></tbody></table></div>
-          </td></tr>
-
-          <tr>
-            <td>
-              <select
-                id="select_model"
-                className="form-control"
-                name="model_path"
-                onChange={this.handleChange}
-                // defaultValue={"/var/www/github/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml"}                    
-                defaultValue={this.state.model_path}
-              >
-                <option value="/var/www/github/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml">Comokit ovh</option>
-                <option value="C:/git/PROJECT/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml">Comokit local</option>
-                <option value="/Users/hqn88/git/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml">mac Comokit local</option>
-                <option value="C:/git/gama/msi.gama.models/models/Tutorials/Road Traffic/models/Model 05.gaml">Road Traffic 05.gaml</option>
-              </select>
-            </td></tr><tr><td><select
-              id="select_exp"
-              className="form-control"
-              name="exp_name"
-              onChange={this.handleChange}
-              // defaultValue={"Closures"}
-              defaultValue={this.state.exp_name}
-            >
-              <option value="Closures">Closures</option>
-              <option value="road_traffic">road_traffic</option>
-            </select></td></tr>
-          <tr><td><div>
-            <table><tbody><tr width="100%">
-              {this.state.connected &&
-                <td><Button color="primary" style={{ width: "100px" }} size="sm" onClick={this.tryLaunch}>Launch</Button></td>
+            <tr><td>
+              {
+                (this.state.waiting) &&
+                <Button variant="primary" disabled>
+                  <Spinner
+                    as="span"
+                    animation="border"
+                    size="sm"
+                    role="status"
+                    aria-hidden="true"
+                  />
+                  <span className="visually-hidden"> Loading...</span>
+                </Button>
               }
-              {this.state.loaded && <td><Button color="primary" size="sm" onClick={this.tryAutoStep}>↹</Button> </td>}
-
-              {this.state.loaded && <td><Button color="primary" size="sm" onClick={this.tryPlay}>▷</Button> </td>}
-
-              {this.state.loaded && <td><Button color="primary" size="sm" onClick={this.tryPause}>❚❚</Button> </td>}
-
-              {this.state.loaded && <td><Button color="primary" size="sm" onClick={this.tryStep}>⏯</Button> </td>}
-
-              {this.state.loaded && <td><Button color="primary" size="sm" onClick={this.tryReload}>↻</Button> </td>}
-
-              {this.state.loaded && <td><Button color="primary" size="sm" onClick={this.tryClose}>✕</Button> </td>}
-            </tr></tbody></table></div>
-          </td>
-            <td>
             </td></tr>
-          <tr><td>
-            {
-              (this.state.waiting) &&
-              <Button variant="primary" disabled>
-                <Spinner
-                  as="span"
-                  animation="border"
-                  size="sm"
-                  role="status"
-                  aria-hidden="true"
-                />
-                <span className="visually-hidden"> Loading...</span>
-              </Button>
-            }
-          </td></tr>
 
-        </tbody></table>
-      </div></>
+            <tr><td><div>
+              <table><tbody><tr width="100%">
+                {this.state.loaded && <td><Button color="primary" size="sm" onClick={this.tryAutoStep}>↹</Button> </td>}
+
+                {this.state.loaded && <td><Button color="primary" size="sm" onClick={this.tryPlay}>▷</Button> </td>}
+
+                {this.state.loaded && <td><Button color="primary" size="sm" onClick={this.tryPause}>❚❚</Button> </td>}
+
+                {this.state.loaded && <td><Button color="primary" size="sm" onClick={this.tryStep}>⏯</Button> </td>}
+
+                {this.state.loaded && <td><Button color="primary" size="sm" onClick={this.tryReload}>↻</Button> </td>}
+
+                {this.state.loaded && <td><Button color="primary" size="sm" onClick={this.tryClose}>✕</Button> </td>}
+              </tr></tbody></table></div></td>
+            </tr>
+
+            <tr>
+              <td>
+                <select
+                  id="select_model"
+                  className="form-control"
+                  name="model_path"
+                  onChange={this.handleChange}
+                  // defaultValue={"/var/www/github/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml"}                    
+                  defaultValue={this.state.model_path}
+                >
+                  <option value="/var/www/github/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml">Comokit ovh</option>
+                  <option value="C:/git/PROJECT/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml">Comokit local</option>
+                  <option value="/Users/hqn88/git/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml">mac Comokit local</option>
+                  <option value="C:/git/gama/msi.gama.models/models/Tutorials/Road Traffic/models/Model 05.gaml">Road Traffic 05.gaml</option>
+                </select>
+              </td></tr><tr><td><select
+                id="select_exp"
+                className="form-control"
+                name="exp_name"
+                onChange={this.handleChange}
+                // defaultValue={"Closures"}
+                defaultValue={this.state.exp_name}
+              >
+                <option value="Closures">Closures</option>
+                <option value="road_traffic">road_traffic</option>
+              </select></td>
+            </tr>
+
+            <tr>
+              <td> <select
+                id="select_host"
+                className="form-control"
+                name="url"
+                onChange={this.handleChange}
+                defaultValue={this.state.url}
+              // defaultValue={"ws://51.255.46.42:6001"}
+              >
+                <option value="ws://51.255.46.42:6001">Gama ovh</option>
+                <option value="wss://51.255.46.42:6001">Secure Gama ovh</option>
+                <option value="ws://localhost:6868">Local</option>
+                <option value="wss://localhost:6868">Secure Local</option>
+              </select></td>
+            </tr>
+
+
+            <tr><td><div><table><tbody><tr width="100%">
+              <td><Button color="primary" style={{ width: "70px" }} size="sm" onClick={this.tryConnect}>Connect</Button></td>
+
+              {this.state.connected &&
+                <td><Button color="primary" style={{ width: "70px" }} size="sm" onClick={this.tryLaunch}>Launch</Button></td>
+              }
+            </tr></tbody></table></div>
+            </td></tr>
+
+            <tr>
+              <td>
+                <table><tbody><tr>
+                  <td><Button color="primary" outline style={{ width: "50px" }} size="lg" onClick={this.tryEdit}>✎</Button></td>
+                  <td><Button color="primary" outline style={{ width: "50px" }} size="lg" onClick={this.tryAdd}>✚</Button></td>
+                  <td><Button color="primary" outline style={{ width: "50px" }} size="lg" onClick={this.trySave}>S</Button> </td>
+                  <td><Button color="primary" outline style={{ width: "50px" }} size="lg" onClick={this.tryLoad}>O</Button> </td>
+                </tr></tbody></table>
+
+              </td>
+            </tr>
+            <tr><td height={50}></td></tr>
+          </tbody></table>
+        </div>
+      </td></tr></tbody></table>
+    </>
     );
 
   }
@@ -191,6 +200,9 @@ class NavigationBar extends React.Component {
   }
   tryAdd() {
     this.props.grid.current.addWidget();
+  }
+  tryEdit() {
+    this.props.grid.current.toggleEdit();
   }
   tryConnect() {
     var _this = this;

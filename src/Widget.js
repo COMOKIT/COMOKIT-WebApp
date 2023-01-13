@@ -284,7 +284,30 @@ class Widget extends React.Component {
 
     // console.log(this.state.expressions);
     // console.log(this.grid.state.param_str);
+    const widgetHeader = (
+      <table>
+        <tbody>
 
+          <tr>
+            <td> <Button
+              color="info"
+              size="sm"
+              onClick={() => this.toConfig()}
+            >
+              ⚙
+            </Button></td>
+            <td width="100%"><div className="dragHandle">
+            </div></td>
+            <td> <Button
+              className="closeBtn"
+              color="danger"
+              size="sm"
+              onClick={() => this.grid.removeWidget(this._id)}
+            >
+              X
+            </Button></td></tr>
+        </tbody>
+      </table>);
     if (this.state.data.length < 1) {
       // console.log(this._id);
       // console.log(this.grid.state.id_param);
@@ -323,9 +346,6 @@ class Widget extends React.Component {
       const expressions_layouts = this.state.expressions.map((element, index) => (
         <tr key={index}>
           <td>Expr</td>
-          <td width={'100%'}>
-            <Input type="text" name="expr" value={element.expr || ""} onChange={e => this.handleChangeE(index, e)} />
-          </td>
           <td>
             <div>
               <div style={{
@@ -343,6 +363,10 @@ class Widget extends React.Component {
 
             </div>
           </td>
+          <td width={'100%'}>
+            <Input type="text" name="expr" value={element.expr || ""} onChange={e => this.handleChangeE(index, e)} />
+          </td>
+
           <td>
             {index ?
               <Button
@@ -357,6 +381,7 @@ class Widget extends React.Component {
               : null}
           </td></tr>
       ));
+
       const param_layouts = (this.grid.state && (this._id === this.grid.state.id_param)) ? this.state.param.map((e, index) => (
         <tr key={e['key']} ><td width={50}>{e['key']}</td>
           <td> <Input type="text" name={"param_" + e['key']}
@@ -371,29 +396,7 @@ class Widget extends React.Component {
 
       return (
         <><div className="widgetHeader">
-          <table>
-            <tbody>
-
-              <tr>
-                <td> <Button
-                  color="info"
-                  size="sm"
-                  onClick={() => this.toConfig()}
-                >
-                  ⚙
-                </Button></td>
-                <td width="100%"><div className="dragHandle">
-                </div></td>
-                <td> <Button
-                  className="closeBtn"
-                  color="danger"
-                  size="sm"
-                  onClick={() => this.grid.removeWidget(this._id)}
-                >
-                  X
-                </Button></td></tr>
-            </tbody>
-          </table>
+          {(this.grid.state && (this.grid.state.editing)) && widgetHeader}
         </div>
 
           <div
@@ -470,55 +473,11 @@ class Widget extends React.Component {
     }
     if (this.state.chartType === "expression") {
       return <><div className="widgetHeader">
-        <table>
-          <tbody>
-
-            <tr>
-              <td> <Button
-                color="info"
-                size="sm"
-                onClick={() => this.toConfig()}
-              >
-                ⚙
-              </Button></td>
-              <td width="100%"><div className="dragHandle">
-              </div></td>
-              <td> <Button
-                className="closeBtn"
-                color="danger"
-                size="sm"
-                onClick={() => this.grid.removeWidget(this._id)}
-              >
-                X
-              </Button></td></tr>
-          </tbody>
-        </table>
+        {(this.grid.state && (this.grid.state.editing)) && widgetHeader}
       </div><Charts props={this.state}></Charts></>;
     }
     return (<><div className="widgetHeader">
-      <table>
-        <tbody>
-
-          <tr>
-            <td> <Button
-              color="info"
-              size="sm"
-              onClick={() => this.toConfig()}
-            >
-              ⚙
-            </Button></td>
-            <td width="100%"><div className="dragHandle">
-            </div></td>
-            <td> <Button
-              className="closeBtn"
-              color="danger"
-              size="sm"
-              onClick={() => this.grid.removeWidget(this._id)}
-            >
-              X
-            </Button></td></tr>
-        </tbody>
-      </table>
+      {(this.grid.state && (this.grid.state.editing)) && widgetHeader}
     </div><BaseMap parent={this} props={this.state} /></>
     )
       ;

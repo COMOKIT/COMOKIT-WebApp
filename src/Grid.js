@@ -5,6 +5,7 @@ import Widget from "./Widget";
 const ResponsiveGridLayout = WidthProvider(Responsive);
 const default_Layout = {
   widgets: [{ id: 1 }],
+  editing:true,
   widgetSequence: 1,
   id_param: -1,
   waiting: true,
@@ -20,6 +21,7 @@ class Grid extends React.Component {
 
     this.addParam = this.addParam.bind(this);
     this.addWidget = this.addWidget.bind(this);
+    this.toggleEdit = this.toggleEdit.bind(this);
     this.waiting = this.waiting.bind(this);
     this.removeWidget = this.removeWidget.bind(this);
   }
@@ -72,6 +74,12 @@ class Grid extends React.Component {
     }
   }
 
+  toggleEdit() {
+    this.setState((prevState) => ({
+      editing:!this.state.editing
+    }));
+  }
+
   addWidget() {
     this.setState((prevState) => ({
       widgets: [...prevState.widgets, { id: prevState.widgetSequence + 1 }],
@@ -101,14 +109,14 @@ class Grid extends React.Component {
     const config = {
       x: 0,
       y: 0,
-      w: 2,
+      w: 4,
       h: 2,
       maxH: 4,
       maxW: 8
     };
     const layouts = this.state.widgets.map((item) => (
       <div className="widget" key={item.id} data-grid={config}>
-        <div style={{ width: "100%", height: "100%" }}>
+        <div  className="mscroll" style={{ width: "100%", height: "100%" }}>
           <Widget grid={this} id={item.id}></Widget>
         </div>
       </div>
@@ -124,8 +132,8 @@ class Grid extends React.Component {
         <br />
         <ResponsiveGridLayout
           className="layout"
-          breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }}
-          cols={{ lg: 8, md: 4, sm: 2, xs: 1, xxs: 1 }}
+          breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 240 }}
+          cols={{ lg: 16, md: 16, sm: 8, xs: 4, xxs: 2 }}
           rowHeight={185}
           draggableHandle={".dragHandle"}
           layouts={this.state.layouts}
@@ -144,8 +152,12 @@ function getFromLS(key) {
     try {
       ls = JSON.parse(global.localStorage.getItem("rdv_layout")) || {};
       // console.log(ls);
+      Object.keys(default_Layout).forEach(function(k) {
+        if(!ls[key][k]) {return default_Layout;}
+      });
     } catch (e) {
       console.log(e);
+      return default_Layout;
     }
   }
   return ls[key];
