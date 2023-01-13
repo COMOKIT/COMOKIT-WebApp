@@ -103,12 +103,13 @@ class Widget extends React.Component {
   };
 
   componentDidMount(props) {
-    if (this._id === this.grid.state.id_param) {
-      this.setState({ param: this.grid.state.param_str }, () => {
-        this.saveWToLS("Widget" + this.id, this.state);
-        // this.getWFromLS("Widget" + this.id);
-      });
-    }
+    // this.saveWToLS("Widget" + this.id, this.state);
+    // if (this._id === this.grid.state.id_param) {
+    this.setState({ param: this.grid.state.param_str }, () => {
+      this.saveWToLS("Widget" + this.id, this.state);
+      // this.getWFromLS("Widget" + this.id);
+    });
+    // }
   }
   handleChangeCBBOX(i, e) {
     let formValues = this.state.param;
@@ -530,9 +531,16 @@ class Widget extends React.Component {
     if (global.localStorage) {
       try {
         ls = JSON.parse(global.localStorage.getItem("rdv_widget" + key)) || {};
+        if (ls[key]) {
+          ls[key].mapbox.map((element, index) => (<></>
+          ));
+          ls[key].expressions.map((element, index) => (<></>
+          ));
+        }
         // console.log(ls);
       } catch (e) {
-        console.log(e);
+        console.log(e + " " + key + " " + ls[key]);
+        return default_Widget_state;
       }
     }
     return ls[key];
