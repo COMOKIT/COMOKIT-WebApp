@@ -30,7 +30,7 @@ class Grid extends React.Component {
   onShowClick ()   {
     // this.child.current.fetchFile();
     // this.refs.child.fetchFile();
-    this.setState({ triggerFunc: () => {}})
+    this.setState({ triggerFunc: () => {console.log("shown")}})
 
   };
 
@@ -161,7 +161,7 @@ function getFromLS(key) {
       ls = JSON.parse(global.localStorage.getItem("rdv_layout")) || {};
       // console.log(ls);
       Object.keys(default_Layout).forEach(function(k) {
-        if(!ls[key][k]) {return default_Layout;}
+        if(ls[key] && !ls[key][k]) {return default_Layout;}
       });
     } catch (e) {
       console.log(e);

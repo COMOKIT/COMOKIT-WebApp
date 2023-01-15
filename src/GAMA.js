@@ -72,10 +72,16 @@ class GAMA extends React.Component {
         };
 
         var _this = this;
-        this.wSocket.addEventListener('open', event => {
+        
+        this.wSocket.onmessage = function (e) {
+            // console.log(event); 
+            var result = JSON.parse(e.data).content;
+            if (result) _this.socket_id = result;
+        };
+        this.wSocket.onopen = function (event) {
             if (opened_callback) opened_callback(_this);
             _this.initExecutor();
-        });
+        }; 
 
     }
     initExecutor() {
@@ -95,6 +101,7 @@ class GAMA extends React.Component {
                 var myself = this;
 
                 this.wSocket.onmessage = function (event) {
+                    // console.log(event);
                     if (myself.req !== "") {
                         // console.log(myself.req);
                         if (event.data instanceof Blob) { } else {
@@ -200,8 +207,7 @@ class GAMA extends React.Component {
 
             var result = JSON.parse(e).content;
             // console.log(e);
-            if (result.exp_id) myself.exp_id = result.exp_id;
-            if (result.socket_id) myself.socket_id = result.socket_id;
+            if (result) myself.exp_id = result; 
             if (c) {
                 c();
             }
