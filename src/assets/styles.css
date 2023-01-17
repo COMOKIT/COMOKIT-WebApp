@@ -61,8 +61,8 @@ body {
 
 .widget {
   background: white;
-  border-radius: 0.0em;
-  box-shadow: 0 0 0.7142857142857143rem #cccccc;
+  border-radius: 0.25em;
+  /* box-shadow: 0 0 0.7142857142857143rem #cccccc; */
   padding: 0px;
   font-family: "Montserrat", sans-serif;
 }

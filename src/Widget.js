@@ -314,15 +314,16 @@ class Widget extends React.Component {
         <tbody>
 
           <tr>
+            <td width="100%"><div className="dragHandle">
+            </div></td>
             <td> <Button
+              className="closeBtn"
               color="info"
               size="sm"
               onClick={() => this.toConfig()}
             >
               ⚙
             </Button></td>
-            <td width="100%"><div className="dragHandle">
-            </div></td>
             <td> <Button
               className="closeBtn"
               color="danger"
