@@ -117,7 +117,7 @@ class Grid extends React.Component {
     const config = {
       x: 0,
       y: 0,
-      w: 4,
+      w: 3,
       h: 2,
       maxH: 10,
       maxW: 16

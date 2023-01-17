@@ -1,5 +1,5 @@
-import React from "react"; 
- 
+import React from "react";
+
 
 class SingleCharts extends React.Component {
   constructor(props) {
@@ -7,14 +7,16 @@ class SingleCharts extends React.Component {
     this.state = {
       title: {
         text: "aaa"
-      }, 
-      val:0
+      },
+      color: "",
+      val: 0
     };
 
     window.$gama.addOutput(this, this);
     this.title = props.props.title;
     this.expressions = props.props.expressions;
     this.state.title.text = (this.title);
+    this.state.color = this.expressions[0].color;
     // let _this = this;
     // this.expressions.forEach((value, index, array) => {
     //   _this.state.series.push({
@@ -68,9 +70,9 @@ class SingleCharts extends React.Component {
 
           for (var index = 0; index < eee.length; index++) {
             // if (_this.state.series[index]) {
-              // console.log("finish "+eee[index]);
-              // let vv = _this.expressions[index];
-              _this.state.val=parseFloat(eee[index]); 
+            // console.log("finish "+eee[index]);
+            // let vv = _this.expressions[index];
+            _this.state.val = parseFloat(eee[index]);
             // }
 
           }
@@ -101,9 +103,9 @@ class SingleCharts extends React.Component {
     return (
       <div className="singleM">
         <div>
-        {this.title}
+          {this.title}
         </div>
-        <div style={{fontSize:'72px'}}>{this.state.val}</div>
+        <div style={{ fontSize: '72px', fontWeight: '900', color: `rgba(${this.state.color.r}, ${this.state.color.g}, ${this.state.color.b}, ${this.state.color.a})` }}>{this.state.val}</div>
       </div>
     );
   }

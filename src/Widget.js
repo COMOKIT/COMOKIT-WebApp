@@ -18,7 +18,7 @@ const default_Widget_state = {
     style: "",
   }],
   expressions: [{
-    label:"",
+    label: "",
     expr: "",
     displayColorPicker: false,
     color: {
@@ -110,7 +110,7 @@ class Widget extends React.Component {
     }
   }
 
-  onParentTrigger() { 
+  onParentTrigger() {
     this.fetchFile();
 
     // Let's call the passed variable from parent if it's a function
@@ -262,11 +262,20 @@ class Widget extends React.Component {
   }
 
   toConfig() {
-    this.setState((prevState) => ({
-      data: [],
-      loading: false
-    }));
+    if (this.grid.state && (this._id !== this.grid.state.id_param)) {
 
+      if (this.state.data.length < 1) {
+        this.setState((prevState) => ({
+          data: [0],
+          loading: false
+        }));
+      }else{
+        this.setState((prevState) => ({
+          data: [],
+          loading: false
+        }));
+      }
+    }
   }
 
   render() {
@@ -322,6 +331,7 @@ class Widget extends React.Component {
               color="info"
               size="sm"
               onClick={() => this.toConfig()}
+              disabled={false && this.grid.state.waiting}
             >
               ⚙
             </Button></td>
@@ -398,7 +408,7 @@ class Widget extends React.Component {
           </td>
 
           <td>
-            {index ?
+            {((index) && this.chartType !== "single") ?
               <Button
                 className="closeBtn"
                 color="danger"
@@ -408,7 +418,7 @@ class Widget extends React.Component {
                 X
               </Button>
 
-              : null}
+              : ""}
           </td></tr>
       ));
 
@@ -448,7 +458,7 @@ class Widget extends React.Component {
               {(this.grid.state && (this._id !== this.grid.state.id_param)) &&
                 <table width={'100%'}>
                   <tbody>
-                    <tr><td width={25}>Type</td><td colSpan={2}>
+                    <tr><td width={25}>Type</td><td colSpan={3}>
                       <select
                         id="select1"
                         className="form-control"
@@ -462,10 +472,6 @@ class Widget extends React.Component {
                         <option value="single">SingleMetric</option>
                       </select>
                     </td>
-                      <td width={50}>
-                        <Button color="primary" size="sm" onClick={this.fetchFile} disabled={false && this.grid.state.waiting}>
-                          Show
-                        </Button></td>
                     </tr>
                   </tbody>
                 </table>}
@@ -484,7 +490,7 @@ class Widget extends React.Component {
                       Add Source
                     </Button>
                   </>}
-                {(this.state.chartType === "series"||this.state.chartType === "single") &&
+                {(this.state.chartType === "series" || this.state.chartType === "single") &&
                   <><div>
                     <table width={'100%'}><tbody><tr>
                       <td>Title </td>
@@ -493,9 +499,9 @@ class Widget extends React.Component {
                           onChange={this.handleChange} /></td></tr>
                       {expressions_layouts}</tbody></table>
                   </div>
-                    <Button color="primary" size="sm" onClick={() => this.addFormFields()}>
+                    {this.state.chartType !== "single" && <Button color="primary" size="sm" onClick={() => this.addFormFields()}>
                       Add Expression
-                    </Button>
+                    </Button>}
                   </>}
               </form>
             </Card>
