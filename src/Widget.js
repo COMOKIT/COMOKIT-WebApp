@@ -1,7 +1,8 @@
 import React from 'react'
 import reactCSS from 'reactcss'
 import { SketchPicker } from 'react-color'
-import Charts from "./Chart";
+import Charts from "./SeriesChart";
+import SingleCharts from "./SingleChart";
 import { Input, Card, Button, CardTitle } from "reactstrap";
 import BaseMap from "./BaseMap";
 const default_Widget_state = {
@@ -458,6 +459,7 @@ class Widget extends React.Component {
                       >
                         <option value="geojson">Geojson</option>
                         <option value="series">SeriesChart</option>
+                        <option value="single">SingleMetric</option>
                       </select>
                     </td>
                       <td width={50}>
@@ -482,7 +484,7 @@ class Widget extends React.Component {
                       Add Source
                     </Button>
                   </>}
-                {this.state.chartType === "series" &&
+                {(this.state.chartType === "series"||this.state.chartType === "single") &&
                   <><div>
                     <table width={'100%'}><tbody><tr>
                       <td>Title </td>
@@ -507,6 +509,11 @@ class Widget extends React.Component {
       return <><div className="widgetHeader">
         {(this.grid.state && (this.grid.state.editing)) && widgetHeader}
       </div><Charts props={this.state}></Charts></>;
+    }
+    if (this.state.chartType === "single") {
+      return <><div className="widgetHeader">
+        {(this.grid.state && (this.grid.state.editing)) && widgetHeader}
+      </div><SingleCharts props={this.state}></SingleCharts></>;
     }
     return (<><div className="widgetHeader">
       {(this.grid.state && (this.grid.state.editing)) && widgetHeader}
