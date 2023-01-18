@@ -46,8 +46,8 @@ class GAMA extends React.Component {
 
 
     }
-    doConnect(c) {
-        this.connect(c, this.on_disconnected);
+    doConnect(c, dc) {
+        this.connect(c, dc);
     }
     connect(opened_callback, closed_callback) {
         // console.log(this.address.address);
@@ -64,15 +64,17 @@ class GAMA extends React.Component {
         //     rejectUnauthorized: false
         // });
 
+        var myself = this;
         this.wSocket.onclose = function (event) {
-            clearInterval(this.executor);
+            clearInterval(myself.executor);
 
-            var myself = this;
+
+            myself.wSocket = null;
             if (closed_callback) closed_callback(myself);
         };
 
         var _this = this;
-        
+
         this.wSocket.onmessage = function (e) {
             // console.log(event); 
             var result = JSON.parse(e.data).content;
@@ -81,7 +83,7 @@ class GAMA extends React.Component {
         this.wSocket.onopen = function (event) {
             if (opened_callback) opened_callback(_this);
             _this.initExecutor();
-        }; 
+        };
 
     }
     initExecutor() {
@@ -115,14 +117,14 @@ class GAMA extends React.Component {
             }
         }, this.executor_speed);
     }
-    on_connected(c) {
-        console.log("connected");
-        if (c) c();
-    }
+    // on_connected(c) {
+    //     console.log("connected");
+    //     if (c) c();
+    // }
 
-    on_disconnected() {
-        console.log("disconnected");
-    }
+    // on_disconnected() {
+    //     console.log("disconnected");
+    // }
 
 
 
@@ -207,7 +209,7 @@ class GAMA extends React.Component {
 
             var result = JSON.parse(e).content;
             // console.log(e);
-            if (result) myself.exp_id = result; 
+            if (result) myself.exp_id = result;
             if (c) {
                 c();
             }
@@ -249,7 +251,7 @@ class GAMA extends React.Component {
         this.execute(this.status, () => {
             this.output_executor = setInterval(() => {
                 this.updateOutputs();
-                if(c) c();
+                if (c) c();
                 this.autoStep(c);
             }, 100);
         });

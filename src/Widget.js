@@ -123,6 +123,8 @@ class Widget extends React.Component {
     // if (this._id === this.grid.state.id_param) {
     this.setState({ param: this.grid.state.param_str }, () => {
       this.saveWToLS("Widget" + this.id, this.state);
+
+      this.setState( this.getWFromLS("Widget" + this.id))
       // this.getWFromLS("Widget" + this.id);
     });
     // }
@@ -173,7 +175,7 @@ class Widget extends React.Component {
   }
   handleChangeE(i, e) {
     let formValues = this.state.expressions;
-    console.log(i+" "+formValues);
+    // console.log(i+" "+formValues);
     formValues[i][e.target.name] = e.target.value;
     this.setState({ formValues }, () => {
       this.saveWToLS("Widget" + this.id, this.state);

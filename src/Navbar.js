@@ -76,11 +76,10 @@ class NavigationBar extends React.Component {
     }));
   }
 
-  render() {
-    var addr = this.state.url;
+  render() { 
     // if (this.gama.current && this.gama.current.wSocket && this.gama.current.wSocket.readyState === 1) {
 
-    return (<><GAMA ref={this.gama} address={addr}  ></GAMA>
+    return (<><GAMA ref={this.gama} address={this.state.url}  ></GAMA>
       <table height={"100%"}><tbody><tr><td valign="bottom">
         <div>
           <table><tbody>
@@ -206,14 +205,16 @@ class NavigationBar extends React.Component {
   }
   tryConnect() {
     var _this = this;
-    if (!this.gama.current.wSocket) {// && this.gama.current.wSocket.readyState!==1
-
-      this.waiting(true);
-      this.gama.current.doConnect(() => {
-        _this.checkConnect();
-        _this.waiting(false);
-        console.log("connected");
-      });
+    if (!this.gama.current.wSocket) {// && this.gama.current.wSocket.readyState!==1 
+        this.waiting(true);
+        this.gama.current.doConnect(() => {
+          _this.checkConnect();
+          _this.waiting(false);
+          console.log("connected");
+        },() => {  
+          _this.waiting(false);
+          console.log("disconnected");
+        }); 
 
     }
     // window.$gama.doConnect();
