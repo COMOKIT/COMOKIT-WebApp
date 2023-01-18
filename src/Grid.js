@@ -1,11 +1,11 @@
-import React from "react"; 
+import React from "react";
 import { Responsive, WidthProvider } from "react-grid-layout";
 import Widget from "./Widget";
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 const default_Layout = {
   widgets: [{ id: 1 }],
-  editing:true,
+  editing: true,
   widgetSequence: 1,
   id_param: -1,
   waiting: true,
@@ -27,10 +27,10 @@ class Grid extends React.Component {
     this.removeWidget = this.removeWidget.bind(this);
   }
 
-  onShowClick ()   {
+  onShowClick() {
     // this.child.current.fetchFile();
     // this.refs.child.fetchFile();
-    this.setState({ triggerFunc: () => {console.log("shown")}})
+    this.setState({ triggerFunc: () => { console.log("shown") } })
 
   };
 
@@ -43,7 +43,7 @@ class Grid extends React.Component {
   componentDidMount(props) {
     this.removeWidget(this.state.id_param);
     this.waiting(true);
-  } 
+  }
 
   addParam(ee) {
 
@@ -84,7 +84,7 @@ class Grid extends React.Component {
 
   toggleEdit() {
     this.setState((prevState) => ({
-      editing:!this.state.editing
+      editing: !this.state.editing
     }));
   }
 
@@ -95,14 +95,26 @@ class Grid extends React.Component {
     }));
   }
 
-  removeWidget(id) { 
-    this.setState((prevState) => ({
-      widgets: prevState.widgets.filter((item) => item.id !== id),
-      id_param: id === prevState.id_param ? -1 : prevState.id_param,
-      //do not decrement sequence, since each new widget must
-      //have unique value
-      widgetSequence: prevState.widgetSequence
-    }));
+  removeWidget(id, conf) {
+    if (conf) {
+      if (window.confirm('Are you sure to remove?')) {
+        this.setState((prevState) => ({
+          widgets: prevState.widgets.filter((item) => item.id !== id),
+          id_param: id === prevState.id_param ? -1 : prevState.id_param,
+          //do not decrement sequence, since each new widget must
+          //have unique value
+          widgetSequence: prevState.widgetSequence
+        }));
+      }
+    } else {
+      this.setState((prevState) => ({
+        widgets: prevState.widgets.filter((item) => item.id !== id),
+        id_param: id === prevState.id_param ? -1 : prevState.id_param,
+        //do not decrement sequence, since each new widget must
+        //have unique value
+        widgetSequence: prevState.widgetSequence
+      }));
+    }
   }
 
   onLayoutChange(layout, layouts) {
@@ -124,8 +136,8 @@ class Grid extends React.Component {
     };
     const layouts = this.state.widgets.map((item) => (
       <div className="widget" key={item.id} data-grid={config}>
-        <div  className="mscroll" style={{ width: "100%", height: "100%" }}>
-          <Widget  triggerChildFunc={this.state.triggerFunc}   grid={this} id={item.id}></Widget>
+        <div className="mscroll" style={{ width: "100%", height: "100%" }}>
+          <Widget triggerChildFunc={this.state.triggerFunc} grid={this} id={item.id}></Widget>
         </div>
       </div>
     ));
@@ -133,7 +145,7 @@ class Grid extends React.Component {
     return (
       <><div>
         {/* <div className="toolBar"> */}
-          {/* <Button color="primary" size="sm" onClick={this.exportPdf}>
+        {/* <Button color="primary" size="sm" onClick={this.exportPdf}>
       Export to PDF
     </Button> */}
         {/* </div> */}
@@ -160,8 +172,8 @@ function getFromLS(key) {
     try {
       ls = JSON.parse(global.localStorage.getItem("rdv_layout")) || {};
       // console.log(ls);
-      Object.keys(default_Layout).forEach(function(k) {
-        if(ls[key] && !ls[key][k]) {return default_Layout;}
+      Object.keys(default_Layout).forEach(function (k) {
+        if (ls[key] && !ls[key][k]) { return default_Layout; }
       });
     } catch (e) {
       console.log(e);

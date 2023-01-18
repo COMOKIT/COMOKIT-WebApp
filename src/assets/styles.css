@@ -80,10 +80,14 @@ body {
 }
 
 .closeBtn {
+  padding: 0px;
+  margin: 0px;
   /* border-radius: 30px; */
   height: 30px;
   width: 30px;
   float: left;
+  font-size:larger;
+  vertical-align: middle;
 }
 
 .widgetHeader { 

@@ -9,7 +9,7 @@ const default_Widget_state = {
   data: [],
   loading: false,
   title: "",
-  chartType: "geojson",
+  chartType: "single",
   param: [],
 
   mapbox: [{
@@ -173,6 +173,7 @@ class Widget extends React.Component {
   }
   handleChangeE(i, e) {
     let formValues = this.state.expressions;
+    console.log(i+" "+formValues);
     formValues[i][e.target.name] = e.target.value;
     this.setState({ formValues }, () => {
       this.saveWToLS("Widget" + this.id, this.state);
@@ -332,17 +333,13 @@ class Widget extends React.Component {
               size="sm"
               onClick={() => this.toConfig()}
               disabled={false && this.grid.state.waiting}
-            >
-              ⚙
-            </Button></td>
+            >⚙</Button></td>
             <td> <Button
               className="closeBtn"
               color="danger"
               size="sm"
               onClick={() => this.grid.removeWidget(this._id)}
-            >
-              X
-            </Button></td></tr>
+            >x</Button></td></tr>
         </tbody>
       </table>);
     if (this.state.data.length < 1) {
