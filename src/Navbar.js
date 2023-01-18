@@ -79,7 +79,7 @@ class NavigationBar extends React.Component {
   render() { 
     // if (this.gama.current && this.gama.current.wSocket && this.gama.current.wSocket.readyState === 1) {
 
-    return (<><GAMA ref={this.gama} address={this.state.url}  ></GAMA>
+    return (<><GAMA ref={this.gama} ></GAMA>
       <table height={"100%"}><tbody><tr><td valign="bottom">
         <div>
           <table><tbody>
@@ -207,7 +207,7 @@ class NavigationBar extends React.Component {
     var _this = this;
     if (!this.gama.current.wSocket) {// && this.gama.current.wSocket.readyState!==1 
         this.waiting(true);
-        this.gama.current.doConnect(() => {
+        this.gama.current.connect(this.state.url,this.state.model_path,this.state.exp_name,() => {
           _this.checkConnect();
           _this.waiting(false);
           console.log("connected");

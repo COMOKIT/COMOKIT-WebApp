@@ -26,7 +26,7 @@ class GAMA extends React.Component {
         this.modelPath = md;
         this.pendingoutput = 0;
         this.experimentName = exp;
-        this.map = mmap;
+        // this.map = mmap;
         this.updateSource = null;
         this.geojson = {
             'type': 'FeatureCollection',
@@ -46,16 +46,16 @@ class GAMA extends React.Component {
 
 
     }
-    doConnect(c, dc) {
-        this.connect(c, dc);
-    }
-    connect(opened_callback, closed_callback) {
-        // console.log(this.address.address);
-        this.modelPath = this.address.modelPath;
-        this.experimentName = this.address.experimentName;
-        this.map = this.address.map;
+    // doConnect(c, dc) {
+    //     this.connect(c, dc);
+    // }
+    connect(a,m,e,opened_callback, closed_callback) { 
+        this.address = a;
+        this.modelPath = m;
+        this.experimentName = e;
+        // this.map = this.address.map;
         // console.log(keytext);
-        this.wSocket = new WebSocket(this.address.address);
+        this.wSocket = new WebSocket(this.address);
         // this.wSocket = new WebSocket(this.address.address, [], {
         //     cert: certtext,
         //     key: keytext,
