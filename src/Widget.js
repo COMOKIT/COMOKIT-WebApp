@@ -352,7 +352,7 @@ class Widget extends React.Component {
               className="closeBtn"
               color="danger"
               size="sm"
-              onClick={() => this.grid.removeWidget(this._id)}
+              onClick={() => this.grid.removeWidget(this._id,true)}
             >x</Button></td></tr>
         </tbody>
       </table>);
