@@ -16,6 +16,7 @@ const default_Widget_state = {
     species: "",
     attributes: "",
     style: "",
+    type: "",
   }],
   expressions: [{
     label: "",
@@ -52,6 +53,7 @@ class Widget extends React.Component {
     this.handleChangeM = this.handleChangeM.bind(this);
     this.handleChangeM1 = this.handleChangeM1.bind(this);
     this.handleChangeM2 = this.handleChangeM2.bind(this);
+    this.handleChangeM3 = this.handleChangeM3.bind(this);
     this.handleChangeE = this.handleChangeE.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.handleClose = this.handleClose.bind(this);
@@ -124,7 +126,7 @@ class Widget extends React.Component {
     this.setState({ param: this.grid.state.param_str }, () => {
       this.saveWToLS("Widget" + this.id, this.state);
 
-      this.setState( this.getWFromLS("Widget" + this.id))
+      this.setState(this.getWFromLS("Widget" + this.id))
       // this.getWFromLS("Widget" + this.id);
     });
     // }
@@ -165,6 +167,16 @@ class Widget extends React.Component {
       // this.getWFromLS("Widget" + this.id);
     });
   }
+
+  handleChangeM3(i, e) {
+    let formValues = this.state.mapbox;
+    formValues[i].type = e.target.value;
+    this.setState({ formValues }, () => {
+      this.saveWToLS("Widget" + this.id, this.state);
+      // this.getWFromLS("Widget" + this.id);
+    });
+  }
+
   handleChangeL(i, e) {
     let formValues = this.state.expressions;
     formValues[i].label = e.target.value;
@@ -272,7 +284,7 @@ class Widget extends React.Component {
           data: [0],
           loading: false
         }));
-      }else{
+      } else {
         this.setState((prevState) => ({
           data: [],
           loading: false
@@ -352,14 +364,20 @@ class Widget extends React.Component {
           <td>Species</td>
           <td>
             <Input type="text" name="species" value={element.species || ""} onChange={e => this.handleChangeM(index, e)} />
-          </td></tr><tr>
-            <td>Attr</td>
+          </td></tr>
+          <tr><td>Attr</td>
             <td>
               <Input type="text" name="attr" value={element.attributes || ""} onChange={e => this.handleChangeM1(index, e)} />
 
 
-            </td></tr><tr>
-            <td>Style</td>
+            </td></tr>
+          <tr><td>Type</td>
+            <td>
+              <Input type="text" name="mtype"  placeholder="circle, line, fill"  value={element.type || ""} onChange={e => this.handleChangeM3(index, e)} />
+
+
+            </td></tr>
+          <tr><td>Style</td>
             <td>
               <Input type="textarea" name="style" value={element.style || ""} onChange={e => this.handleChangeM2(index, e)} />
 

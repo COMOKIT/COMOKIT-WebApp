@@ -36,7 +36,8 @@ class MapGeojson extends React.Component {
             _this.state.sources.push({
                 species: value.species,
                 attr: value.attributes,
-                style: value.style
+                style: value.style,
+                type: value.type
             });
         }
         );
@@ -68,7 +69,7 @@ class MapGeojson extends React.Component {
                 });
                 this.props.map.current.addLayer({
                     'id': "S" + v.species,
-                    type: 'circle',
+                    type:  v.type ? (v.type) : 'circle',
                     'source': "S" + v.species,
                     'layout': {},
                     'paint': v.style ? JSON.parse(v.style) : {
