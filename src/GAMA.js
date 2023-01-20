@@ -49,10 +49,10 @@ class GAMA extends React.Component {
     // doConnect(c, dc) {
     //     this.connect(c, dc);
     // }
-    connect(a,m,e,opened_callback, closed_callback) { 
+    connect(a,opened_callback, closed_callback) { 
         this.address = a;
-        this.modelPath = m;
-        this.experimentName = e;
+        // this.modelPath = m;
+        // this.experimentName = e;
         // this.map = this.address.map;
         // console.log(keytext);
         this.wSocket = new WebSocket(this.address);

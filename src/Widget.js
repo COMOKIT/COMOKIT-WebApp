@@ -5,6 +5,37 @@ import Charts from "./SeriesChart";
 import SingleCharts from "./SingleChart";
 import { Input, Card, Button, CardTitle } from "reactstrap";
 import BaseMap from "./BaseMap";
+
+const styles = reactCSS({
+  'default': {
+    color: {
+      width: '36px',
+      height: '24px',
+      borderRadius: '0px',
+      background: `rgba(241,112,19,1)`,
+    },
+    swatch: {
+      margin: '0px',
+      padding: '0px',
+      background: '#fff',
+      borderRadius: '0px',
+      boxShadow: '0 0 0 1px rgba(0,0,0,.1)',
+      display: 'inline-block',
+      cursor: 'pointer',
+    },
+    popover: {
+      position: 'absolute',
+      zIndex: '2',
+    },
+    cover: {
+      position: 'fixed',
+      top: '0px',
+      right: '0px',
+      bottom: '0px',
+      left: '0px',
+    },
+  },
+});
 const default_Widget_state = {
   data: [],
   loading: false,
@@ -62,8 +93,8 @@ class Widget extends React.Component {
 
   handleFuel(event) {
     // let checkbox = event.target.checked;  
-    // console.log(event.target); 
-    console.log(event.target.value);
+    console.log(event.target); 
+    console.log(event.target.name + " "+event.target.value+ " "+event.target.checked);
     // this.setState({ values: nValues });
   }
 
@@ -135,7 +166,8 @@ class Widget extends React.Component {
     let formValues = this.state.param;
     formValues[i]["value"] = e.target.value;
     // console.log(formValues[i]);
-    this.setState({ param: formValues }, () => {
+    this.setState({ param: formValues }, () => { 
+      this.grid.updateParam(this.state.param);
       this.saveWToLS("Widget" + this.id, this.state);
       // this.getWFromLS("Widget" + this.id);
     });
@@ -294,36 +326,6 @@ class Widget extends React.Component {
   }
 
   render() {
-    const styles = reactCSS({
-      'default': {
-        color: {
-          width: '36px',
-          height: '24px',
-          borderRadius: '0px',
-          background: `rgba(241,112,19,1)`,
-        },
-        swatch: {
-          margin: '0px',
-          padding: '0px',
-          background: '#fff',
-          borderRadius: '0px',
-          boxShadow: '0 0 0 1px rgba(0,0,0,.1)',
-          display: 'inline-block',
-          cursor: 'pointer',
-        },
-        popover: {
-          position: 'absolute',
-          zIndex: '2',
-        },
-        cover: {
-          position: 'fixed',
-          top: '0px',
-          right: '0px',
-          bottom: '0px',
-          left: '0px',
-        },
-      },
-    });
 
     // if (this.state.loading)
     //   return (
@@ -445,11 +447,11 @@ class Widget extends React.Component {
             value={e['value'] || ""} onChange={e => this.handleChangeCBBOX(index, e)}
           />
           </td>
-          <td width={50}><Input type="checkbox" value={e['value']} id={"use_param_" + e['key']}
+          <td width={50}><Input type="checkbox" value={e['value']} name={e['key']} id={"use_param_" + e['key']}
             onChange={(e) => this.handleFuel(e)} /></td></tr>
 
 
-      )) : null;
+      )) : "";
 
       return (
         <><div className="widgetHeader">
@@ -493,7 +495,7 @@ class Widget extends React.Component {
                   </tbody>
                 </table>}
               <form>
-                {(this.state.chartType === "geojson" && this.grid.state && this._id !== this.grid.state.id_param) &&
+                {(this.state.chartType === "geojson" && this.grid.state && (this._id !== this.grid.state.id_param)) &&
                   <><div>
                     <table width={'100%'}><tbody><tr>
                       <td>Title </td>
@@ -507,7 +509,7 @@ class Widget extends React.Component {
                       Add Source
                     </Button>
                   </>}
-                {(this.state.chartType === "series" || this.state.chartType === "single") &&
+                  {((this.state.chartType === "series" || this.state.chartType === "single") && this.grid.state && (this._id !== this.grid.state.id_param)) &&
                   <><div>
                     <table width={'100%'}><tbody><tr>
                       <td>Title </td>
@@ -516,7 +518,7 @@ class Widget extends React.Component {
                           onChange={this.handleChange} /></td></tr>
                       {expressions_layouts}</tbody></table>
                   </div>
-                    {this.state.chartType !== "single" && <Button color="primary" size="sm" onClick={() => this.addFormFields()}>
+                    {this.state.chartType === "series" && <Button color="primary" size="sm" onClick={() => this.addFormFields()}>
                       Add Expression
                     </Button>}
                   </>}

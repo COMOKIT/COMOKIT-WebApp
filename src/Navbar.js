@@ -11,8 +11,7 @@ const default_Nav_state = {
   connected: false,
   loading: false,
   waiting: false,
-  model_path: 'C:/git/gama/msi.gama.models/models/Tutorials/Road Traffic/models/Model 05.gaml',
-  exp_name: 'road_traffic'
+  model_path: 'C:/git/gama/msi.gama.models/models/Tutorials/Road Traffic/models/Model 05.gaml@road_traffic'
 };
 
 class NavigationBar extends React.Component {
@@ -56,6 +55,7 @@ class NavigationBar extends React.Component {
   }
 
   handleChange(e) {
+    console.log(e.target.name);
     this.setState({
       [e.target.name]: e.target.value
     }, () => {
@@ -76,7 +76,7 @@ class NavigationBar extends React.Component {
     }));
   }
 
-  render() { 
+  render() {
     // if (this.gama.current && this.gama.current.wSocket && this.gama.current.wSocket.readyState === 1) {
 
     return (<><GAMA ref={this.gama} ></GAMA>
@@ -126,23 +126,12 @@ class NavigationBar extends React.Component {
                   // defaultValue={"/var/www/github/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml"}                    
                   defaultValue={this.state.model_path}
                 >
-                  <option value="/var/www/github/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml">Comokit ovh</option>
-                  <option value="C:/git/PROJECT/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml">Comokit local</option>
-                  <option value="/Users/hqn88/git/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml">mac Comokit local</option>
-                  <option value="C:/git/gama/msi.gama.models/models/Tutorials/Road Traffic/models/Model 05.gaml">Road Traffic 05.gaml</option>
+                  <option value="/var/www/github/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml@Closures">Comokit ovh - Closures</option>
+                  <option value="C:/git/PROJECT/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml@Closures">Comokit local - Closures</option>
+                  <option value="/Users/hqn88/git/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml@Closures">mac Comokit local - Closures</option>
+                  <option value="C:/git/gama/msi.gama.models/models/Tutorials/Road Traffic/models/Model 05.gaml@road_traffic">Road Traffic 05.gaml - road_traffic</option>
                 </select>
-              </td></tr><tr><td><select
-                id="select_exp"
-                className="form-control"
-                name="exp_name"
-                onChange={this.handleChange}
-                // defaultValue={"Closures"}
-                defaultValue={this.state.exp_name}
-              >
-                <option value="Closures">Closures</option>
-                <option value="road_traffic">road_traffic</option>
-              </select></td>
-            </tr>
+              </td></tr>
 
             <tr>
               <td> <select
@@ -206,15 +195,15 @@ class NavigationBar extends React.Component {
   tryConnect() {
     var _this = this;
     if (!this.gama.current.wSocket) {// && this.gama.current.wSocket.readyState!==1 
-        this.waiting(true);
-        this.gama.current.connect(this.state.url,this.state.model_path,this.state.exp_name,() => {
-          _this.checkConnect();
-          _this.waiting(false);
-          console.log("connected");
-        },() => {  
-          _this.waiting(false);
-          console.log("disconnected");
-        }); 
+      this.waiting(true);
+      this.gama.current.connect(this.state.url, () => {
+        _this.checkConnect();
+        _this.waiting(false);
+        console.log("connected");
+      }, () => {
+        _this.waiting(false);
+        console.log("disconnected");
+      });
 
     }
     // window.$gama.doConnect();
@@ -228,8 +217,8 @@ class NavigationBar extends React.Component {
 
       this.props.grid.current.waiting(true);
       this.waiting(true);
-      this.gama.current.modelPath = this.state.model_path;
-      this.gama.current.experimentName = this.state.exp_name;
+      this.gama.current.modelPath = this.state.model_path.split("@")[0];
+      this.gama.current.experimentName = this.state.model_path.split("@")[1];
 
       // var modelPath = 'C:/git/gama/msi.gama.models/models/Tutorials/Road Traffic/models/Model 05.gaml';
       // var experimentName = 'road_traffic';
@@ -280,7 +269,7 @@ class NavigationBar extends React.Component {
       this.gama.current.queue.length = 0;
       // this.gama.current.autoStep(console.log("autoStep"));
       // this.gama.current.step(console.log("step"));
-      this.gama.current.play(() => {console.log("play")});
+      this.gama.current.play(() => { console.log("play") });
     }
     // window.$gama.doConnect();
   }
@@ -306,6 +295,42 @@ class NavigationBar extends React.Component {
   tryReload() {
     if (this.gama.current && this.gama.current.wSocket) {// && this.gama.current.wSocket.readyState!== 
       this.gama.current.queue.length = 0;
+      // this.props.grid.current.state.param_str_new.map((e, index) =>  {
+
+      //   console.log(e['key']+" "+ e['value']);
+      //   return "";
+
+      // });
+
+
+      var pp = [];
+      this.props.grid.current.state.param_str_new.forEach((value, key, map) => {  
+        var v = value['value'];
+        var t = "string";
+        if (!isNaN(v)) {
+          t = "float";
+          if (v.indexOf('.') === -1) { t = "int"; }
+        }
+        pp.push({ "name": "" + value['key'], "value": v, "type": t });
+      });
+      
+      console.log(pp);
+      // var pp = [];
+      // parameters.forEach((value, key, map) => {
+      // 	if ($('#use_param_' + key).prop('checked')) {
+      // 		var v = $('#param_' + key).val();
+      // 		var t;
+      // 		t = "string";
+      // 		if (!isNaN(v)) {
+      // 			t = "float";
+      // 			if (v.indexOf('.') === -1) { t = "int"; }
+      // 		}
+
+      // 		pp.push({ "name": "" + key, "value": v, "type": t });
+      // 	}
+      // })
+      // // console.log(pp);
+      this.gama.current.setParameters(pp);
       this.waiting(true);
       this.gama.current.reload(() => {
         console.log("reloaded");

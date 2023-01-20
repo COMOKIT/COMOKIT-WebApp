@@ -10,6 +10,7 @@ const default_Layout = {
   id_param: -1,
   waiting: true,
   param_str: [],
+  param_str_new:[],
   triggerFunc: null,
   layouts: {}
 };
@@ -69,7 +70,8 @@ class Grid extends React.Component {
     });
     // t += '<tr><td> End Condition:</td><td> <input type="text" id="param_end_condition" value="cycle>1000"></td><td><input type="checkbox" value="1" id="use_param_end_condition" /></td></tr>';
     this.setState((prevState) => ({
-      param_str: parameters
+      param_str: parameters,
+      param_str_new:parameters
     }));
     saveToLS("Layout", this.state);
 
@@ -80,6 +82,13 @@ class Grid extends React.Component {
         widgetSequence: prevState.widgetSequence + 1
       }));
     }
+  }
+
+  updateParam(ee){
+    this.setState((prevState) => ({  
+      param_str_new:ee
+    }));
+    saveToLS("Layout", this.state);
   }
 
   toggleEdit() {
