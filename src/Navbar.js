@@ -223,14 +223,15 @@ class NavigationBar extends React.Component {
       // var modelPath = 'C:/git/gama/msi.gama.models/models/Tutorials/Road Traffic/models/Model 05.gaml';
       // var experimentName = 'road_traffic';
       var _this = this;
-      this.gama.current.launch(() => {
-        window.$loaded = true;
-        _this.fetchFile();
-
-        console.log("loaded " + this.state.loaded);
+      this.gama.current.launch((e) => {
+        if (e.type === "CommandExecutedSuccessfully") {
+          window.$loaded = true;
+          _this.fetchFile();
+          console.log("loaded " + this.state.loaded);
+          _this.tryGenParam();
+        }
         this.props.grid.current.waiting(false);
         this.waiting(false);
-        _this.tryGenParam();
       });
       // this.gama.current.launch(_this.tryPlay);
 
@@ -304,7 +305,7 @@ class NavigationBar extends React.Component {
 
 
       var pp = [];
-      this.props.grid.current.state.param_str_new.forEach((value, key, map) => {  
+      this.props.grid.current.state.param_str_new.forEach((value, key, map) => {
         var v = value['value'];
         var t = "string";
         if (!isNaN(v)) {
@@ -313,7 +314,7 @@ class NavigationBar extends React.Component {
         }
         pp.push({ "name": "" + value['key'], "value": v, "type": t });
       });
-      
+
       console.log(pp);
       // var pp = [];
       // parameters.forEach((value, key, map) => {

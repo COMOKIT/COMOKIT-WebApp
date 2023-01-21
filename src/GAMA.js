@@ -207,12 +207,14 @@ class GAMA extends React.Component {
         this.status = "load";
         this.execute(this.status, function (e) {
 
-            var result = JSON.parse(e).content;
-            // console.log(e);
-            if (result) myself.exp_id = result;
-            if (c) {
-                c();
-            }
+            var result = JSON.parse(e);
+            // console.log(result);
+            // if(result.type==="CommandExecutedSuccessfully"){
+                if (result.type==="CommandExecutedSuccessfully" && result.content) myself.exp_id = result.content;
+                if (c) {
+                    c(result);
+                }
+            // }
         });
     }
 
