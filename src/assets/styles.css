@@ -62,7 +62,7 @@ body {
 .widget {
   background: white;
   border-radius: 0.25em;
-  /* box-shadow: 0 0 0.7142857142857143rem #cccccc; */
+  box-shadow: 0 0 0.7142857142857143rem #cccccc;
   padding: 0px;
   font-family: "Montserrat", sans-serif;
 }
@@ -91,6 +91,7 @@ body {
 }
 
 .widgetHeader { 
+  width: 100%;
   text-align: left;
   border-bottom: 0px solid #eee;
 	z-index: 1000;  
@@ -99,7 +100,7 @@ body {
 
 .dragHandle {
   display: inline-block;
-  width: 85%;
+  width: 100%;
   cursor: move;
   border-radius: 0.5em;
   padding: 6px;

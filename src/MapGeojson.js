@@ -117,7 +117,7 @@ class MapGeojson extends React.Component {
         //     console.log(ee);
         // });
         window.$gama.evalExpr("CRS_transform(world.location,\"EPSG:4326\")", function (ee) {
-            console.log(ee);
+            // console.log(ee);
             if (JSON.parse(ee).type === "CommandExecutedSuccessfully") {
                 ee = JSON.parse(ee).content.replace(/[{}]/g, "");
                 var eee = ee.split(",");

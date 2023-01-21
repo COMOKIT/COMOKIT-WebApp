@@ -375,7 +375,20 @@ class Widget extends React.Component {
             </td></tr>
           <tr><td>Type</td>
             <td>
-              <Input type="text" name="mtype"  placeholder="circle, line, fill"  value={element.type || ""} onChange={e => this.handleChangeM3(index, e)} />
+            <select
+                id="select_mbtype"
+                className="form-control"
+                name="mtype"
+                // onChange={this.handleChange}
+                onChange={e => this.handleChangeM3(index, e)} 
+                // defaultValue={this.state.url}
+                value={element.type || "circle"}
+              // defaultValue={"ws://51.255.46.42:6001"}
+              >
+                <option value="circle">Circle</option>
+                <option value="line">Line</option>
+                <option value="fill">Fill</option> 
+              </select>
 
 
             </td></tr>

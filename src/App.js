@@ -9,9 +9,9 @@ import Sidebar from "react-sidebar";
 const bstyle = {
   margin: 0,
   top: 'auto',
-  right: 2,
+  left: 2,
   bottom: 2,
-  left: 'auto',
+  right: 'auto',
   position: 'fixed',
   zIndex:9999999
 };
@@ -55,7 +55,7 @@ class App extends React.Component {
             sidebar={<NavigationBar grid={mygrid}/>}
             open={this.state.sidebarOpen}
             touch={false}
-            pullRight={true}
+            pullRight={false}
             touchHandleWidth={5}
             onSetOpen={this.onSetSidebarOpen}
             styles={{ sidebar: {backgroundColor: "rgba(255,255,255,1)"} }}

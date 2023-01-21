@@ -65,17 +65,9 @@ class SingleCharts extends React.Component {
 
         try {
 
-          ee = JSON.parse(ee).content.replace(/[[\]]/g, "");
-          var eee = ee.split(",");
-
-          for (var index = 0; index < eee.length; index++) {
-            // if (_this.state.series[index]) {
-            // console.log("finish "+eee[index]);
-            // let vv = _this.expressions[index];
-            _this.state.val = parseFloat(eee[index]);
-            // }
-
-          }
+          ee = JSON.parse(ee).content.replace(/[[\]]/g, ""); 
+  
+          _this.state.val = ee; 
           _this.setState({ series: _this.state.series });
         } catch (e) {
           console.log(e + " " + (ex) + " " + (JSON.parse(ee).command));
