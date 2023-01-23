@@ -17,6 +17,7 @@ const default_Nav_state = {
 class NavigationBar extends React.Component {
   constructor(param) {
     super(param);
+    this.mySelRef = React.createRef();
     this.id = "m" + param.id;
     this.state = this.getNFromLS("Nav") || default_Nav_state;
     this.gama = React.createRef();
@@ -122,6 +123,7 @@ class NavigationBar extends React.Component {
                   id="select_model"
                   className="form-control"
                   name="model_path"
+                  ref={this.mySelRef}
                   onChange={this.handleChange}
                   // defaultValue={"/var/www/github/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml"}                    
                   defaultValue={this.state.model_path}
@@ -219,9 +221,9 @@ class NavigationBar extends React.Component {
 
       this.props.grid.current.waiting(true);
       this.waiting(true);
-      console.log(this.state.model_path);
-      this.gama.current.modelPath = this.state.model_path.split("@")[0];
-      this.gama.current.experimentName = this.state.model_path.split("@")[1];
+      console.log(this.mySelRef.current.value);
+      this.gama.current.modelPath = this.mySelRef.current.value.split("@")[0];
+      this.gama.current.experimentName = this.mySelRef.current.value.split("@")[1];
 
       // var modelPath = 'C:/git/gama/msi.gama.models/models/Tutorials/Road Traffic/models/Model 05.gaml';
       // var experimentName = 'road_traffic';
