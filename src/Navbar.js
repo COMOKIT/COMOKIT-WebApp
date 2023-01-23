@@ -55,7 +55,7 @@ class NavigationBar extends React.Component {
   }
 
   handleChange(e) {
-    console.log(e.target.name);
+    // console.log(e.target.value);
     this.setState({
       [e.target.name]: e.target.value
     }, () => {
@@ -219,6 +219,7 @@ class NavigationBar extends React.Component {
 
       this.props.grid.current.waiting(true);
       this.waiting(true);
+      console.log(this.state.model_path);
       this.gama.current.modelPath = this.state.model_path.split("@")[0];
       this.gama.current.experimentName = this.state.model_path.split("@")[1];
 
@@ -226,6 +227,7 @@ class NavigationBar extends React.Component {
       // var experimentName = 'road_traffic';
       var _this = this;
       this.gama.current.launch((e) => {
+        // console.log(e);
         if (e.type === "CommandExecutedSuccessfully") {
           window.$loaded = true;
           _this.fetchFile();

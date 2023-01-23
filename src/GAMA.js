@@ -5,7 +5,7 @@ import React from 'react'
 // import keytext from '!!raw-loader!./key.pem';
 
 class GAMA extends React.Component {
-    constructor(addr, md, exp, mmap) {
+    constructor() {
 
         super();
         this.socket_id = 0;
@@ -22,10 +22,10 @@ class GAMA extends React.Component {
         this.param = [];
         this.outputs = new Map();
         this.logger = void 0;
-        this.address = addr;
-        this.modelPath = md;
+        this.address = "";
+        this.modelPath = "";
         this.pendingoutput = 0;
-        this.experimentName = exp;
+        this.experimentName = "";
         // this.map = mmap;
         this.updateSource = null;
         this.geojson = {
