@@ -59,7 +59,6 @@ class MapGeojson extends React.Component {
         // console.log("connected");
         // console.log(this.props.map);
         var mymyself = myself;
-
         this.props.map.current.on('load', async () => {
             // Add the source1 location as a source.
             this.state.sources.forEach((v) => {
@@ -67,29 +66,39 @@ class MapGeojson extends React.Component {
                     type: 'geojson',
                     data: mymyself.geojson
                 });
+
+                var circle_defaultstyle = {
+                    'circle-radius': {
+                        'base': 1,
+                        'stops': [
+                            [12, 5],
+                            [22, 10]
+                        ]
+                    },
+                    'circle-color': ['match', ['get', v.attr], // get the property
+                        "susceptible", 'green',
+                        "latent", 'orange',
+                        "presymptomatic", 'red',
+                        "asymptomatic", 'red',
+                        "symptomatic", 'red',
+                        "removed", 'blue',
+                        'gray'],
+
+                };
+                var fill_defaultstyle = { 
+                    'fill-outline-color': "black",
+                    'fill-color': ['get', v.attr]
+                    };
+                var line_defaultstyle = { 
+                    'line-color': ['get', v.attr]
+                    };
+                var defaultstyle = v.type==='line'?line_defaultstyle:(v.type==="fill"?fill_defaultstyle:(circle_defaultstyle));
                 this.props.map.current.addLayer({
                     'id': "S" + v.species,
-                    type:  v.type ? (v.type) : 'circle',
+                    type: v.type ? (v.type) : 'circle',
                     'source': "S" + v.species,
                     'layout': {},
-                    'paint': v.style ? JSON.parse(v.style) : {
-                        'circle-radius': {
-                            'base': 1,
-                            'stops': [
-                                [12, 5],
-                                [22, 10]
-                            ]
-                        },
-                        'circle-color': ['match', ['get', v.attr], // get the property
-                            "susceptible", 'green',
-                            "latent", 'orange',
-                            "presymptomatic", 'red',
-                            "asymptomatic", 'red',
-                            "symptomatic", 'red',
-                            "removed", 'blue',
-                            'gray'],
-    
-                    },
+                    'paint': v.style ? JSON.parse(v.style) : defaultstyle,
                 });
             });
             // this.props.map.current.addSource('source1', {
