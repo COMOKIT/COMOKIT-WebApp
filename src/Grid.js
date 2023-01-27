@@ -10,16 +10,16 @@ const default_Layout = {
   id_param: -1,
   waiting: true,
   param_str: [],
-  param_str_new:[],
+  param_str_new: [],
   triggerFunc: null,
   layouts: {}
 };
-const originalLayouts = getFromLS("Layout") || default_Layout;
 
 class Grid extends React.Component {
   constructor() {
     super();
-    this.state = originalLayouts;
+    this.state = getFromLS("Layout") || default_Layout;
+    this.reloadLayout = this.reloadLayout.bind(this);
     this.addParam = this.addParam.bind(this);
     this.addWidget = this.addWidget.bind(this);
     this.toggleEdit = this.toggleEdit.bind(this);
@@ -71,7 +71,7 @@ class Grid extends React.Component {
     // t += '<tr><td> End Condition:</td><td> <input type="text" id="param_end_condition" value="cycle>1000"></td><td><input type="checkbox" value="1" id="use_param_end_condition" /></td></tr>';
     this.setState((prevState) => ({
       param_str: parameters,
-      param_str_new:parameters
+      param_str_new: parameters
     }));
     saveToLS("Layout", this.state);
 
@@ -84,9 +84,9 @@ class Grid extends React.Component {
     }
   }
 
-  updateParam(ee){
-    this.setState((prevState) => ({  
-      param_str_new:ee
+  updateParam(ee) {
+    this.setState((prevState) => ({
+      param_str_new: ee
     }));
     saveToLS("Layout", this.state);
   }
@@ -97,6 +97,17 @@ class Grid extends React.Component {
     }));
   }
 
+  reloadLayout(ee) {
+
+    // console.log(this.state);
+    // console.log(JSON.parse(ee["rdv_layout"])["Layout"]);
+    this.setState( JSON.parse(ee["rdv_layout"])["Layout"], function () {
+      // console.log(this.state);
+
+      saveToLS("Layout", this.state);
+      // this.getWFromLS("Widget" + this.id);
+    });
+  }
   addWidget() {
     this.setState((prevState) => ({
       widgets: [...prevState.widgets, { id: prevState.widgetSequence + 1 }],

@@ -22,8 +22,11 @@ class NavigationBar extends React.Component {
     this.state = this.getNFromLS("Nav") || default_Nav_state;
     this.gama = React.createRef();
     this.grid = param.grid;
+    this.fileUploadInput = React.createRef();
+
     this.checkConnect = this.checkConnect.bind(this);
     this.fetchFile = this.fetchFile.bind(this);
+    this.onFileChange = this.onFileChange.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.tryConnect = this.tryConnect.bind(this);
     this.tryLaunch = this.tryLaunch.bind(this);
@@ -75,6 +78,23 @@ class NavigationBar extends React.Component {
     this.setState((prevState) => ({
       loaded: true
     }));
+  }
+
+  onFileChange(evt) {
+    // console.log(evt.target.files);
+
+    let files = evt.target.files;
+    if (!files.length) {
+      alert('No file select');
+      return;
+    }
+    let file = files[0];
+    let reader = new FileReader();
+    var _this = this;
+    reader.onload = function (e) {
+      _this.props.grid.current.reloadLayout(JSON.parse(e.target.result));
+    };
+    reader.readAsText(file);
   }
 
   render() {
@@ -169,7 +189,12 @@ class NavigationBar extends React.Component {
                   <td><Button color="primary" outline style={{ width: "50px" }} size="lg" onClick={this.tryEdit}>✎</Button></td>
                   <td><Button color="primary" outline style={{ width: "50px" }} size="lg" onClick={this.tryAdd}>✚</Button></td>
                   <td><Button color="primary" outline style={{ width: "50px" }} size="lg" onClick={this.trySave}>S</Button> </td>
-                  <td><Button color="primary" outline style={{ width: "50px" }} size="lg" onClick={this.tryLoad}>O</Button> </td>
+                  <td>
+
+                    <Button htmlFor="fileUpload" color="primary" outline style={{ width: "50px" }} size="lg" onClick={this.tryLoad}>O</Button>
+                    <input hidden
+                      ref={this.fileUploadInput} id="fileUpload" type="file" onChange={this.onFileChange} accept="text/*" />
+                  </td>
                 </tr></tbody></table>
 
               </td>
@@ -185,7 +210,7 @@ class NavigationBar extends React.Component {
 
 
   tryLoad() {
-    getLocalstorageToFile("layout.txt");
+    this.fileUploadInput.current.click();
   }
   trySave() {
     getLocalstorageToFile("layout.txt");
@@ -391,7 +416,9 @@ function getLocalstorageToFile(fileName) {
 
   /* save as blob */
 
-  var textToSave = JSON.stringify(a)
+  var textToSave = JSON.stringify(localStorage);
+  console.log((localStorage));
+
   var textToSaveAsBlob = new Blob([textToSave], {
     type: "text/plain"
   });
