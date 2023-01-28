@@ -141,6 +141,9 @@ class Widget extends React.Component {
     if (this.props.triggerChildFunc !== prevProps.triggerChildFunc) {
       this.onParentTrigger();
     }
+    if (this.props.triggerChildFunc2 !== prevProps.triggerChildFunc2) {
+      this.onParentTrigger2();
+    }
   }
 
   onParentTrigger() {
@@ -149,6 +152,16 @@ class Widget extends React.Component {
     // Let's call the passed variable from parent if it's a function
     if (this.props.triggerChildFunc && {}.toString.call(this.props.triggerChildFunc) === '[object Function]') {
       this.props.triggerChildFunc();
+    }
+  }
+  onParentTrigger2() {
+    this.setState(
+      this.getWFromLS("Widget" + this.id)
+    )
+
+    // Let's call the passed variable from parent if it's a function
+    if (this.props.triggerChildFunc2 && {}.toString.call(this.props.triggerChildFunc2) === '[object Function]') {
+      this.props.triggerChildFunc2();
     }
   }
   componentDidMount(props) {

@@ -12,6 +12,7 @@ const default_Layout = {
   param_str: [],
   param_str_new: [],
   triggerFunc: null,
+  triggerFunc2: null,
   layouts: {}
 };
 
@@ -98,13 +99,26 @@ class Grid extends React.Component {
   }
 
   reloadLayout(ee) {
-
     // console.log(this.state);
     // console.log(JSON.parse(ee["rdv_layout"])["Layout"]);
-    this.setState( JSON.parse(ee["rdv_layout"])["Layout"], function () {
+    // console.log(ee);
+    Object.keys(ee).forEach(function(key) {
+      // console.log(key);
+      
+      if (global.localStorage) {
+        global.localStorage.setItem(
+          key,ee[key]
+        );
+      }
+    });
+    this.setState(JSON.parse(ee["rdv_layout"])["Layout"], function () {
       // console.log(this.state);
 
-      saveToLS("Layout", this.state);
+      this.setState({ triggerFunc2: () => {  } })
+      // saveToLS("Layout", this.state);
+      // window.location.reload(false);
+      // ee.map((e, index) =>  { 
+      // });
       // this.getWFromLS("Widget" + this.id);
     });
   }
@@ -126,7 +140,7 @@ class Grid extends React.Component {
           widgetSequence: prevState.widgetSequence
         }));
       }
-    } else {
+    } else { 
       this.setState((prevState) => ({
         widgets: prevState.widgets.filter((item) => item.id !== id),
         id_param: id === prevState.id_param ? -1 : prevState.id_param,
@@ -157,7 +171,7 @@ class Grid extends React.Component {
     const layouts = this.state.widgets.map((item) => (
       <div className="widget" key={item.id} data-grid={config}>
         <div className="mscroll" style={{ width: "100%", height: "100%" }}>
-          <Widget triggerChildFunc={this.state.triggerFunc} grid={this} id={item.id}></Widget>
+          <Widget triggerChildFunc={this.state.triggerFunc} triggerChildFunc2={this.state.triggerFunc2} grid={this} id={item.id}></Widget>
         </div>
       </div>
     ));

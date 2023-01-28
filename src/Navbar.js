@@ -417,7 +417,7 @@ function getLocalstorageToFile(fileName) {
   /* save as blob */
 
   var textToSave = JSON.stringify(localStorage);
-  console.log((localStorage));
+  // console.log((localStorage));
 
   var textToSaveAsBlob = new Blob([textToSave], {
     type: "text/plain"
