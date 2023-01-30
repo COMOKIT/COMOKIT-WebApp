@@ -136,9 +136,10 @@ class NavigationBar extends React.Component {
                 {this.state.loaded && <td><Button color="primary" size="sm" onClick={this.tryClose}>✕</Button> </td>}
               </tr></tbody></table></div></td>
             </tr>
-
+            
+            <tr><td align='left'>Model:</td></tr>
             <tr>
-              <td>
+              <td> 
                 <select
                   id="select_model"
                   className="form-control"
@@ -148,17 +149,19 @@ class NavigationBar extends React.Component {
                   // defaultValue={"/var/www/github/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml"}                    
                   defaultValue={this.state.model_path}
                 >
-                  <option value="/var/www/github/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml@Closures">Comokit ovh - Closures</option>
-                  <option value="C:/git/PROJECT/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml@Closures">Comokit local - Closures</option>
-                  <option value="C:/git/PROJECT/COMOKIT-Model/COMOKIT/Macro/Models/Experiments/No containment.gaml@No Containment">Comokit local MACRO - No Containment</option>
-                  <option value="/var/www/github/COMOKIT-Model/COMOKIT/Macro/Models/Experiments/No containment.gaml@No Containment">Comokit ovh MACRO - No Containment</option>
-                  <option value="/Users/hqn88/git/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml@Closures">mac Comokit local - Closures</option>
-                  <option value="C:/git/gama/msi.gama.models/models/Tutorials/Road Traffic/models/Model 07.gaml@road_traffic">Road Traffic 07.gaml - road_traffic</option>
-                </select>
+                  <option value="/var/www/github/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml@Closures">ovh MESO - Closures</option>
+                  <option value="C:/git/PROJECT/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml@Closures">local MESO - Closures</option>
+                  <option value="C:/git/PROJECT/COMOKIT-Model/COMOKIT/Macro/Models/Experiments/No containment.gaml@No Containment">local MACRO - No Containment</option>
+                  <option value="/var/www/github/COMOKIT-Model/COMOKIT/Macro/Models/Experiments/No containment.gaml@No Containment">ovh MACRO - No Containment</option>
+                  <option value="/Users/hqn88/git/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml@Closures">macs local - Closures</option>
+                  {/* <option value="C:/git/gama/msi.gama.models/models/Tutorials/Road Traffic/models/Model 07.gaml@road_traffic">Road Traffic 07.gaml - road_traffic</option> */}
+                </select> 
               </td></tr>
 
+              <tr><td align='left'>Server:</td></tr>
             <tr>
-              <td> <select
+              <td> 
+                <select
                 id="select_host"
                 className="form-control"
                 name="url"
@@ -170,7 +173,8 @@ class NavigationBar extends React.Component {
                 <option value="wss://51.255.46.42:6001">Secure Gama ovh</option>
                 <option value="ws://localhost:6868">Local</option>
                 <option value="wss://localhost:6868">Secure Local</option>
-              </select></td>
+              </select>
+                </td>
             </tr>
 
 
