@@ -1,12 +1,15 @@
 import React from "react";
 import { Responsive, WidthProvider } from "react-grid-layout";
+import Config from "./Config";
 import Widget from "./Widget";
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 const default_Layout = {
   widgets: [{ id: 1 }],
+  configs: [{ id: 1 }],
   editing: true,
   widgetSequence: 1,
+  configSequence: 1,
   id_param: -1,
   waiting: true,
   param_str: [],
@@ -23,16 +26,18 @@ class Grid extends React.Component {
     this.reloadLayout = this.reloadLayout.bind(this);
     this.addParam = this.addParam.bind(this);
     this.addWidget = this.addWidget.bind(this);
+    this.removeWidget = this.removeWidget.bind(this);
+    this.addConfig = this.addConfig.bind(this);
+    this.removeConfig = this.removeConfig.bind(this);
     this.toggleEdit = this.toggleEdit.bind(this);
     this.waiting = this.waiting.bind(this);
     this.onShowClick = this.onShowClick.bind(this);
-    this.removeWidget = this.removeWidget.bind(this);
   }
 
-  onShowClick() {
+  onShowClick(c) {
     // this.child.current.fetchFile();
     // this.refs.child.fetchFile();
-    this.setState({ triggerFunc: () => { console.log("shown") } })
+    this.setState({ triggerFunc: () => c })
 
   };
 
@@ -129,6 +134,13 @@ class Grid extends React.Component {
     }));
   }
 
+  addConfig() {
+    this.setState((prevState) => ({
+      configs: [...prevState.configs, { id: prevState.configSequence + 1 }],
+      configSequence: prevState.configSequence + 1
+    }));
+  }
+
   removeWidget(id, conf) {
     if (conf) {
       if (window.confirm('Are you sure to remove?')) {
@@ -147,6 +159,22 @@ class Grid extends React.Component {
         //do not decrement sequence, since each new widget must
         //have unique value
         widgetSequence: prevState.widgetSequence
+      }));
+    }
+  }
+
+  removeConfig(id, conf) {
+    if (conf) {
+      if (window.confirm('Are you sure to disconnect?')) {
+        this.setState((prevState) => ({
+          configs: prevState.configs.filter((item) => item.id !== id),
+          configSequence: prevState.configSequence
+        }));
+      }
+    } else { 
+      this.setState((prevState) => ({
+        configs: prevState.configs.filter((item) => item.id !== id), 
+        configSequence: prevState.configSequence
       }));
     }
   }
@@ -176,6 +204,14 @@ class Grid extends React.Component {
       </div>
     ));
 
+    const layoutsConfig = this.state.configs.map((item) => (
+      <div className="widget" key={"c"+item.id} data-grid={config}>
+        <div className="mscroll" style={{ width: "100%", height: "100%" }}>
+          <Config grid={this} id={item.id}></Config>
+        </div>
+      </div>
+    ));
+
     return (
       <><div>
         {/* <div className="toolBar"> */}
@@ -193,6 +229,7 @@ class Grid extends React.Component {
           layouts={this.state.layouts}
           onLayoutChange={(layout, layouts) => this.onLayoutChange(layout, layouts)}
         >
+          {layoutsConfig}
           {layouts}
         </ResponsiveGridLayout>
       </div></>

@@ -49,7 +49,7 @@ class GAMA extends React.Component {
     // doConnect(c, dc) {
     //     this.connect(c, dc);
     // }
-    connect(a,opened_callback, closed_callback) { 
+    connect(a, opened_callback, closed_callback) {
         this.address = a;
         // this.modelPath = m;
         // this.experimentName = e;
@@ -210,10 +210,10 @@ class GAMA extends React.Component {
             var result = JSON.parse(e);
             // console.log(result);
             // if(result.type==="CommandExecutedSuccessfully"){
-                if (result.type==="CommandExecutedSuccessfully" && result.content) myself.exp_id = result.content;
-                if (c) {
-                    c(result);
-                }
+            if (result.type === "CommandExecutedSuccessfully" && result.content) myself.exp_id = result.content;
+            if (c) {
+                c(result);
+            }
             // }
         });
     }
@@ -272,7 +272,9 @@ class GAMA extends React.Component {
         this.queue.length = 0;
         clearInterval(this.output_executor);
         this.status = "pause";
-        this.execute(this.status, c);
+        this.execute(this.status, () => {
+            if (c) c();
+        });
     }
     // serial(asyncFunctions) {
     //     return asyncFunctions.map(function (functionChain, nextFunction) {

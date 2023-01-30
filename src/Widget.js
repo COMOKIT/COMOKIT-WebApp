@@ -147,7 +147,7 @@ class Widget extends React.Component {
   }
 
   onParentTrigger() {
-    this.fetchFile();
+    this.toConfig();
 
     // Let's call the passed variable from parent if it's a function
     if (this.props.triggerChildFunc && {}.toString.call(this.props.triggerChildFunc) === '[object Function]') {

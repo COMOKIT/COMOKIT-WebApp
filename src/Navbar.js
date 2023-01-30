@@ -38,6 +38,7 @@ class NavigationBar extends React.Component {
     this.tryReload = this.tryReload.bind(this);
     this.tryClose = this.tryClose.bind(this);
     this.tryAdd = this.tryAdd.bind(this);
+    this.tryConfig = this.tryConfig.bind(this);
     this.tryEdit = this.tryEdit.bind(this);
     this.trySave = this.trySave.bind(this);
     this.tryLoad = this.tryLoad.bind(this);
@@ -192,6 +193,7 @@ class NavigationBar extends React.Component {
                 <table><tbody><tr>
                   <td><Button color="primary" outline style={{ width: "50px" }} size="lg" onClick={this.tryEdit}>✎</Button></td>
                   <td><Button color="primary" outline style={{ width: "50px" }} size="lg" onClick={this.tryAdd}>✚</Button></td>
+                  <td><Button color="primary" outline style={{ width: "50px" }} size="lg" onClick={this.tryAdd}>✚</Button></td>
                   <td><Button color="primary" outline style={{ width: "50px" }} size="lg" onClick={this.trySave}>S</Button> </td>
                   <td>
 
@@ -221,6 +223,9 @@ class NavigationBar extends React.Component {
   }
   tryAdd() {
     this.props.grid.current.addWidget();
+  }
+  tryConfig() {
+    this.props.grid.current.addConfig();
   }
   tryEdit() {
     this.props.grid.current.toggleEdit();
