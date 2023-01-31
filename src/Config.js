@@ -1,6 +1,6 @@
 import React from 'react'
 import GAMA from "./GAMA";
-import {   Card, Button, CardTitle } from "reactstrap";
+import { Card, Button, CardTitle, Spinner } from "reactstrap";
 
 const default_Config_state = {
   data: [],
@@ -299,9 +299,9 @@ class Config extends React.Component {
 
     return (
       <><GAMA ref={this.gama} ></GAMA>
-      <div className="ConfigHeader">
-        {(this.grid.state && (this.grid.state.editing)) && ConfigHeader}
-      </div>
+        <div className="ConfigHeader">
+          {(this.grid.state && (this.grid.state.editing)) && ConfigHeader}
+        </div>
 
         <div
           style={{
@@ -321,21 +321,30 @@ class Config extends React.Component {
                     <table><tbody>
 
 
-                      <tr><td><div>
-                        <table><tbody><tr width="100%">
-                          {this.state.loaded && <td><Button color="primary" size="sm" onClick={this.tryAutoStep}>↹</Button> </td>}
-
-                          {this.state.loaded && <td><Button color="primary" size="sm" onClick={this.tryPlay}>▷</Button> </td>}
-
-                          {this.state.loaded && <td><Button color="primary" size="sm" onClick={this.tryPause}>❚❚</Button> </td>}
-
-                          {this.state.loaded && <td><Button color="primary" size="sm" onClick={this.tryStep}>⏯</Button> </td>}
-
-                          {this.state.loaded && <td><Button color="primary" size="sm" onClick={this.tryReload}>↻</Button> </td>}
-
-                          {this.state.loaded && <td><Button color="primary" size="sm" onClick={this.tryClose}>✕</Button> </td>}
-                        </tr></tbody></table></div></td>
+                      <tr><td align='left'>Server:</td></tr>
+                      <tr>
+                        <td>
+                          <select
+                            id="select_host"
+                            className="form-control"
+                            name="url"
+                            onChange={this.handleChange}
+                            defaultValue={this.state.url}
+                          // defaultValue={"ws://51.255.46.42:6001"}
+                          >
+                            <option value="ws://51.255.46.42:6001">Gama ovh</option>
+                            <option value="wss://51.255.46.42:6001">Secure Gama ovh</option>
+                            <option value="ws://localhost:6868">Local</option>
+                            <option value="wss://localhost:6868">Secure Local</option>
+                          </select>
+                        </td>
                       </tr>
+
+                      <tr><td><div><table><tbody><tr width="100%">
+                        <td><Button color="primary" style={{ width: "80px" }} size="sm" onClick={this.tryConnect}>Connect</Button></td>
+ 
+                      </tr></tbody></table></div>
+                      </td></tr>
 
                       <tr><td align='left'>Model:</td></tr>
                       <tr>
@@ -358,33 +367,47 @@ class Config extends React.Component {
                           </select>
                         </td></tr>
 
-                      <tr><td align='left'>Server:</td></tr>
-                      <tr>
-                        <td>
-                          <select
-                            id="select_host"
-                            className="form-control"
-                            name="url"
-                            onChange={this.handleChange}
-                            defaultValue={this.state.url}
-                          // defaultValue={"ws://51.255.46.42:6001"}
-                          >
-                            <option value="ws://51.255.46.42:6001">Gama ovh</option>
-                            <option value="wss://51.255.46.42:6001">Secure Gama ovh</option>
-                            <option value="ws://localhost:6868">Local</option>
-                            <option value="wss://localhost:6868">Secure Local</option>
-                          </select>
-                        </td>
+
+                      <tr><td><div><table><tbody><tr width="100%"> 
+                        {this.state.connected &&
+                          <td><Button color="primary" style={{ width: "80px" }} size="sm" onClick={this.tryLaunch}>Launch</Button></td>
+                        }
+                      </tr></tbody></table></div>
+                      </td></tr>
+
+                      <tr><td><div>
+                        <table><tbody><tr width="100%">
+                          {this.state.loaded && <td><Button color="primary" size="sm" onClick={this.tryAutoStep}>↹</Button> </td>}
+
+                          {this.state.loaded && <td><Button color="primary" size="sm" onClick={this.tryPlay}>▷</Button> </td>}
+
+                          {this.state.loaded && <td><Button color="primary" size="sm" onClick={this.tryPause}>❚❚</Button> </td>}
+
+                          {this.state.loaded && <td><Button color="primary" size="sm" onClick={this.tryStep}>⏯</Button> </td>}
+
+                          {this.state.loaded && <td><Button color="primary" size="sm" onClick={this.tryReload}>↻</Button> </td>}
+
+                          {this.state.loaded && <td><Button color="primary" size="sm" onClick={this.tryClose}>✕</Button> </td>}
+                        </tr></tbody></table></div></td>
                       </tr>
 
 
-                      <tr><td><div><table><tbody><tr width="100%">
-                        <td><Button color="primary" style={{ width: "70px" }} size="sm" onClick={this.tryConnect}>Connect</Button></td>
 
-                        {this.state.connected &&
-                          <td><Button color="primary" style={{ width: "70px" }} size="sm" onClick={this.tryLaunch}>Launch</Button></td>
+
+                      <tr><td>
+                        {
+                          (this.state.waiting) &&
+                          <Button variant="primary" disabled>
+                            <Spinner
+                              as="span"
+                              animation="border"
+                              size="sm"
+                              role="status"
+                              aria-hidden="true"
+                            />
+                            <span className="visually-hidden"> Loading...</span>
+                          </Button>
                         }
-                      </tr></tbody></table></div>
                       </td></tr>
 
                     </tbody></table>
@@ -440,7 +463,7 @@ class Config extends React.Component {
       this.gama.current.launch((e) => {
         // console.log(e);
         if (e.type === "CommandExecutedSuccessfully") {
-          window.$loaded = true; 
+          window.$loaded = true;
           this.setState((prevState) => ({
             loaded: true
           }));
@@ -455,7 +478,7 @@ class Config extends React.Component {
     }
     // window.$gama.doConnect();
   }
-  
+
   tryGenParam() {
 
     if (this.gama.current && this.gama.current.wSocket) {// && this.gama.current.wSocket.readyState!==1 
@@ -465,7 +488,7 @@ class Config extends React.Component {
 
         if (JSON.parse(ee).content && JSON.parse(ee).type === "CommandExecutedSuccessfully") {
           _this.props.grid.addParam(ee);
-          _this.props.grid.onShowClick(function(){ console.log("shown") });
+          _this.props.grid.onShowClick(function () { console.log("shown") });
         }
       });
     }
@@ -513,9 +536,9 @@ class Config extends React.Component {
   }
   tryReload() {
     if (this.gama.current && this.gama.current.wSocket) {// && this.gama.current.wSocket.readyState!== 
-      this.gama.current.queue.length = 0; 
+      this.gama.current.queue.length = 0;
       var pp = [];
-      this.props.grid.current.state.param_str_new.forEach((value, key, map) => {
+      this.props.grid.state.param_str_new.forEach((value, key, map) => {
         var v = value['value'];
         var t = "string";
         if (!isNaN(v)) {
@@ -524,7 +547,7 @@ class Config extends React.Component {
         }
         pp.push({ "name": "" + value['key'], "value": v, "type": t });
       });
- 
+
       this.gama.current.setParameters(pp);
       this.waiting(true);
       this.gama.current.reload(() => {
@@ -537,12 +560,12 @@ class Config extends React.Component {
   tryClose() {
     if (this.gama.current && this.gama.current.wSocket) {// && this.gama.current.wSocket.readyState!== 
       this.gama.current.queue.length = 0;
-      this.gama.current.pause(()=>{
+      this.gama.current.pause(() => {
         console.log("disconnected");
         this.setState((prevState) => ({
           loaded: false
         }));
-        this.gama.current.wSocket=null;
+        this.gama.current.wSocket = null;
         this.checkConnect(false);
         this.props.grid.onShowClick(null);
       });
