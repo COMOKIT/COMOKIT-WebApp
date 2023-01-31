@@ -317,7 +317,7 @@ class Config extends React.Component {
           }}
         >
           <Card body><CardTitle width={'100%'}>
-          </CardTitle> 
+          </CardTitle>
             <form>
 
 
@@ -344,7 +344,7 @@ class Config extends React.Component {
                   </td>
                 </tr>
 
-                <tr><td>
+                <tr><td colSpan={2}>
                   <div>
                     <table><tbody><tr width="100%">
                       <td><Button color="primary" style={{ width: "80px" }} size="sm" onClick={this.tryConnect}>Connect</Button></td>
@@ -373,14 +373,15 @@ class Config extends React.Component {
                   </td></tr>
 
 
-                <tr><td><div><table><tbody><tr width="100%">
-                  {this.state.connected &&
-                    <td><Button color="primary" style={{ width: "80px" }} size="sm" onClick={this.tryLaunch}>Launch</Button></td>
-                  }
-                </tr></tbody></table></div>
+                <tr><td colSpan={2}>
+                  <div><table><tbody><tr width="100%">
+                    {this.state.connected &&
+                      <td><Button color="primary" style={{ width: "80px" }} size="sm" onClick={this.tryLaunch}>Launch</Button></td>
+                    }
+                  </tr></tbody></table></div>
                 </td></tr>
 
-                <tr><td><div>
+                <tr><td colSpan={2}><div>
                   <table><tbody><tr width="100%">
                     {this.state.loaded && <td><Button color="primary" size="sm" onClick={this.tryAutoStep}>↹</Button> </td>}
 
@@ -399,7 +400,7 @@ class Config extends React.Component {
 
 
 
-                <tr><td>
+                <tr><td colSpan={2}>
                   {
                     (this.state.waiting) &&
                     <Button variant="primary" disabled>
