@@ -1,6 +1,7 @@
 import React from 'react'
-import GAMA from "./GAMA";
-import { Button, Spinner } from "reactstrap";
+// import GAMA from "./GAMA";
+import { Fab, Action } from 'react-tiny-fab';
+import 'react-tiny-fab/dist/styles.css';
 
 const default_Nav_state = {
   // url: "ws://51.255.46.42:6001",
@@ -14,6 +15,23 @@ const default_Nav_state = {
   waiting: false,
   model_path: 'C:/git/gama/msi.gama.models/models/Tutorials/Road Traffic/models/Model 05.gaml@road_traffic'
 };
+
+const components = [
+  {
+    position: {
+      bottom: 0,
+      left: 0,
+    },
+    event: 'hover',
+    alwaysShowTitle: true,
+    mainButtonStyles: {
+      backgroundColor: '#27ae60',
+    },
+    actionButtonStyles: {
+      backgroundColor: '#16a085',
+    },
+  },
+];
 
 class NavigationBar extends React.Component {
   constructor(param) {
@@ -100,118 +118,149 @@ class NavigationBar extends React.Component {
   }
 
   render() {
+    const renderComponents = c =>
+      c.map(({ mainButtonStyles, actionButtonStyles, position, event, alwaysShowTitle }, i) => (
+        <Fab
+          mainButtonStyles={mainButtonStyles}
+          style={position}
+          icon="+"
+          event={event}
+          key={i}
+          alwaysShowTitle={alwaysShowTitle}
+        >
+          <Action
+            style={actionButtonStyles}
+            text="Import"
+            onClick={this.tryLoad}
+          >
+            O
+          </Action>
+          <Action style={actionButtonStyles} text="Export" onClick={this.trySave}>
+            S
+          </Action>
+          <Action style={actionButtonStyles} text="Add widget" onClick={this.tryAdd}>
+            +
+          </Action>
+          <Action style={actionButtonStyles} text="Edit mode" onClick={this.tryEdit}>
+            ✎
+          </Action>
+        </Fab>
+      ));
     // if (this.gama.current && this.gama.current.wSocket && this.gama.current.wSocket.readyState === 1) {
-
-    return (<><GAMA ref={this.gama} ></GAMA>
-      <table height={"100%"}><tbody><tr><td valign="bottom">
-        <div>
-          <table><tbody>
-
-            <tr><td>
-              {
-                (this.state.waiting) &&
-                <Button variant="primary" disabled>
-                  <Spinner
-                    as="span"
-                    animation="border"
-                    size="sm"
-                    role="status"
-                    aria-hidden="true"
-                  />
-                  <span className="visually-hidden"> Loading...</span>
-                </Button>
-              }
-            </td></tr>
-
-            <tr><td><div>
-              <table><tbody><tr width="100%">
-                {this.state.loaded && <td><Button color="primary" size="sm" onClick={this.tryAutoStep}>↹</Button> </td>}
-
-                {this.state.loaded && <td><Button color="primary" size="sm" onClick={this.tryPlay}>▷</Button> </td>}
-
-                {this.state.loaded && <td><Button color="primary" size="sm" onClick={this.tryPause}>❚❚</Button> </td>}
-
-                {this.state.loaded && <td><Button color="primary" size="sm" onClick={this.tryStep}>⏯</Button> </td>}
-
-                {this.state.loaded && <td><Button color="primary" size="sm" onClick={this.tryReload}>↻</Button> </td>}
-
-                {this.state.loaded && <td><Button color="primary" size="sm" onClick={this.tryClose}>✕</Button> </td>}
-              </tr></tbody></table></div></td>
-            </tr>
-            
-            <tr><td align='left'>Model:</td></tr>
-            <tr>
-              <td> 
-                <select
-                  id="select_model"
-                  className="form-control"
-                  name="model_path"
-                  ref={this.mySelRef}
-                  onChange={this.handleChange}
-                  // defaultValue={"/var/www/github/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml"}                    
-                  defaultValue={this.state.model_path}
-                >
-                  <option value="/var/www/github/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml@Closures">ovh MESO - Closures</option>
-                  <option value="C:/git/PROJECT/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml@Closures">local MESO - Closures</option>
-                  <option value="C:/git/PROJECT/COMOKIT-Model/COMOKIT/Macro/Models/Experiments/No containment.gaml@No Containment">local MACRO - No Containment</option>
-                  <option value="/var/www/github/COMOKIT-Model/COMOKIT/Macro/Models/Experiments/No containment.gaml@No Containment">ovh MACRO - No Containment</option>
-                  <option value="/Users/hqn88/git/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml@Closures">macs local - Closures</option>
-                  {/* <option value="C:/git/gama/msi.gama.models/models/Tutorials/Road Traffic/models/Model 07.gaml@road_traffic">Road Traffic 07.gaml - road_traffic</option> */}
-                </select> 
-              </td></tr>
-
-              <tr><td align='left'>Server:</td></tr>
-            <tr>
-              <td> 
-                <select
-                id="select_host"
-                className="form-control"
-                name="url"
-                onChange={this.handleChange}
-                defaultValue={this.state.url}
-              // defaultValue={"ws://51.255.46.42:6001"}
-              >
-                <option value="ws://51.255.46.42:6001">Gama ovh</option>
-                <option value="wss://51.255.46.42:6001">Secure Gama ovh</option>
-                <option value="ws://localhost:6868">Local</option>
-                <option value="wss://localhost:6868">Secure Local</option>
-              </select>
-                </td>
-            </tr>
-
-
-            <tr><td><div><table><tbody><tr width="100%">
-              <td><Button color="primary" style={{ width: "70px" }} size="sm" onClick={this.tryConnect}>Connect</Button></td>
-
-              {this.state.connected &&
-                <td><Button color="primary" style={{ width: "70px" }} size="sm" onClick={this.tryLaunch}>Launch</Button></td>
-              }
-            </tr></tbody></table></div>
-            </td></tr>
-
-            <tr>
-              <td>
-                <table><tbody><tr>
-                  <td><Button color="primary" outline style={{ width: "50px" }} size="lg" onClick={this.tryEdit}>✎</Button></td>
-                  <td><Button color="primary" outline style={{ width: "50px" }} size="lg" onClick={this.tryAdd}>✚</Button></td>
-                  <td><Button color="primary" outline style={{ width: "50px" }} size="lg" onClick={this.tryAdd}>✚</Button></td>
-                  <td><Button color="primary" outline style={{ width: "50px" }} size="lg" onClick={this.trySave}>S</Button> </td>
-                  <td>
-
-                    <Button htmlFor="fileUpload" color="primary" outline style={{ width: "50px" }} size="lg" onClick={this.tryLoad}>O</Button>
-                    <input hidden
-                      ref={this.fileUploadInput} id="fileUpload" type="file" onChange={this.onFileChange} accept="text/*" />
-                  </td>
-                </tr></tbody></table>
-
-              </td>
-            </tr>
-            <tr><td height={50}></td></tr>
-          </tbody></table>
-        </div>
-      </td></tr></tbody></table>
+    return <>
+      {renderComponents(components)}
+      <input hidden ref={this.fileUploadInput} id="fileUpload" type="file" onChange={this.onFileChange} accept="text/*" />;
     </>
-    );
+    // return (<><GAMA ref={this.gama} ></GAMA>
+    //   <table height={"100%"}><tbody><tr><td valign="bottom">
+    //     <div>
+    //       <table><tbody>
+
+    //         <tr><td>
+    //           {
+    //             (this.state.waiting) &&
+    //             <Button variant="primary" disabled>
+    //               <Spinner
+    //                 as="span"
+    //                 animation="border"
+    //                 size="sm"
+    //                 role="status"
+    //                 aria-hidden="true"
+    //               />
+    //               <span className="visually-hidden"> Loading...</span>
+    //             </Button>
+    //           }
+    //         </td></tr>
+
+    //         <tr><td><div>
+    //           <table><tbody><tr width="100%">
+    //             {this.state.loaded && <td><Button color="primary" size="sm" onClick={this.tryAutoStep}>↹</Button> </td>}
+
+    //             {this.state.loaded && <td><Button color="primary" size="sm" onClick={this.tryPlay}>▷</Button> </td>}
+
+    //             {this.state.loaded && <td><Button color="primary" size="sm" onClick={this.tryPause}>❚❚</Button> </td>}
+
+    //             {this.state.loaded && <td><Button color="primary" size="sm" onClick={this.tryStep}>⏯</Button> </td>}
+
+    //             {this.state.loaded && <td><Button color="primary" size="sm" onClick={this.tryReload}>↻</Button> </td>}
+
+    //             {this.state.loaded && <td><Button color="primary" size="sm" onClick={this.tryClose}>✕</Button> </td>}
+    //           </tr></tbody></table></div></td>
+    //         </tr>
+
+    //         <tr><td align='left'>Model:</td></tr>
+    //         <tr>
+    //           <td> 
+    //             <select
+    //               id="select_model"
+    //               className="form-control"
+    //               name="model_path"
+    //               ref={this.mySelRef}
+    //               onChange={this.handleChange}
+    //               // defaultValue={"/var/www/github/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml"}                    
+    //               defaultValue={this.state.model_path}
+    //             >
+    //               <option value="/var/www/github/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml@Closures">ovh MESO - Closures</option>
+    //               <option value="C:/git/PROJECT/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml@Closures">local MESO - Closures</option>
+    //               <option value="C:/git/PROJECT/COMOKIT-Model/COMOKIT/Macro/Models/Experiments/No containment.gaml@No Containment">local MACRO - No Containment</option>
+    //               <option value="/var/www/github/COMOKIT-Model/COMOKIT/Macro/Models/Experiments/No containment.gaml@No Containment">ovh MACRO - No Containment</option>
+    //               <option value="/Users/hqn88/git/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml@Closures">macs local - Closures</option>
+    //               {/* <option value="C:/git/gama/msi.gama.models/models/Tutorials/Road Traffic/models/Model 07.gaml@road_traffic">Road Traffic 07.gaml - road_traffic</option> */}
+    //             </select> 
+    //           </td></tr>
+
+    //           <tr><td align='left'>Server:</td></tr>
+    //         <tr>
+    //           <td> 
+    //             <select
+    //             id="select_host"
+    //             className="form-control"
+    //             name="url"
+    //             onChange={this.handleChange}
+    //             defaultValue={this.state.url}
+    //           // defaultValue={"ws://51.255.46.42:6001"}
+    //           >
+    //             <option value="ws://51.255.46.42:6001">Gama ovh</option>
+    //             <option value="wss://51.255.46.42:6001">Secure Gama ovh</option>
+    //             <option value="ws://localhost:6868">Local</option>
+    //             <option value="wss://localhost:6868">Secure Local</option>
+    //           </select>
+    //             </td>
+    //         </tr>
+
+
+    //         <tr><td><div><table><tbody><tr width="100%">
+    //           <td><Button color="primary" style={{ width: "70px" }} size="sm" onClick={this.tryConnect}>Connect</Button></td>
+
+    //           {this.state.connected &&
+    //             <td><Button color="primary" style={{ width: "70px" }} size="sm" onClick={this.tryLaunch}>Launch</Button></td>
+    //           }
+    //         </tr></tbody></table></div>
+    //         </td></tr>
+
+    //         <tr>
+    //           <td>
+    //             <table><tbody><tr>
+    //               <td><Button color="primary" outline style={{ width: "50px" }} size="lg" onClick={this.tryEdit}>✎</Button></td>
+    //               <td><Button color="primary" outline style={{ width: "50px" }} size="lg" onClick={this.tryAdd}>✚</Button></td>
+    //               <td><Button color="primary" outline style={{ width: "50px" }} size="lg" onClick={this.tryAdd}>✚</Button></td>
+    //               <td><Button color="primary" outline style={{ width: "50px" }} size="lg" onClick={this.trySave}>S</Button> </td>
+    //               <td>
+
+    //                 <Button htmlFor="fileUpload" color="primary" outline style={{ width: "50px" }} size="lg" onClick={this.tryLoad}>O</Button>
+    //                 <input hidden
+    //                   ref={this.fileUploadInput} id="fileUpload" type="file" onChange={this.onFileChange} accept="text/*" />
+    //               </td>
+    //             </tr></tbody></table>
+
+    //           </td>
+    //         </tr>
+    //         <tr><td height={50}></td></tr>
+    //       </tbody></table>
+    //     </div>
+    //   </td></tr></tbody></table>
+    // </>
+    // );
 
   }
 
