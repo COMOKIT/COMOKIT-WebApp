@@ -1,6 +1,7 @@
 import React from 'react'
 import GAMA from "./GAMA";
 import { Button, Spinner } from "reactstrap";
+
 const default_Nav_state = {
   // url: "ws://51.255.46.42:6001",
   // model_path: "/var/www/github/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml",
