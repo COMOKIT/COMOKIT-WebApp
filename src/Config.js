@@ -8,6 +8,12 @@ const default_Config_state = {
   title: "",
   param: [],
 
+  // url: "ws://51.255.46.42:6001",
+  // model_path: "/var/www/github/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml",
+  url: "ws://localhost:6868",
+  // model_path:"C:/git/PROJECT/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml",
+  // exp_name: "Closures",
+  model_path: 'C:/git/gama/msi.gama.models/models/Tutorials/Road Traffic/models/Model 05.gaml@road_traffic',
   loaded: false,
   connected: false,
   waiting: false,
