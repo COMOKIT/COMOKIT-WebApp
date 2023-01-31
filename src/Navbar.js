@@ -25,10 +25,11 @@ const components = [
     event: 'hover',
     alwaysShowTitle: true,
     mainButtonStyles: {
-      backgroundColor: '#27ae60',
+      backgroundColor: 'dodgerblue', borderRadius: 8
     },
     actionButtonStyles: {
-      backgroundColor: '#16a085',
+      backgroundColor: 'dodgerblue',borderRadius: 8,
+      color: '#fff',
     },
   },
 ];
@@ -123,7 +124,7 @@ class NavigationBar extends React.Component {
         <Fab
           mainButtonStyles={mainButtonStyles}
           style={position}
-          icon="+"
+          icon="☰"
           event={event}
           key={i}
           alwaysShowTitle={alwaysShowTitle}
@@ -141,7 +142,7 @@ class NavigationBar extends React.Component {
           <Action style={actionButtonStyles} text="Add widget" onClick={this.tryAdd}>
             +
           </Action>
-          <Action style={actionButtonStyles} text="Edit mode" onClick={this.tryEdit}>
+          <Action style={actionButtonStyles} text="Edit layout" onClick={this.tryEdit}>
             ✎
           </Action>
         </Fab>

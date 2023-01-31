@@ -1,5 +1,6 @@
 import React from 'react'
 import GAMA from "./GAMA";
+import Select from 'react-select';
 import { Card, Button, CardTitle, Spinner } from "reactstrap";
 
 const default_Config_state = {
@@ -296,10 +297,16 @@ class Config extends React.Component {
     //     </td></tr>
     // ));
 
+    const options = [
+      { value: 'ws://51.255.46.42:6001', label: 'Gama ovh' },
+      { value: 'wss://51.255.46.42:6001', label: 'Secure Gama ovh' },
+      { value: 'wss://localhost:6868', label: 'Secure Local' },
+      { value: 'ws://localhost:6868', label: 'Local' }
+    ]
 
     return (
       <><GAMA ref={this.gama} ></GAMA>
-        <div className="ConfigHeader">
+        <div className="widgetHeader">
           {(this.grid.state && (this.grid.state.editing)) && ConfigHeader}
         </div>
 
@@ -309,111 +316,107 @@ class Config extends React.Component {
             width: "100%"
           }}
         >
-          <Card body><CardTitle>
-            {(this.grid.state && (this._id === this.grid.state.id_param)) && <div style={{ padding: 0 }}>Parameters</div>}
-          </CardTitle>
-
+          <Card body><CardTitle width={'100%'}>
+          </CardTitle> 
             <form>
 
-              <div>
-                <table height={"100%"}><tbody><tr><td valign="bottom">
+
+              <table width={'100%'}><tbody>
+
+
+                <tr><td width={20} align='left'>Server:</td>
+                  <td>
+                    <select
+                      id="select_host"
+                      className="form-control"
+                      name="url"
+                      onChange={this.handleChange}
+                      defaultValue={this.state.url}
+                    // defaultValue={"ws://51.255.46.42:6001"}
+                    >
+                      <option value="ws://51.255.46.42:6001">Gama ovh</option>
+                      <option value="wss://51.255.46.42:6001">Secure Gama ovh</option>
+                      <option value="ws://localhost:6868">Local</option>
+                      <option value="wss://localhost:6868">Secure Local</option>
+                    </select>
+
+                    {/* <Select options={options} /> */}
+                  </td>
+                </tr>
+
+                <tr><td>
                   <div>
-                    <table><tbody>
-
-
-                      <tr><td align='left'>Server:</td></tr>
-                      <tr>
-                        <td>
-                          <select
-                            id="select_host"
-                            className="form-control"
-                            name="url"
-                            onChange={this.handleChange}
-                            defaultValue={this.state.url}
-                          // defaultValue={"ws://51.255.46.42:6001"}
-                          >
-                            <option value="ws://51.255.46.42:6001">Gama ovh</option>
-                            <option value="wss://51.255.46.42:6001">Secure Gama ovh</option>
-                            <option value="ws://localhost:6868">Local</option>
-                            <option value="wss://localhost:6868">Secure Local</option>
-                          </select>
-                        </td>
-                      </tr>
-
-                      <tr><td><div><table><tbody><tr width="100%">
-                        <td><Button color="primary" style={{ width: "80px" }} size="sm" onClick={this.tryConnect}>Connect</Button></td>
- 
-                      </tr></tbody></table></div>
-                      </td></tr>
-
-                      <tr><td align='left'>Model:</td></tr>
-                      <tr>
-                        <td>
-                          <select
-                            id="select_model"
-                            className="form-control"
-                            name="model_path"
-                            ref={this.mySelRef}
-                            onChange={this.handleChange}
-                            // defaultValue={"/var/www/github/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml"}                    
-                            defaultValue={this.state.model_path}
-                          >
-                            <option value="/var/www/github/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml@Closures">ovh MESO - Closures</option>
-                            <option value="C:/git/PROJECT/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml@Closures">local MESO - Closures</option>
-                            <option value="C:/git/PROJECT/COMOKIT-Model/COMOKIT/Macro/Models/Experiments/No containment.gaml@No Containment">local MACRO - No Containment</option>
-                            <option value="/var/www/github/COMOKIT-Model/COMOKIT/Macro/Models/Experiments/No containment.gaml@No Containment">ovh MACRO - No Containment</option>
-                            <option value="/Users/hqn88/git/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml@Closures">macs local - Closures</option>
-                            {/* <option value="C:/git/gama/msi.gama.models/models/Tutorials/Road Traffic/models/Model 07.gaml@road_traffic">Road Traffic 07.gaml - road_traffic</option> */}
-                          </select>
-                        </td></tr>
-
-
-                      <tr><td><div><table><tbody><tr width="100%"> 
-                        {this.state.connected &&
-                          <td><Button color="primary" style={{ width: "80px" }} size="sm" onClick={this.tryLaunch}>Launch</Button></td>
-                        }
-                      </tr></tbody></table></div>
-                      </td></tr>
-
-                      <tr><td><div>
-                        <table><tbody><tr width="100%">
-                          {this.state.loaded && <td><Button color="primary" size="sm" onClick={this.tryAutoStep}>↹</Button> </td>}
-
-                          {this.state.loaded && <td><Button color="primary" size="sm" onClick={this.tryPlay}>▷</Button> </td>}
-
-                          {this.state.loaded && <td><Button color="primary" size="sm" onClick={this.tryPause}>❚❚</Button> </td>}
-
-                          {this.state.loaded && <td><Button color="primary" size="sm" onClick={this.tryStep}>⏯</Button> </td>}
-
-                          {this.state.loaded && <td><Button color="primary" size="sm" onClick={this.tryReload}>↻</Button> </td>}
-
-                          {this.state.loaded && <td><Button color="primary" size="sm" onClick={this.tryClose}>✕</Button> </td>}
-                        </tr></tbody></table></div></td>
-                      </tr>
-
-
-
-
-                      <tr><td>
-                        {
-                          (this.state.waiting) &&
-                          <Button variant="primary" disabled>
-                            <Spinner
-                              as="span"
-                              animation="border"
-                              size="sm"
-                              role="status"
-                              aria-hidden="true"
-                            />
-                            <span className="visually-hidden"> Loading...</span>
-                          </Button>
-                        }
-                      </td></tr>
-
-                    </tbody></table>
+                    <table><tbody><tr width="100%">
+                      <td><Button color="primary" style={{ width: "80px" }} size="sm" onClick={this.tryConnect}>Connect</Button></td>
+                    </tr></tbody></table>
                   </div>
-                </td></tr></tbody></table>
-              </div>
+                </td></tr>
+
+                <tr><td align='left'>Model:</td>
+                  <td>
+                    <select
+                      id="select_model"
+                      className="form-control"
+                      name="model_path"
+                      ref={this.mySelRef}
+                      onChange={this.handleChange}
+                      // defaultValue={"/var/www/github/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml"}                    
+                      defaultValue={this.state.model_path}
+                    >
+                      <option value="/var/www/github/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml@Closures">ovh MESO - Closures</option>
+                      <option value="C:/git/PROJECT/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml@Closures">local MESO - Closures</option>
+                      <option value="C:/git/PROJECT/COMOKIT-Model/COMOKIT/Macro/Models/Experiments/No containment.gaml@No Containment">local MACRO - No Containment</option>
+                      <option value="/var/www/github/COMOKIT-Model/COMOKIT/Macro/Models/Experiments/No containment.gaml@No Containment">ovh MACRO - No Containment</option>
+                      <option value="/Users/hqn88/git/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml@Closures">macs local - Closures</option>
+                      <option value="C:/git/gama/msi.gama.models/models/Tutorials/Road Traffic/models/Model 07.gaml@road_traffic">Road Traffic 07.gaml - road_traffic</option>
+                    </select>
+                  </td></tr>
+
+
+                <tr><td><div><table><tbody><tr width="100%">
+                  {this.state.connected &&
+                    <td><Button color="primary" style={{ width: "80px" }} size="sm" onClick={this.tryLaunch}>Launch</Button></td>
+                  }
+                </tr></tbody></table></div>
+                </td></tr>
+
+                <tr><td><div>
+                  <table><tbody><tr width="100%">
+                    {this.state.loaded && <td><Button color="primary" size="sm" onClick={this.tryAutoStep}>↹</Button> </td>}
+
+                    {this.state.loaded && <td><Button color="primary" size="sm" onClick={this.tryPlay}>▷</Button> </td>}
+
+                    {this.state.loaded && <td><Button color="primary" size="sm" onClick={this.tryPause}>❚❚</Button> </td>}
+
+                    {this.state.loaded && <td><Button color="primary" size="sm" onClick={this.tryStep}>⏯</Button> </td>}
+
+                    {this.state.loaded && <td><Button color="primary" size="sm" onClick={this.tryReload}>↻</Button> </td>}
+
+                    {this.state.loaded && <td><Button color="primary" size="sm" onClick={this.tryClose}>✕</Button> </td>}
+                  </tr></tbody></table></div></td>
+                </tr>
+
+
+
+
+                <tr><td>
+                  {
+                    (this.state.waiting) &&
+                    <Button variant="primary" disabled>
+                      <Spinner
+                        as="span"
+                        animation="border"
+                        size="sm"
+                        role="status"
+                        aria-hidden="true"
+                      />
+                      <span className="visually-hidden"> Loading...</span>
+                    </Button>
+                  }
+                </td></tr>
+
+
+              </tbody></table>
 
             </form>
           </Card>
