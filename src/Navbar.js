@@ -149,7 +149,7 @@ class NavigationBar extends React.Component {
     // if (this.gama.current && this.gama.current.wSocket && this.gama.current.wSocket.readyState === 1) {
     return <>
       {renderComponents(components)}
-      <input hidden ref={this.fileUploadInput} id="fileUpload" type="file" onChange={this.onFileChange} accept="text/*" />;
+      <input hidden ref={this.fileUploadInput} id="fileUpload" type="file" onChange={this.onFileChange} accept="text/plain" />;
     </>
     // return (<><GAMA ref={this.gama} ></GAMA>
     //   <table height={"100%"}><tbody><tr><td valign="bottom">
