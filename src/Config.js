@@ -25,10 +25,10 @@ const default_Config_state = {
 
   // url: "ws://51.255.46.42:6001",
   // model_path: "/var/www/github/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml",
-  url: "ws://localhost:6868",
+  url: "ws://51.255.46.42:6001",
   // model_path:"C:/git/PROJECT/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml",
   // exp_name: "Closures",
-  model_path: 'C:/git/gama/msi.gama.models/models/Tutorials/Road Traffic/models/Model 05.gaml@road_traffic',
+  model_path: '/var/www/github/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml@Closures',
   loaded: false,
   connected: false,
   waiting: false,
@@ -253,7 +253,7 @@ class Config extends React.Component {
 
                     <Creatable options={options_server}
 
-                      defaultInputValue={(options_server.find(obj => obj.value === this.state.url)).label}
+                      defaultInputValue={(options_server.find(obj => obj.value === this.state.url))?(options_server.find(obj => obj.value === this.state.url)).label:''}
                       onChange={this.handleChangeServer} />
                   </td>
                 </tr>
@@ -267,29 +267,13 @@ class Config extends React.Component {
                 </td></tr>
 
                 <tr><td align='left'>Model:</td>
-                  <td>
-                    {/* <select
-                      id="select_model"
-                      className="form-control"
-                      name="model_path"
-                      ref={this.mySelRef}
-                      onChange={this.handleChange}
-                      // defaultValue={"/var/www/github/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml"}                    
-                      defaultValue={this.state.model_path}
-                    >
-                      <option value="/var/www/github/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml@Closures">ovh MESO - Closures</option>
-                      <option value="C:/git/PROJECT/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml@Closures">local MESO - Closures</option>
-                      <option value="C:/git/PROJECT/COMOKIT-Model/COMOKIT/Macro/Models/Experiments/No containment.gaml@No Containment">local MACRO - No Containment</option>
-                      <option value="/var/www/github/COMOKIT-Model/COMOKIT/Macro/Models/Experiments/No containment.gaml@No Containment">ovh MACRO - No Containment</option>
-                      <option value="/Users/hqn88/git/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml@Closures">macs local - Closures</option>
-                      <option value="C:/git/gama/msi.gama.models/models/Tutorials/Road Traffic/models/Model 07.gaml@road_traffic">Road Traffic 07.gaml - road_traffic</option>
-                    </select> */}
+                  <td> 
 
                     <Creatable options={options_model}
                       ref={ref => {
                         this.mySelRef = ref;
                       }}
-                      defaultInputValue={(options_model.find(obj => obj.value === this.state.model_path)).label}
+                      defaultInputValue={(options_model.find(obj => obj.value === this.state.model_path))?(options_model.find(obj => obj.value === this.state.model_path)).label:''}
                       onChange={this.handleChangeModel} />
                   </td></tr>
 

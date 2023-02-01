@@ -242,11 +242,13 @@ function getFromLS(key) {
   if (global.localStorage) {
     try {
       ls = JSON.parse(global.localStorage.getItem("rdv_layout")) || {};
-      Object.keys(default_Layout).forEach(function (k) {
-        // console.log(k); 
-        // console.log(ls[key][k]===undefined);
-        if (ls[key][k]===undefined) { throw new Error('Error'+k); }
-      });
+      if(ls[key]){
+        Object.keys(default_Layout).forEach(function (k) {
+          // console.log(k); 
+          // console.log(ls[key][k]===undefined);
+          if (ls[key][k]===undefined) { throw new Error('Error'+k); }
+        });
+      }
     } catch (e) {
       console.log(e);
       return default_Layout;
