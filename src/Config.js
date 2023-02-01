@@ -1,8 +1,22 @@
 import React from 'react'
 import GAMA from "./GAMA";
-import Select from 'react-select';
+import Creatable from 'react-select/creatable';
 import { Card, Button, CardTitle, Spinner } from "reactstrap";
 
+const options_server = [
+  { value: 'ws://51.255.46.42:6001', label: 'Gama ovh' },
+  { value: 'wss://51.255.46.42:6001', label: 'Secure Gama ovh' },
+  { value: 'wss://localhost:6868', label: 'Secure Local' },
+  { value: 'ws://localhost:6868', label: 'Local' }
+]
+const options_model = [
+  { value: '/var/www/github/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml@Closures', label: 'ovh MESO - Closures' },
+  { value: 'C:/git/PROJECT/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml@Closures', label: 'local MESO - Closures' },
+  { value: 'C:/git/PROJECT/COMOKIT-Model/COMOKIT/Macro/Models/Experiments/No containment.gaml@No Containment', label: 'local MACRO - No Containment' },
+  { value: '/var/www/github/COMOKIT-Model/COMOKIT/Macro/Models/Experiments/No containment.gaml@No Containment', label: 'ovh MACRO - No Containment' },
+  { value: '/Users/hqn88/git/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml@Closures', label: 'macs local - Closures' },
+  { value: 'C:/git/gama/msi.gama.models/models/Tutorials/Road Traffic/models/Model 07.gaml@road_traffic', label: 'Road Traffic 07.gaml - road_traffic' },
+]
 const default_Config_state = {
   data: [],
   loading: false,
@@ -48,8 +62,8 @@ class Config extends React.Component {
     this.mySelRef = React.createRef();
 
     this.fetchFile = this.fetchFile.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.handleChangeM = this.handleChangeM.bind(this);
+    this.handleChangeServer = this.handleChangeServer.bind(this);
+    this.handleChangeModel = this.handleChangeModel.bind(this);
     this.handleChangeM1 = this.handleChangeM1.bind(this);
     this.handleChangeM2 = this.handleChangeM2.bind(this);
     this.handleChangeM3 = this.handleChangeM3.bind(this);
@@ -64,16 +78,6 @@ class Config extends React.Component {
     this.tryReload = this.tryReload.bind(this);
     this.tryClose = this.tryClose.bind(this);
   }
-
-  handleChange(e) {
-    this.setState({
-      [e.target.name]: e.target.value
-    }, () => {
-      this.saveCfgToLS("Config" + this.id, this.state);
-      // this.getCfgFromLS("Config" + this.id);
-    });
-  }
-
 
   componentDidUpdate(prevProps) {
     if (this.props.triggerChildFunc !== prevProps.triggerChildFunc) {
@@ -107,15 +111,6 @@ class Config extends React.Component {
       connected: false,
       loaded: false
     }));
-    // this.saveCfgToLS("Config" + this.id, this.state);
-    // if (this._id === this.grid.state.id_param) {
-    // this.setState({ param: this.grid.state.param_str }, () => {
-    //   this.saveCfgToLS("Config" + this.id, this.state);
-
-    //   this.setState(this.getCfgFromLS("Config" + this.id))
-    //   // this.getCfgFromLS("Config" + this.id);
-    // });
-    // }
   }
 
   waiting(b) {
@@ -128,10 +123,24 @@ class Config extends React.Component {
       connected: b
     }));
   }
-  handleChangeM(i, e) {
-    let formValues = this.state.mapbox;
-    formValues[i].species = e.target.value;
-    this.setState({ formValues }, () => {
+
+
+  handleChangeServer(e) {
+    console.log(e);
+    this.setState({
+      url: e.value
+    }, () => {
+      this.saveCfgToLS("Config" + this.id, this.state);
+      // this.getCfgFromLS("Config" + this.id);
+    });
+  }
+
+
+  handleChangeModel(e) {
+    console.log(e);
+    this.setState({
+      model_path: e.value
+    }, () => {
       this.saveCfgToLS("Config" + this.id, this.state);
       // this.getCfgFromLS("Config" + this.id);
     });
@@ -182,52 +191,6 @@ class Config extends React.Component {
     });
   }
 
-  addFormFields() {
-    this.setState(({
-      title: this.state.title,
-      expressions: [...this.state.expressions, {
-        expr: "",
-        displayColorPicker: false,
-        color: {
-          r: '241',
-          g: '112',
-          b: '19',
-          a: '1',
-        }
-      }]
-    }), () => {
-      this.saveCfgToLS("Config" + this.id, this.state);
-    })
-  }
-
-  addFormMapboxFields() {
-    this.setState(({
-      title: this.state.title,
-      mapbox: [...this.state.mapbox, {
-        species: "",
-        attributes: "",
-      }]
-    }), () => {
-      this.saveCfgToLS("Config" + this.id, this.state);
-    })
-  }
-
-  removeFormFields(i) {
-    let formValues = this.state.expressions;
-    formValues.splice(i, 1);
-    this.setState({ formValues }, () => {
-      this.saveCfgToLS("Config" + this.id, this.state);
-    });
-  }
-
-  removeFormMapBoxFields(i) {
-    let formValues = this.state.mapbox;
-    formValues.splice(i, 1);
-    this.setState({ formValues }, () => {
-      this.saveCfgToLS("Config" + this.id, this.state);
-    });
-  }
-
 
   fetchFile() {
     if (this.grid.state && (this._id !== this.grid.state.id_param)) {
@@ -241,15 +204,6 @@ class Config extends React.Component {
 
   render() {
 
-    // if (this.state.loading)
-    //   return (
-    //     <div style={{ height: "300px", lineHeight: "300px" }}>
-    //       <Spinner color="secondary" />
-    //     </div>
-    //   );
-
-    // console.log(this.state.expressions);
-    // console.log(this.grid.state.param_str);
     const ConfigHeader = (
       <table>
         <tbody>
@@ -272,37 +226,7 @@ class Config extends React.Component {
             >x</Button></td></tr>
         </tbody>
       </table>);
-    // const expressions_layouts = this.state.expressions.map((element, index) => (
-    //   <tr key={index}>
-    //     <td>Expr</td>
-    //     <td>
-    //       <Input type="text" name="label" placeholder="Label" value={element.label || ""} onChange={e => this.handleChangeL(index, e)} />
-    //     </td>
-    //     <td>
-    //       <Input type="text" name="expr" placeholder="Expression" value={element.expr || ""} onChange={e => this.handleChangeE(index, e)} />
-    //     </td>
 
-    //     <td>
-    //       {((index) && this.chartType !== "single") ?
-    //         <Button
-    //           className="closeBtn"
-    //           color="danger"
-    //           size="sm"
-    //           onClick={() => this.removeFormFields(index)}
-    //         >
-    //           X
-    //         </Button>
-
-    //         : ""}
-    //     </td></tr>
-    // ));
-
-    const options = [
-      { value: 'ws://51.255.46.42:6001', label: 'Gama ovh' },
-      { value: 'wss://51.255.46.42:6001', label: 'Secure Gama ovh' },
-      { value: 'wss://localhost:6868', label: 'Secure Local' },
-      { value: 'ws://localhost:6868', label: 'Local' }
-    ]
 
     return (
       <><GAMA ref={this.gama} ></GAMA>
@@ -326,21 +250,11 @@ class Config extends React.Component {
 
                 <tr><td width={20} align='left'>Server:</td>
                   <td>
-                    <select
-                      id="select_host"
-                      className="form-control"
-                      name="url"
-                      onChange={this.handleChange}
-                      defaultValue={this.state.url}
-                    // defaultValue={"ws://51.255.46.42:6001"}
-                    >
-                      <option value="ws://51.255.46.42:6001">Gama ovh</option>
-                      <option value="wss://51.255.46.42:6001">Secure Gama ovh</option>
-                      <option value="ws://localhost:6868">Local</option>
-                      <option value="wss://localhost:6868">Secure Local</option>
-                    </select>
 
-                    {/* <Select options={options} /> */}
+                    <Creatable options={options_server}
+
+                      defaultInputValue={(options_server.find(obj => obj.value === this.state.url)).label}
+                      onChange={this.handleChangeServer} />
                   </td>
                 </tr>
 
@@ -354,7 +268,7 @@ class Config extends React.Component {
 
                 <tr><td align='left'>Model:</td>
                   <td>
-                    <select
+                    {/* <select
                       id="select_model"
                       className="form-control"
                       name="model_path"
@@ -369,7 +283,14 @@ class Config extends React.Component {
                       <option value="/var/www/github/COMOKIT-Model/COMOKIT/Macro/Models/Experiments/No containment.gaml@No Containment">ovh MACRO - No Containment</option>
                       <option value="/Users/hqn88/git/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml@Closures">macs local - Closures</option>
                       <option value="C:/git/gama/msi.gama.models/models/Tutorials/Road Traffic/models/Model 07.gaml@road_traffic">Road Traffic 07.gaml - road_traffic</option>
-                    </select>
+                    </select> */}
+
+                    <Creatable options={options_model}
+                      ref={ref => {
+                        this.mySelRef = ref;
+                      }}
+                      defaultInputValue={(options_model.find(obj => obj.value === this.state.model_path)).label}
+                      onChange={this.handleChangeModel} />
                   </td></tr>
 
 
@@ -457,9 +378,17 @@ class Config extends React.Component {
       // console.log(this.props.grid);
       this.props.grid.waiting(true);
       this.waiting(true);
-      console.log(this.mySelRef.current.value);
-      this.gama.current.modelPath = this.mySelRef.current.value.split("@")[0];
-      this.gama.current.experimentName = this.mySelRef.current.value.split("@")[1];
+      // console.log(this.mySelRef);
+      // console.log(this.mySelRef.props.inputValue); 
+      // console.log((options_model.find(obj => obj.label === this.mySelRef.props.inputValue))); 
+      var mm=(options_model.find(obj => obj.label === this.mySelRef.props.inputValue));
+      if(mm===undefined){
+        mm=this.mySelRef.props.inputValue;
+      }else{
+        mm=mm.value;
+      }
+      this.gama.current.modelPath = mm.split("@")[0];
+      this.gama.current.experimentName = mm.split("@")[1];
 
       // var modelPath = 'C:/git/gama/msi.gama.models/models/Tutorials/Road Traffic/models/Model 05.gaml';
       // var experimentName = 'road_traffic';
