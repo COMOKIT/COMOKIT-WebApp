@@ -14,8 +14,8 @@ const default_Layout = {
   waiting: true,
   param_str: [],
   param_str_new: [],
-  triggerFunc: null,
-  triggerFunc2: null,
+  triggerFunc: {},
+  triggerFunc2: {},
   layouts: {}
 };
 
@@ -119,7 +119,7 @@ class Grid extends React.Component {
     this.setState(JSON.parse(ee["rdv_layout"])["Layout"], function () {
       // console.log(this.state);
 
-      this.setState({ triggerFunc2: () => {  } })
+      // this.setState({ triggerFunc2: () => {  } })
       // saveToLS("Layout", this.state);
       // window.location.reload(false);
       // ee.map((e, index) =>  { 
@@ -242,11 +242,12 @@ function getFromLS(key) {
   if (global.localStorage) {
     try {
       ls = JSON.parse(global.localStorage.getItem("rdv_layout")) || {};
+      // console.log(ls[key] );
       if(ls[key]){
         Object.keys(default_Layout).forEach(function (k) {
           // console.log(k); 
           // console.log(ls[key][k]===undefined);
-          if (ls[key][k]===undefined) { throw new Error('Error'+k); }
+          if (ls[key][k]===undefined) { throw new Error('undefined '+k); }
         });
       }
     } catch (e) {
