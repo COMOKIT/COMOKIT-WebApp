@@ -242,7 +242,7 @@ function getFromLS(key) {
   if (global.localStorage) {
     try {
       ls = JSON.parse(global.localStorage.getItem("rdv_layout")) || {};
-      // console.log(ls[key] );
+      console.log(ls[key] );
       if(ls[key]){
         Object.keys(default_Layout).forEach(function (k) {
           // console.log(k); 

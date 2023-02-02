@@ -253,7 +253,7 @@ class Config extends React.Component {
 
                     <Creatable options={options_server}
 
-                      defaultInputValue={(options_server.find(obj => obj.value === this.state.url))?(options_server.find(obj => obj.value === this.state.url)).label:''}
+                      defaultInputValue={(options_server.find(obj => obj.value === this.state.url))?(options_server.find(obj => obj.value === this.state.url)).label:this.state.url}
                       onChange={this.handleChangeServer} />
                   </td>
                 </tr>
@@ -273,7 +273,7 @@ class Config extends React.Component {
                       ref={ref => {
                         this.mySelRef = ref;
                       }}
-                      defaultInputValue={(options_model.find(obj => obj.value === this.state.model_path))?(options_model.find(obj => obj.value === this.state.model_path)).label:''}
+                      defaultInputValue={(options_model.find(obj => obj.value === this.state.model_path))?(options_model.find(obj => obj.value === this.state.model_path)).label:this.state.model_path}
                       onChange={this.handleChangeModel} />
                   </td></tr>
 
