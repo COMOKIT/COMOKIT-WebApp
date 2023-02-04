@@ -76,7 +76,7 @@ class Widget extends React.Component {
     this.state = this.getWFromLS("Widget" + this.id) || default_Widget_state;
     this.grid = param.grid;
 
-    this.toConfig = this.toConfig.bind(this);
+    this.toEdit = this.toEdit.bind(this);
     this.fetchFile = this.fetchFile.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleChangeColor = this.handleChangeColor.bind(this);
@@ -147,7 +147,7 @@ class Widget extends React.Component {
   }
 
   onParentTrigger() {
-    this.toConfig();
+    this.toEdit();
 
     // Let's call the passed variable from parent if it's a function
     if (this.props.triggerChildFunc && {}.toString.call(this.props.triggerChildFunc) === '[object Function]') {
@@ -321,7 +321,7 @@ class Widget extends React.Component {
     //   );
   }
 
-  toConfig() {
+  toEdit() {
     if (this.grid.state && (this._id !== this.grid.state.id_param)) {
 
       if (this.state.data.length < 1) {
@@ -360,7 +360,7 @@ class Widget extends React.Component {
               className="closeBtn"
               color="info"
               size="sm"
-              onClick={() => this.toConfig()}
+              onClick={() => this.toEdit()}
               disabled={false && this.grid.state.waiting}
             >⚙</Button></td>
             <td> <Button

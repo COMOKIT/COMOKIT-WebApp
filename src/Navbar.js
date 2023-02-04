@@ -58,7 +58,7 @@ class NavigationBar extends React.Component {
     this.tryReload = this.tryReload.bind(this);
     this.tryClose = this.tryClose.bind(this);
     this.tryAdd = this.tryAdd.bind(this);
-    this.tryConfig = this.tryConfig.bind(this);
+    this.tryExperiment = this.tryExperiment.bind(this);
     this.tryEdit = this.tryEdit.bind(this);
     this.trySave = this.trySave.bind(this);
     this.tryLoad = this.tryLoad.bind(this);
@@ -275,8 +275,8 @@ class NavigationBar extends React.Component {
   tryAdd() {
     this.props.grid.current.addWidget();
   }
-  tryConfig() {
-    this.props.grid.current.addConfig();
+  tryExperiment() {
+    this.props.grid.current.addExperiment();
   }
   tryEdit() {
     this.props.grid.current.toggleEdit();

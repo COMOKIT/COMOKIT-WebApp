@@ -17,7 +17,7 @@ const options_model = [
   { value: '/Users/hqn88/git/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml@Closures', label: 'macs local - Closures' },
   { value: 'C:/git/gama/msi.gama.models/models/Tutorials/Road Traffic/models/Model 07.gaml@road_traffic', label: 'Road Traffic 07.gaml - road_traffic' },
 ]
-const default_Config_state = {
+const default_Experiment_state = {
   data: [],
   loading: false,
   title: "",
@@ -44,19 +44,19 @@ const default_Config_state = {
     }
   }]
 };
-class Config extends React.Component {
+class Experiment extends React.Component {
   // static id;
   constructor(param) {
     super();
-    // if (typeof Config.id === 'undefined') {
-    //   Config.id = 0;
+    // if (typeof Experiment.id === 'undefined') {
+    //   Experiment.id = 0;
     // } else {
-    //   Config.id += 1;
+    //   Experiment.id += 1;
     // }
-    // this.id = "m" + Config.id;
+    // this.id = "m" + Experiment.id;
     this._id = param.id;
     this.id = "m" + param.id;
-    this.state = this.getCfgFromLS("Config" + this.id) || default_Config_state;
+    this.state = this.getCfgFromLS("Experiment" + this.id) || default_Experiment_state;
     this.grid = param.grid;
     this.gama = React.createRef();
     this.mySelRef = React.createRef();
@@ -98,7 +98,7 @@ class Config extends React.Component {
   }
   onParentTrigger2() {
     this.setState(
-      this.getCfgFromLS("Config" + this.id)
+      this.getCfgFromLS("Experiment" + this.id)
     )
 
     // Let's call the passed variable from parent if it's a function
@@ -130,8 +130,8 @@ class Config extends React.Component {
     this.setState({
       url: e.value
     }, () => {
-      this.saveCfgToLS("Config" + this.id, this.state);
-      // this.getCfgFromLS("Config" + this.id);
+      this.saveCfgToLS("Experiment" + this.id, this.state);
+      // this.getCfgFromLS("Experiment" + this.id);
     });
   }
 
@@ -141,8 +141,8 @@ class Config extends React.Component {
     this.setState({
       model_path: e.value
     }, () => {
-      this.saveCfgToLS("Config" + this.id, this.state);
-      // this.getCfgFromLS("Config" + this.id);
+      this.saveCfgToLS("Experiment" + this.id, this.state);
+      // this.getCfgFromLS("Experiment" + this.id);
     });
   }
 
@@ -150,8 +150,8 @@ class Config extends React.Component {
     let formValues = this.state.mapbox;
     formValues[i].attributes = e.target.value;
     this.setState({ formValues }, () => {
-      this.saveCfgToLS("Config" + this.id, this.state);
-      // this.getCfgFromLS("Config" + this.id);
+      this.saveCfgToLS("Experiment" + this.id, this.state);
+      // this.getCfgFromLS("Experiment" + this.id);
     });
   }
 
@@ -159,8 +159,8 @@ class Config extends React.Component {
     let formValues = this.state.mapbox;
     formValues[i].style = e.target.value;
     this.setState({ formValues }, () => {
-      this.saveCfgToLS("Config" + this.id, this.state);
-      // this.getCfgFromLS("Config" + this.id);
+      this.saveCfgToLS("Experiment" + this.id, this.state);
+      // this.getCfgFromLS("Experiment" + this.id);
     });
   }
 
@@ -168,8 +168,8 @@ class Config extends React.Component {
     let formValues = this.state.mapbox;
     formValues[i].type = e.target.value;
     this.setState({ formValues }, () => {
-      this.saveCfgToLS("Config" + this.id, this.state);
-      // this.getCfgFromLS("Config" + this.id);
+      this.saveCfgToLS("Experiment" + this.id, this.state);
+      // this.getCfgFromLS("Experiment" + this.id);
     });
   }
 
@@ -177,8 +177,8 @@ class Config extends React.Component {
     let formValues = this.state.expressions;
     formValues[i].label = e.target.value;
     this.setState({ formValues }, () => {
-      this.saveCfgToLS("Config" + this.id, this.state);
-      // this.getCfgFromLS("Config" + this.id);
+      this.saveCfgToLS("Experiment" + this.id, this.state);
+      // this.getCfgFromLS("Experiment" + this.id);
     });
   }
   handleChangeE(i, e) {
@@ -186,8 +186,8 @@ class Config extends React.Component {
     // console.log(i+" "+formValues);
     formValues[i][e.target.name] = e.target.value;
     this.setState({ formValues }, () => {
-      this.saveCfgToLS("Config" + this.id, this.state);
-      // this.getCfgFromLS("Config" + this.id);
+      this.saveCfgToLS("Experiment" + this.id, this.state);
+      // this.getCfgFromLS("Experiment" + this.id);
     });
   }
 
@@ -204,7 +204,7 @@ class Config extends React.Component {
 
   render() {
 
-    const ConfigHeader = (
+    const ExperimentHeader = (
       <table>
         <tbody>
 
@@ -215,14 +215,14 @@ class Config extends React.Component {
               className="closeBtn"
               color="info"
               size="sm"
-              onClick={() => this.toConfig()}
+              onClick={() => this.toExperiment()}
               disabled={false && this.grid.state.waiting}
             >⚙</Button></td> */}
             <td> <Button
               className="closeBtn"
               color="danger"
               size="sm"
-              onClick={() => this.grid.removeConfig(this._id, true)}
+              onClick={() => this.grid.removeExperiment(this._id, true)}
             >x</Button></td></tr>
         </tbody>
       </table>);
@@ -231,7 +231,7 @@ class Config extends React.Component {
     return (
       <><GAMA ref={this.gama} ></GAMA>
         <div className="widgetHeader">
-          {(this.grid.state && (this.grid.state.editing)) && ConfigHeader}
+          {(this.grid.state && (this.grid.state.editing)) && ExperimentHeader}
         </div>
 
         <div
@@ -332,8 +332,8 @@ class Config extends React.Component {
     // if (this.props.updateMethod) {
     //   this.Method();
     // }
-    // return <><div className="ConfigHeader">
-    //   {(this.grid.state && (this.grid.state.editing)) && ConfigHeader}
+    // return <><div className="ExperimentHeader">
+    //   {(this.grid.state && (this.grid.state.editing)) && ExperimentHeader}
     // </div><SingleCharts props={this.state}></SingleCharts></>;
   }
 
@@ -494,14 +494,14 @@ class Config extends React.Component {
     let ls = {};
     if (global.localStorage) {
       try {
-        ls = JSON.parse(global.localStorage.getItem("rdv_Config" + key)) || {};
+        ls = JSON.parse(global.localStorage.getItem("rdv_Experiment" + key)) || {};
         if (ls[key]) {
           ls[key].expressions.map((element, index) => ({}));
         }
         // console.log(ls);
       } catch (e) {
         console.log(e + " " + key + " " + ls[key]);
-        return default_Config_state;
+        return default_Experiment_state;
       }
     }
     return ls[key];
@@ -510,7 +510,7 @@ class Config extends React.Component {
   saveCfgToLS(key, value) {
     if (global.localStorage) {
       global.localStorage.setItem(
-        "rdv_Config" + key,
+        "rdv_Experiment" + key,
         JSON.stringify({
           [key]: value
         })
@@ -519,4 +519,4 @@ class Config extends React.Component {
   }
 }
 
-export default Config;
+export default Experiment;

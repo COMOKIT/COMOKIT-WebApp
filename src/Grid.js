@@ -1,21 +1,19 @@
 import React from "react";
 import { Responsive, WidthProvider } from "react-grid-layout";
-import Config from "./Config";
+import Experiment from "./Experiment";
 import Widget from "./Widget";
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 const default_Layout = {
   widgets: [{ id: 1 }],
-  configs: [{ id: 1 }],
+  exps: [{ id: 1 }],
   editing: true,
   widgetSequence: 1,
-  configSequence: 1,
+  expSequence: 1,
   id_param: -1,
   waiting: true,
   param_str: [],
   param_str_new: [],
-  triggerFunc: {},
-  triggerFunc2: {},
   layouts: {}
 };
 
@@ -27,8 +25,8 @@ class Grid extends React.Component {
     this.addParam = this.addParam.bind(this);
     this.addWidget = this.addWidget.bind(this);
     this.removeWidget = this.removeWidget.bind(this);
-    this.addConfig = this.addConfig.bind(this);
-    this.removeConfig = this.removeConfig.bind(this);
+    this.addExperiment = this.addExperiment.bind(this);
+    this.removeExperiment = this.removeExperiment.bind(this);
     this.toggleEdit = this.toggleEdit.bind(this);
     this.waiting = this.waiting.bind(this);
     this.onShowClick = this.onShowClick.bind(this);
@@ -119,7 +117,7 @@ class Grid extends React.Component {
     this.setState(JSON.parse(ee["rdv_layout"])["Layout"], function () {
       // console.log(this.state);
 
-      // this.setState({ triggerFunc2: () => {  } })
+      this.setState({ triggerFunc2: () => {  } })
       // saveToLS("Layout", this.state);
       // window.location.reload(false);
       // ee.map((e, index) =>  { 
@@ -134,10 +132,10 @@ class Grid extends React.Component {
     }));
   }
 
-  addConfig() {
+  addExperiment() {
     this.setState((prevState) => ({
-      configs: [...prevState.configs, { id: prevState.configSequence + 1 }],
-      configSequence: prevState.configSequence + 1
+      exps: [...prevState.exps, { id: prevState.expSequence + 1 }],
+      expSequence: prevState.expSequence + 1
     }));
   }
 
@@ -163,18 +161,18 @@ class Grid extends React.Component {
     }
   }
 
-  removeConfig(id, conf) {
+  removeExperiment(id, conf) {
     if (conf) {
       if (window.confirm('Are you sure to disconnect?')) {
         this.setState((prevState) => ({
-          configs: prevState.configs.filter((item) => item.id !== id),
-          configSequence: prevState.configSequence
+          exps: prevState.exps.filter((item) => item.id !== id),
+          expSequence: prevState.expSequence
         }));
       }
     } else { 
       this.setState((prevState) => ({
-        configs: prevState.configs.filter((item) => item.id !== id), 
-        configSequence: prevState.configSequence
+        exps: prevState.exps.filter((item) => item.id !== id), 
+        expSequence: prevState.expSequence
       }));
     }
   }
@@ -204,10 +202,10 @@ class Grid extends React.Component {
       </div>
     ));
 
-    const layoutsConfig = this.state.configs.map((item) => (
+    const layoutsExperiment = this.state.exps.map((item) => (
       <div className="widget" key={"c"+item.id} data-grid={config}>
         <div className="mscroll" style={{ width: "100%", height: "100%" }}>
-          <Config grid={this} id={item.id}></Config>
+          <Experiment grid={this} id={item.id}></Experiment>
         </div>
       </div>
     ));
@@ -229,7 +227,7 @@ class Grid extends React.Component {
           layouts={this.state.layouts}
           onLayoutChange={(layout, layouts) => this.onLayoutChange(layout, layouts)}
         >
-          {layoutsConfig}
+          {layoutsExperiment}
           {layouts}
         </ResponsiveGridLayout>
       </div></>
