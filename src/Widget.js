@@ -2,6 +2,7 @@ import React from 'react'
 import reactCSS from 'reactcss'
 import { SketchPicker } from 'react-color'
 import Charts from "./SeriesChart";
+import AreaCharts from "./AreaChart";
 import SingleCharts from "./SingleChart";
 import { Input, Card, Button, CardTitle } from "reactstrap";
 import BaseMap from "./BaseMap";
@@ -513,8 +514,9 @@ class Widget extends React.Component {
                         defaultValue={this.state.chartType}
                       >
                         <option value="geojson">Geojson</option>
-                        <option value="series">SeriesChart</option>
                         <option value="single">SingleMetric</option>
+                        <option value="series">SeriesChart</option>
+                        <option value="area">AreaChart</option>
                       </select>
                     </td>
                     </tr>
@@ -535,7 +537,7 @@ class Widget extends React.Component {
                       Add Source
                     </Button>
                   </>}
-                  {((this.state.chartType === "series" || this.state.chartType === "single") && this.grid.state && (this._id !== this.grid.state.id_param)) &&
+                  {((this.state.chartType === "series" || this.state.chartType === "area" || this.state.chartType === "single") && this.grid.state && (this._id !== this.grid.state.id_param)) &&
                   <><div>
                     <table width={'100%'}><tbody><tr>
                       <td>Title </td>
@@ -544,7 +546,7 @@ class Widget extends React.Component {
                           onChange={this.handleChange} /></td></tr>
                       {expressions_layouts}</tbody></table>
                   </div>
-                    {this.state.chartType === "series" && <Button color="primary" size="sm" onClick={() => this.addFormFields()}>
+                    {(this.state.chartType === "series" || this.state.chartType === "area") && <Button color="primary" size="sm" onClick={() => this.addFormFields()}>
                       Add Expression
                     </Button>}
                   </>}
@@ -560,6 +562,11 @@ class Widget extends React.Component {
       return <><div className="widgetHeader">
         {(this.grid.state && (this.grid.state.editing)) && widgetHeader}
       </div><Charts props={this.state}></Charts></>;
+    }
+    if (this.state.chartType === "area") {
+      return <><div className="widgetHeader">
+        {(this.grid.state && (this.grid.state.editing)) && widgetHeader}
+      </div><AreaCharts props={this.state}></AreaCharts></>;
     }
     if (this.state.chartType === "single") {
       return <><div className="widgetHeader">
