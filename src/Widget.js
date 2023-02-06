@@ -7,6 +7,7 @@ import SingleCharts from "./SingleChart";
 import { Input, Card, Button, CardTitle } from "reactstrap";
 import BaseMap from "./BaseMap";
 
+const lst_type = ['series', 'area']; 
 const styles = reactCSS({
   'default': {
     color: {
@@ -94,8 +95,8 @@ class Widget extends React.Component {
 
   handleFuel(event) {
     // let checkbox = event.target.checked;  
-    console.log(event.target); 
-    console.log(event.target.name + " "+event.target.value+ " "+event.target.checked);
+    console.log(event.target);
+    console.log(event.target.name + " " + event.target.value + " " + event.target.checked);
     // this.setState({ values: nValues });
   }
 
@@ -180,7 +181,7 @@ class Widget extends React.Component {
     let formValues = this.state.param;
     formValues[i]["value"] = e.target.value;
     // console.log(formValues[i]);
-    this.setState({ param: formValues }, () => { 
+    this.setState({ param: formValues }, () => {
       this.grid.updateParam(this.state.param);
       this.saveWToLS("Widget" + this.id, this.state);
       // this.getWFromLS("Widget" + this.id);
@@ -340,7 +341,6 @@ class Widget extends React.Component {
   }
 
   render() {
-
     // if (this.state.loading)
     //   return (
     //     <div style={{ height: "300px", lineHeight: "300px" }}>
@@ -368,7 +368,7 @@ class Widget extends React.Component {
               className="closeBtn"
               color="danger"
               size="sm"
-              onClick={() => this.grid.removeWidget(this._id,true)}
+              onClick={() => this.grid.removeWidget(this._id, true)}
             >x</Button></td></tr>
         </tbody>
       </table>);
@@ -389,19 +389,19 @@ class Widget extends React.Component {
             </td></tr>
           <tr><td>Type</td>
             <td>
-            <select
+              <select
                 id="select_mbtype"
                 className="form-control"
                 name="mtype"
                 // onChange={this.handleChange}
-                onChange={e => this.handleChangeM3(index, e)} 
+                onChange={e => this.handleChangeM3(index, e)}
                 // defaultValue={this.state.url}
                 value={element.type || "circle"}
               // defaultValue={"ws://51.255.46.42:6001"}
               >
                 <option value="circle">Circle</option>
                 <option value="line">Line</option>
-                <option value="fill">Fill</option> 
+                <option value="fill">Fill</option>
               </select>
 
 
@@ -537,7 +537,7 @@ class Widget extends React.Component {
                       Add Source
                     </Button>
                   </>}
-                  {((this.state.chartType === "series" || this.state.chartType === "area" || this.state.chartType === "single") && this.grid.state && (this._id !== this.grid.state.id_param)) &&
+                {((lst_type.includes(this.state.chartType) || this.state.chartType === "single") && this.grid.state && (this._id !== this.grid.state.id_param)) &&
                   <><div>
                     <table width={'100%'}><tbody><tr>
                       <td>Title </td>
@@ -546,7 +546,7 @@ class Widget extends React.Component {
                           onChange={this.handleChange} /></td></tr>
                       {expressions_layouts}</tbody></table>
                   </div>
-                    {(this.state.chartType === "series" || this.state.chartType === "area") && <Button color="primary" size="sm" onClick={() => this.addFormFields()}>
+                    {(lst_type.includes(this.state.chartType)) && <Button color="primary" size="sm" onClick={() => this.addFormFields()}>
                       Add Expression
                     </Button>}
                   </>}
