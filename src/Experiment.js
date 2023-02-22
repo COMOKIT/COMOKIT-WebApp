@@ -4,25 +4,27 @@ import Creatable from 'react-select/creatable';
 import { Card, Button, CardTitle, Spinner } from "reactstrap";
 
 const options_server = [];
+const options_model = [];
 
 if (process.env.REACT_APP_ENABLE_LOCALHOST_GAMA){
   var url = (process.env.REACT_APP_USE_SECURE_WEBSOCKET ? 'wss' : 'ws') + '://localhost:'+ process.env.REACT_APP_LOCALHOST_GAMA_PORT;
   options_server.push({ value: url, label: 'Local GAMA' });
+
+  options_model.push({ value: process.env.REACT_APP_LOCALHOST_COMOKIT_GIT_WORKSPACE + '/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml@Closures', label: '[LOCAL] MESO - Closures' });
+  options_model.push({ value: process.env.REACT_APP_LOCALHOST_COMOKIT_GIT_WORKSPACE + 'Macro/Models/Experiments/No containment.gaml@No Containment', label: '[LOCAL] MACRO - No Containment' });
 }
 
 if (process.env.REACT_APP_ENABLE_REMOTE_GAMA){
   var url = (process.env.REACT_APP_USE_SECURE_WEBSOCKET ? 'wss' : 'ws') + '://' + process.env.REACT_APP_REMOTE_GAMA_IP + ':' + process.env.REACT_APP_REMOTE_GAMA_PORT;
   options_server.push({ value: url, label: 'Remote GAMA' });
+
+  options_model.push({ value: process.env.REACT_APP_REMOTE_COMOKIT_GIT_WORKSPACE + '/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml@Closures', label: '[REMOTE] MESO - Closures' });
+  options_model.push({ value: process.env.REACT_APP_REMOTE_COMOKIT_GIT_WORKSPACE + 'Macro/Models/Experiments/No containment.gaml@No Containment', label: '[REMOTE] MACRO - No Containment' });
 }
 
-const options_model = [
-  { value: '/var/www/github/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml@Closures', label: 'ovh MESO - Closures' },
-  { value: 'C:/git/PROJECT/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml@Closures', label: 'local MESO - Closures' },
-  { value: 'C:/git/PROJECT/COMOKIT-Model/COMOKIT/Macro/Models/Experiments/No containment.gaml@No Containment', label: 'local MACRO - No Containment' },
-  { value: '/var/www/github/COMOKIT-Model/COMOKIT/Macro/Models/Experiments/No containment.gaml@No Containment', label: 'ovh MACRO - No Containment' },
-  { value: '/Users/hqn88/git/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml@Closures', label: 'macs local - Closures' },
-  { value: 'C:/git/gama/msi.gama.models/models/Tutorials/Road Traffic/models/Model 07.gaml@road_traffic', label: 'Road Traffic 07.gaml - road_traffic' },
-]
+//  { value: 'C:/git/gama/msi.gama.models/models/Tutorials/Road Traffic/models/Model 07.gaml@road_traffic', label: 'Road Traffic 07.gaml - road_traffic' }
+
+
 const default_Experiment_state = {
   data: [],
   loading: false,
