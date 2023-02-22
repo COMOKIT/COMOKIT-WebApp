@@ -1,9 +1,10 @@
 import React, { useEffect, useRef } from "react";
-import mapboxgl from '!mapbox-gl'; // eslint-disable-line import/no-webpack-loader-syntax
+import mapboxgl from '!mapbox-gl';
 
 import MapGeojson from "./MapGeojson";
+
 const BaseMap = (props) => {
-  mapboxgl.accessToken = 'pk.eyJ1IjoiaHFuZ2hpODgiLCJhIjoiY2t0N2w0cGZ6MHRjNTJ2bnJtYm5vcDB0YyJ9.oTjisOggN28UFY8q1hiAug';
+  mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
   // console.log(props.parent);
   const mymap = useRef(null);
 
@@ -17,7 +18,6 @@ const BaseMap = (props) => {
       center: [105.8249019, 21.0076181], // TLU -84.5, 38.05starting position 
       zoom: 15 // starting zoom
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mymap]); 
   
   return (
