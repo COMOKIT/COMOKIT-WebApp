@@ -77,7 +77,7 @@ function start_renderer() {
 	}, 100);
 }
 
-mapboxgl.accessToken = 'pk.eyJ1IjoiaHFuZ2hpODgiLCJhIjoiY2t0N2w0cGZ6MHRjNTJ2bnJtYm5vcDB0YyJ9.oTjisOggN28UFY8q1hiAug';
+mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
 const map = new mapboxgl.Map({
 	container: mapid,
 	style: 'mapbox://styles/mapbox/satellite-streets-v11',
