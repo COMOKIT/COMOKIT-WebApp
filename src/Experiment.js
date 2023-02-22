@@ -3,12 +3,18 @@ import GAMA from "./GAMA";
 import Creatable from 'react-select/creatable';
 import { Card, Button, CardTitle, Spinner } from "reactstrap";
 
-const options_server = [
-  { value: 'ws://51.255.46.42:6001', label: 'Gama ovh' },
-  { value: 'wss://51.255.46.42:6001', label: 'Secure Gama ovh' },
-  { value: 'wss://localhost:6868', label: 'Secure Local' },
-  { value: 'ws://localhost:6868', label: 'Local' }
-]
+const options_server = [];
+
+if (process.env.REACT_APP_ENABLE_LOCALHOST_GAMA){
+  var url = (process.env.REACT_APP_USE_SECURE_WEBSOCKET ? 'wss' : 'ws') + '://localhost:'+ process.env.REACT_APP_LOCALHOST_GAMA_PORT;
+  options_server.push({ value: url, label: 'Local GAMA' });
+}
+
+if (process.env.REACT_APP_ENABLE_REMOTE_GAMA){
+  var url = (process.env.REACT_APP_USE_SECURE_WEBSOCKET ? 'wss' : 'ws') + '://' + process.env.REACT_APP_REMOTE_GAMA_IP + ':' + process.env.REACT_APP_REMOTE_GAMA_PORT;
+  options_server.push({ value: url, label: 'Remote GAMA' });
+}
+
 const options_model = [
   { value: '/var/www/github/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml@Closures', label: 'ovh MESO - Closures' },
   { value: 'C:/git/PROJECT/COMOKIT-Model/COMOKIT/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml@Closures', label: 'local MESO - Closures' },
