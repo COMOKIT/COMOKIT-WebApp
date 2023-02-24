@@ -11,7 +11,7 @@ if (process.env.REACT_APP_ENABLE_LOCALHOST_GAMA){
   options_server.push({ value: url, label: 'Local GAMA' });
 
   options_model.push({ value: process.env.REACT_APP_LOCALHOST_COMOKIT_GIT_WORKSPACE + '/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml@Closures', label: '[LOCAL] MESO - Closures' });
-  options_model.push({ value: process.env.REACT_APP_LOCALHOST_COMOKIT_GIT_WORKSPACE + 'Macro/Models/Experiments/No containment.gaml@No Containment', label: '[LOCAL] MACRO - No Containment' });
+  options_model.push({ value: process.env.REACT_APP_LOCALHOST_COMOKIT_GIT_WORKSPACE + '/Macro/Models/Experiments/No containment.gaml@No Containment', label: '[LOCAL] MACRO - No Containment' });
 }
 
 if (process.env.REACT_APP_ENABLE_REMOTE_GAMA){
@@ -19,7 +19,7 @@ if (process.env.REACT_APP_ENABLE_REMOTE_GAMA){
   options_server.push({ value: url, label: 'Remote GAMA' });
 
   options_model.push({ value: process.env.REACT_APP_REMOTE_COMOKIT_GIT_WORKSPACE + '/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml@Closures', label: '[REMOTE] MESO - Closures' });
-  options_model.push({ value: process.env.REACT_APP_REMOTE_COMOKIT_GIT_WORKSPACE + 'Macro/Models/Experiments/No containment.gaml@No Containment', label: '[REMOTE] MACRO - No Containment' });
+  options_model.push({ value: process.env.REACT_APP_REMOTE_COMOKIT_GIT_WORKSPACE + '/Macro/Models/Experiments/No containment.gaml@No Containment', label: '[REMOTE] MACRO - No Containment' });
 }
 
 //  { value: 'C:/git/gama/msi.gama.models/models/Tutorials/Road Traffic/models/Model 07.gaml@road_traffic', label: 'Road Traffic 07.gaml - road_traffic' }
