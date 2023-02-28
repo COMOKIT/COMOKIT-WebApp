@@ -7,7 +7,7 @@ const options_server = [];
 const options_model = [];
 
 if (process.env.REACT_APP_ENABLE_LOCALHOST_GAMA){
-  var url = (process.env.REACT_APP_USE_SECURE_WEBSOCKET ? 'wss' : 'ws') + '://localhost:'+ process.env.REACT_APP_LOCALHOST_GAMA_PORT;
+  const url = (process.env.REACT_APP_USE_SECURE_WEBSOCKET ? 'wss' : 'ws') + '://localhost:'+ process.env.REACT_APP_LOCALHOST_GAMA_PORT;
   options_server.push({ value: url, label: 'Local GAMA' });
 
   options_model.push({ value: process.env.REACT_APP_LOCALHOST_COMOKIT_GIT_WORKSPACE + '/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml@Closures', label: '[LOCAL] MESO - Closures' });
@@ -15,7 +15,7 @@ if (process.env.REACT_APP_ENABLE_LOCALHOST_GAMA){
 }
 
 if (process.env.REACT_APP_ENABLE_REMOTE_GAMA){
-  var url = (process.env.REACT_APP_USE_SECURE_WEBSOCKET ? 'wss' : 'ws') + '://' + process.env.REACT_APP_REMOTE_GAMA_IP + ':' + process.env.REACT_APP_REMOTE_GAMA_PORT;
+  const url = (process.env.REACT_APP_USE_SECURE_WEBSOCKET ? 'wss' : 'ws') + '://' + process.env.REACT_APP_REMOTE_GAMA_IP + ':' + process.env.REACT_APP_REMOTE_GAMA_PORT;
   options_server.push({ value: url, label: 'Remote GAMA' });
 
   options_model.push({ value: process.env.REACT_APP_REMOTE_COMOKIT_GIT_WORKSPACE + '/Meso/Models/Experiments/Activity Restrictions/School and Workplace Closure.gaml@Closures', label: '[REMOTE] MESO - Closures' });
