@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import mapboxgl from '!mapbox-gl';  
+import mapboxgl from '!mapbox-gl'; // eslint-disable-line import/no-webpack-loader-syntax
 
 import MapGeojson from "./MapGeojson";
 
@@ -17,7 +17,8 @@ const BaseMap = (props) => {
       antialias: false,
       center: [105.8249019, 21.0076181], // TLU -84.5, 38.05starting position 
       zoom: 15 // starting zoom
-    }); 
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mymap]); 
   
   return (

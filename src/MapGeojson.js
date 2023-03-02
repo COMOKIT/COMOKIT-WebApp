@@ -173,8 +173,13 @@ class MapGeojson extends React.Component {
             if (typeof message.data == "object") {
 
             } else {
-                var gjs = JSON.parse(message);
-                if (gjs.content && gjs.type === "CommandExecutedSuccessfully") {
+                var gjs ;
+                try{
+                    gjs = JSON.parse(message);
+                }catch(exce){
+                    console.log(message);
+                }
+                if (gjs && gjs.content && gjs.type === "CommandExecutedSuccessfully") {
                     var tmp = gjs.content;
                     myself.geojson = null;
 
