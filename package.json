@@ -2,8 +2,7 @@
   "name": "COMOKIT Dashboard",
   "version": "1.0.0",
   "engines": {
-    "node": "18.x",
-    "node": "19.x"
+    "node": "18.x"
   },
   "description": "",
   "keywords": [],
